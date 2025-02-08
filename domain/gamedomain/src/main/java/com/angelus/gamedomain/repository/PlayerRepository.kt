@@ -1,6 +1,7 @@
 package com.angelus.gamedomain.repository
 
 import com.angelus.gamedomain.entities.Direction
+import com.angelus.gamedomain.entities.Rotation
 
 interface PlayerRepository {
     fun movePlayer(playerId: String,
@@ -8,7 +9,7 @@ interface PlayerRepository {
                    direction: Direction
     )
     fun rotatePlayer(playerId: String,
-                     direction: Direction
+                     direction: Rotation
     )
 
 }
