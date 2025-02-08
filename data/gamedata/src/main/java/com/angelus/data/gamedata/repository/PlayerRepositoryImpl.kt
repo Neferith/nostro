@@ -6,8 +6,12 @@ import com.angelus.gamedomain.entities.Player
 import com.angelus.gamedomain.entities.Rotation
 import com.angelus.gamedomain.repository.PlayerRepository
 
-class PlayerRepositoryImpl(private val dataSource: PlayerDataSource): PlayerRepository {
-    override suspend fun movePlayer(playerId: String, distance: Int, direction: Direction): Player {
+class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) : PlayerRepository {
+    override suspend fun movePlayer(
+        playerId: String,
+        distance: Int,
+        direction: Direction
+    ): Player {
         val player = dataSource.fetchPlayer(playerId)
         val updatedPlayer = player.copy(
             position = player.position.changePosition(distance, direction)
@@ -16,15 +20,19 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource): PlayerRepo
         return updatedPlayer
     }
 
-
-
-
-    override suspend fun rotatePlayer(playerId: String, direction: Rotation): Player {
+    override suspend fun rotatePlayer(
+        playerId: String,
+        direction: Rotation
+    ): Player {
         val player = dataSource.fetchPlayer(playerId)
-        val updatedPlayer = player.copy(position = player.position.copy(direction = when (direction) {
-            Rotation.LEFT -> player.position.direction.rotateLeft()
-            Rotation.RIGHT -> player.position.direction.rotateRight()
-        }))
+        val updatedPlayer = player.copy(
+            position = player.position.copy(
+                direction = when (direction) {
+                    Rotation.LEFT -> player.position.direction.rotateLeft()
+                    Rotation.RIGHT -> player.position.direction.rotateRight()
+                }
+            )
+        )
 
         dataSource.updatePlayer(updatedPlayer)
         return updatedPlayer

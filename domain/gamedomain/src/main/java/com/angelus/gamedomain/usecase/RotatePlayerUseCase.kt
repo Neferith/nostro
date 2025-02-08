@@ -1,6 +1,5 @@
 package com.angelus.gamedomain.usecase
 
-import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.Player
 import com.angelus.gamedomain.entities.Rotation
 import com.angelus.gamedomain.repository.PlayerRepository
