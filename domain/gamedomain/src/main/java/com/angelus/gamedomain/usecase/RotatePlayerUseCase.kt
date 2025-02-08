@@ -1,22 +1,22 @@
 package com.angelus.gamedomain.usecase
 
-import com.angelus.gamedomain.entities.Direction
+import com.angelus.gamedomain.entities.Player
+import com.angelus.gamedomain.entities.Rotation
 import com.angelus.gamedomain.repository.PlayerRepository
 
 data class RotatePlayerParams(var playerId: String,
-                              var direction: Direction
+                              var rotation: Rotation
 )
 
 interface RotatePlayerUseCase {
-    operator fun invoke(params: RotatePlayerParams)
+    suspend operator fun invoke(params: RotatePlayerParams): Player
 }
 
 class RotatePlayerUseCaseImpl(val repository: PlayerRepository): RotatePlayerUseCase {
-
-    override fun invoke(params: RotatePlayerParams) {
-        repository.rotatePlayer(
+    override suspend fun invoke(params: RotatePlayerParams): Player {
+        return repository.rotatePlayer(
             params.playerId,
-            params.direction
+            params.rotation
         )
     }
 }

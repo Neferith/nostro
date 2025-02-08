@@ -1,6 +1,7 @@
 package com.angelus.gamedomain.usecase
 
 import com.angelus.gamedomain.entities.Direction
+import com.angelus.gamedomain.entities.Player
 import com.angelus.gamedomain.repository.PlayerRepository
 
 
@@ -10,7 +11,7 @@ data class MovePlayerParams(
 )
 
 interface MovePlayerUseCase {
-    operator fun invoke(params: MovePlayerParams)
+    suspend operator fun invoke(params: MovePlayerParams): Player
 }
 
 class MovePlayerUseCaseImpl(private val repository: PlayerRepository) : MovePlayerUseCase {
@@ -18,8 +19,8 @@ class MovePlayerUseCaseImpl(private val repository: PlayerRepository) : MovePlay
         const val MOVE_DISTANCE = 1
     }
 
-    override fun invoke(params: MovePlayerParams) {
-        repository.movePlayer(
+    override suspend fun invoke(params: MovePlayerParams): Player {
+        return repository.movePlayer(
             params.playerId,
             MOVE_DISTANCE,
             params.direction
