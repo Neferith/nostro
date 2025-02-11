@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain:gamedomain"))
+    implementation(project(":data:gamedata"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
