@@ -18,41 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import com.angelus.nostro.coordinator.AppCoordinator
 import com.angelus.nostro.ui.theme.NostroTheme
 
-// Screen.kt
-sealed class Screen(val route: String) {
-    object Main : Screen("main_screen")
-    object Detail : Screen("detail_screen")
-}
-
-@Composable
-fun NavigationStack() {
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = Screen.Main.route) {
-        composable(route = Screen.Main.route) {
-            MainScreen(navController = navController)
-        }
-        composable(
-            route = Screen.Detail.route + "?text={text}",
-            arguments = listOf(
-                navArgument("text") {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
-        ) {
-            DetailScreen(text = it.arguments?.getString("text"))
-        }
-    }
-}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +35,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationStack()
+                    val navController = rememberNavController()
+                    val appCoordinator = remember { AppCoordinator(navController) }
+                    appCoordinator.Start()
                 }
             }
 
@@ -92,8 +63,13 @@ fun GreetingPreview() {
     }
 }
 
+
+interface MainNavigator {
+    fun goToDetail(value: String)
+}
+
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navigator: MainNavigator) {
     val text = remember {
         mutableStateOf("")
     }
@@ -107,7 +83,8 @@ fun MainScreen(navController: NavController) {
         })
 
         Button(onClick = {
-            navController.navigate(route = Screen.Detail.route + "?text=${text.value}")
+            navigator.goToDetail(text.value)
+            //navController.navigate(route = Screen.Detail.route + "?text=${text.value}")
         }) {
             Text("Next Screen")
         }
