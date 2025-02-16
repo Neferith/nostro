@@ -6,15 +6,17 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.angelus.nostro.DetailScreen
 import com.angelus.nostro.MainNavigator
 import com.angelus.nostro.MainScreen
+import com.angelus.nostro.di.AppCoordinatorFactory
+import com.angelus.nostro.page.game.GameScreenNavigator
+import com.angelus.nostro.page.game.GameScreenViewModel
 
 
 // Screen.kt
 sealed class Screen(val route: String) {
     object Main : Screen("main_screen")
-    object Detail : Screen("detail_screen")
+    object Game : Screen("game_screen")
 }
 
 @Composable
@@ -25,7 +27,7 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
             MainScreen(appCoordinator)
         }
         composable(
-            route = Screen.Detail.route + "?text={text}",
+            route = Screen.Game.route + "?text={text}",
             arguments = listOf(
                 navArgument("text") {
                     type = NavType.StringType
@@ -33,13 +35,16 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
                 }
             )
         ) {
-            DetailScreen(text = it.arguments?.getString("text"))
+            appCoordinator.factory.MakeGameScreenPage(GameScreenViewModel.Params(""), appCoordinator)
+           // GameScreen(appCoordinator, GameScreenViewModel())
         }
     }
 }
 
-class AppCoordinator(private val navController: NavHostController) : MainNavigator {
+class AppCoordinator(private val navController: NavHostController) : MainNavigator, GameScreenNavigator {
     //val navController = rememberNavController()
+
+    val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory() }
 
     @Composable
     fun Start() {
@@ -47,7 +52,7 @@ class AppCoordinator(private val navController: NavHostController) : MainNavigat
     }
 
     override fun goToDetail(value: String) {
-        navController.navigate(route = Screen.Detail.route + "?text=${value}")
+        navController.navigate(route = Screen.Game.route )
     }
 }
 
