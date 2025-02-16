@@ -3,7 +3,6 @@ package com.angelus.nostro.page.game
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,43 +11,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.angelus.data.gamedata.data.PlayerDataSourceImpl
-import com.angelus.data.gamedata.repository.PlayerRepositoryImpl
-import com.angelus.gamedomain.entities.Direction
-import com.angelus.gamedomain.entities.Player
-import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.repository.PlayerRepository
-import com.angelus.gamedomain.usecase.MovePlayerUseCaseImpl
-import com.angelus.nostro.MainNavigator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import com.angelus.nostro.component.MoveControls
+import kotlin.Suppress
 
-class GameScreenViewModel {
-    val repository: PlayerRepository = PlayerRepositoryImpl(PlayerDataSourceImpl())
-    val moveUseCase: MovePlayerUseCaseImpl = MovePlayerUseCaseImpl(repository)
-
-  //  val player =  //repository.movePlayer("", 1, Direction.NORTH)
-
-    private val _player = MutableStateFlow<Player>(Player(Position(0,0, Direction.NORTH)))
-    val player: StateFlow<Player> = _player
-
-    fun movePlayer() {
-        CoroutineScope(Dispatchers.Main).launch {
-            _player.value = repository.movePlayer("", 1, Direction.NORTH)
-          //   this.player = repository.movePlayer("", 1, Direction.NORTH)
-        }
-    }
-}
+interface  GameScreenNavigator
 
 
-val gameScreenViewModel = GameScreenViewModel()
-
+@Suppress("unused")
 @Composable
-fun GameScreen(navigator: MainNavigator, viewModel: GameScreenViewModel) {
-    val playerState = viewModel.player.collectAsState()
+fun GameScreen(navigator: GameScreenNavigator,
+               viewModel: GameScreenViewModel) {
+    val playerState = viewModel.currentPlayer.collectAsState()
     val text = remember {
         mutableStateOf("")
     }
@@ -57,17 +30,18 @@ fun GameScreen(navigator: MainNavigator, viewModel: GameScreenViewModel) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Joueur : ${playerState.value.position.y }")
+        Text(text = "Joueur : ${playerState.value?.position?.orientation }")
+        Text(text = "X : ${playerState.value?.position?.x }")
+        Text(text = "Y : ${playerState.value?.position?.y }")
         OutlinedTextField(value = text.value, onValueChange = {
             text.value = it
         })
 
-        Button(onClick = {
+        MoveControls(
+            onMove = {
+                viewModel.processMoveAction(it)
+            }
+        )
 
-            viewModel.movePlayer()
-            //navController.navigate(route = Screen.Detail.route + "?text=${text.value}")
-        }) {
-            Text("Avancer")
-        }
     }
 }

@@ -8,7 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.angelus.nostro.MainNavigator
 import com.angelus.nostro.MainScreen
-import com.angelus.nostro.page.game.GameScreen
+import com.angelus.nostro.di.AppCoordinatorFactory
+import com.angelus.nostro.page.game.GameScreenNavigator
 import com.angelus.nostro.page.game.GameScreenViewModel
 
 
@@ -34,13 +35,16 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
                 }
             )
         ) {
-            GameScreen(appCoordinator, GameScreenViewModel())
+            appCoordinator.factory.MakeGameScreenPage(GameScreenViewModel.Params(""), appCoordinator)
+           // GameScreen(appCoordinator, GameScreenViewModel())
         }
     }
 }
 
-class AppCoordinator(private val navController: NavHostController) : MainNavigator {
+class AppCoordinator(private val navController: NavHostController) : MainNavigator, GameScreenNavigator {
     //val navController = rememberNavController()
+
+    val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory() }
 
     @Composable
     fun Start() {

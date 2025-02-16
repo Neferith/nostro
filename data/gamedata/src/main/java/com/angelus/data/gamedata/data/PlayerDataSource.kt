@@ -1,6 +1,6 @@
 package com.angelus.data.gamedata.data
 
-import com.angelus.gamedomain.entities.Direction
+import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Player
 import com.angelus.gamedomain.entities.Position
 
@@ -11,7 +11,14 @@ interface PlayerDataSource {
 
 class PlayerDataSourceImpl: PlayerDataSource {
 
-    var player:Player = Player(Position(0,0, Direction.NORTH))
+    var player:Player = Player(
+        "",
+        Position(
+            0,
+            0,
+            Orientation.NORTH
+        )
+    )
 
 
     override suspend fun fetchPlayer(playerId: String): Player {
