@@ -30,9 +30,9 @@ fun GameScreen(navigator: GameScreenNavigator,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Joueur : ${playerState.value?.position?.orientation }")
-        Text(text = "X : ${playerState.value?.position?.x }")
-        Text(text = "Y : ${playerState.value?.position?.y }")
+        Text(text = "Joueur : ${playerState.value?.entityPosition?.orientation }")
+        Text(text = "X : ${playerState.value?.entityPosition?.x }")
+        Text(text = "Y : ${playerState.value?.entityPosition?.y }")
         OutlinedTextField(value = text.value, onValueChange = {
             text.value = it
         })

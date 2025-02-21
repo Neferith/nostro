@@ -38,16 +38,24 @@ enum class Rotation {
 }
 
 data class Position(
-    var x: Int,
-    var y: Int,
-    var orientation: Orientation
+    val x: Int,
+    val y: Int
+)
+
+data class EntityPosition(
+    val position: Position,
+    val orientation: Orientation
 ) {
     fun moveForward(distance: Int) = move(distance, 0)
     fun moveBackward(distance: Int) = move(-distance, 0)
     fun strafeLeft(distance: Int) = move(0, -distance)
     fun strafeRight(distance: Int) = move(0, distance)
 
-    fun changePosition(distance: Int, direction: Direction): Position {
+    val x: Int get() = position.x
+    val y: Int get() = position.y
+
+
+    fun changePosition(distance: Int, direction: Direction): EntityPosition {
         return when (direction) {
             Direction.FORWARD -> moveForward(distance)
             Direction.BACKWARD -> moveBackward(distance)
@@ -56,12 +64,17 @@ data class Position(
         }
     }
 
-    private fun move(forwardOffset: Int, sideOffset: Int): Position {
-        return when (orientation) {
-            Orientation.NORTH -> copy(y = y - forwardOffset, x = x - sideOffset)
-            Orientation.SOUTH -> copy(y = y + forwardOffset, x = x + sideOffset)
-            Orientation.WEST -> copy(x = x - forwardOffset, y = y + sideOffset)
-            Orientation.EAST -> copy(x = x + forwardOffset, y = y - sideOffset)
+    private fun move(forwardOffset: Int, sideOffset: Int): EntityPosition {
+        val (xOffset, yOffset) = when (orientation) {
+            Orientation.NORTH -> 0 to -1
+            Orientation.SOUTH -> 0 to 1
+            Orientation.WEST -> -1 to 0
+            Orientation.EAST -> 1 to 0
         }
+
+        return copy(position = position.copy(
+            x = position.x + xOffset * forwardOffset + sideOffset,
+            y = position.y + yOffset * forwardOffset + sideOffset
+        ))
     }
 }
