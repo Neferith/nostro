@@ -2,10 +2,14 @@ package com.angelus.nostro.component
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.graphics.BitmapShader
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Shader
+import android.util.Log
 import android.view.View
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -37,7 +41,7 @@ class DungeonCanvasView(context: Context) : View(context) {
     private val dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1),
         intArrayOf(1, 0, 0, 0, 1),
-        intArrayOf(1, 0, 0, 0, 1),
+        intArrayOf(1, 0, 1, 0, 1),
         intArrayOf(1, 0, 0, 0, 1),
         intArrayOf(1, 1, 1, 1, 1)
     )
@@ -65,7 +69,7 @@ class DungeonCanvasView(context: Context) : View(context) {
         val wallWidth = screenWidth / 2 // Largeur de base des murs
         val wallHeight = screenHeight / 2
 
-        for (depth in 1..2) {
+        for (depth in 1..3) {
             val scale = 1f / depth
             val halfWall = (wallWidth * scale) / 2
 
@@ -94,6 +98,14 @@ class DungeonCanvasView(context: Context) : View(context) {
 
 
             if (wallY in dungeonGrid.indices && wallX in dungeonGrid[0].indices && dungeonGrid[wallY][wallX] == 1) {
+                val texture = BitmapFactory.decodeResource(resources, R.drawable.brick)
+                val myShader = BitmapShader(texture, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR)
+
+                val wallPaint = Paint().apply {
+                    this.shader = myShader
+                }
+
+
                 canvas.drawRect(left, top, right, bottom, paintWall)
                 break
             }
@@ -102,10 +114,7 @@ class DungeonCanvasView(context: Context) : View(context) {
 
     // Dessine un mur en perspective (trapezoïde)
     private fun drawTrapezoid(canvas: Canvas, left: Float, right: Float, top: Float, bottom: Float, isLeft: Boolean, depth: Int) {
-        val wallPaint = Paint().apply {
-            color = Color.YELLOW
-            style = Paint.Style.FILL
-        }
+        val texture = BitmapFactory.decodeResource(resources, R.drawable.brick)
 
         val wallWidthMock = width.toFloat() / (2 * depth)
         val wallHeightMock = height.toFloat()/ (2 * depth)
@@ -127,7 +136,46 @@ class DungeonCanvasView(context: Context) : View(context) {
         }
 
         path.close()
-        val texture = BitmapFactory.decodeResource(resources, R.drawable.brick)
+
+        val matrix = Matrix()
+
+// Points d'origine de l'image
+        val srcPoints = floatArrayOf(
+            0f, 0f,
+            texture.width.toFloat(), 0f,
+            texture.width.toFloat(), texture.height.toFloat(),
+            0f, texture.height.toFloat()
+        )
+
+// Points où mapper la texture dans ton trapèze
+        val dstPoints = if (isLeft) {
+            floatArrayOf(
+                left, top,
+                left - wallWidthMock / 2, top - wallWidthMock / 2,
+                left - wallWidthMock / 2, bottom + wallWidthMock / 2,
+                left, bottom
+            )
+        } else {
+            floatArrayOf(
+                right, top,
+                right + wallWidthMock / 2, top - wallWidthMock / 2,
+                right + wallWidthMock / 2, bottom + wallWidthMock / 2,
+                right, bottom
+            )
+        }
+
+// Appliquer la transformation
+        val success = matrix.setPolyToPoly(srcPoints, 0, dstPoints, 0, 4)
+        if (!success) {
+            Log.e("ERROR", "Échec de la transformation de la texture")
+        }
+
+        val shader = BitmapShader(texture, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
+        shader.setLocalMatrix(matrix)
+        val wallPaint = Paint().apply {
+            this.shader = shader
+        }
+
         canvas.drawPath(path, wallPaint)
     }
 
