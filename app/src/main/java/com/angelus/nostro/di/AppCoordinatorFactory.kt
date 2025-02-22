@@ -9,5 +9,5 @@ class AppCoordinatorFactory() : GameScreenPageFactory {
     }
 
     // Accès aux use cases via domainDIContainer
-    override val gameDomainUseCaseFactory get() = domainDIContainer
+    override val playerUseCaseFactory get() = domainDIContainer
 }

@@ -1,17 +1,17 @@
 package com.angelus.nostro.page.game
 
 import androidx.compose.runtime.Composable
-import com.angelus.gamedomain.factory.GameDomainUseCaseFactory
+import com.angelus.gamedomain.factory.PlayerUseCaseFactory
 
 interface GameScreenPageFactory {
 
-    val gameDomainUseCaseFactory: GameDomainUseCaseFactory
+    val playerUseCaseFactory: PlayerUseCaseFactory
 
     fun makeViewModel(params: GameScreenViewModel.Params): GameScreenViewModel {
         val useCases = GameScreenViewModel.UseCases(
-            gameDomainUseCaseFactory.makeMovePlayerUseCase(),
-            gameDomainUseCaseFactory.makeRotatePlayerUseCase(),
-            gameDomainUseCaseFactory.makeObservePlayerUseCase()
+            playerUseCaseFactory.makeMovePlayerUseCase(),
+            playerUseCaseFactory.makeRotatePlayerUseCase(),
+            playerUseCaseFactory.makeObservePlayerUseCase()
         )
         return GameScreenViewModel(params, useCases)
     }

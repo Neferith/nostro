@@ -27,7 +27,7 @@ data class GameMap(val id: String,
     }
 
     // Récupère une portion (sous-grille) de la carte
- /*   fun getGrid(start: Position, width: Int, height: Int): List<List<Tile>> {
+    fun getGrid(start: Position, width: Int, height: Int): List<List<Tile>> {
         val grid = mutableListOf<List<Tile>>()
         for (y in start.y until start.y + height) {
             val row = mutableListOf<Tile>()
@@ -38,5 +38,5 @@ data class GameMap(val id: String,
             grid.add(row)
         }
         return grid
-    }*/
+    }
 }
