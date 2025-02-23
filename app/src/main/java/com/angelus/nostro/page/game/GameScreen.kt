@@ -35,7 +35,7 @@ fun GameScreen(navigator: GameScreenNavigator,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Box(modifier = Modifier.width(300.dp).height(300.dp)) {
+        Box(modifier = Modifier.width(350.dp).height(350.dp)) {
             DungeonScreen()
         }
         Text(text = "Joueur : ${playerState.value?.entityPosition?.orientation }")
