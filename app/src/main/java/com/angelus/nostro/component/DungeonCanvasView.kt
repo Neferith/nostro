@@ -47,14 +47,15 @@ class DungeonCanvasView(context: Context) : View(context) {
 
     private val dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1),
-        intArrayOf(1, 0, 1, 0, 1),
-        intArrayOf(1, 0, 1, 0, 1),
+        intArrayOf(1, 0, 0, 1, 1),
         intArrayOf(1, 0, 0, 0, 1),
-        intArrayOf(1, 1, 1, 1, 1)
+        intArrayOf(1, 0, 0, 0, 1),
+        intArrayOf(1, 0, 0, 0, 1),
+        intArrayOf(1, 1, 1, 1, 1),
     )
 
     private var playerX = 1
-    private var playerY = 2
+    private var playerY = 4
     private var direction = 0 // 0 = Nord, 1 = Est, 2 = Sud, 3 = Ouest
 
     override fun onDraw(canvas: Canvas) {
@@ -67,7 +68,77 @@ class DungeonCanvasView(context: Context) : View(context) {
         canvas.drawRect(0f, height / 2, width, height, paintFloor)
 
         // Dessiner la perspective des murs
-        drawDungeonPerspective(canvas, width, height)
+        newDrawDungeonPerspective(canvas, width, height, 1)
+    }
+
+    private  fun newDrawDungeonPerspective(canvas: Canvas,
+                                           screenWidth: Float,
+                                           screenHeight: Float,
+                                           //x: Int,
+                                           //y: Int,
+                                            depth:Int) {
+        val centerX = screenWidth / 2
+        val centerY = screenHeight / 2
+        val wallWidth = screenWidth / 2 // Largeur de base des murs
+        val wallHeight = screenHeight / 2
+
+        val (wallForwardX, wallForwardY) = getForwardPosition(playerX, playerY, direction, depth)
+        val (wallXLat, wallYLat) = getForwardPosition(playerX, playerY, direction, depth - 1)
+
+        val scale = 1f / depth
+        val halfWall = (wallWidth * scale) / 2
+
+        val left = centerX - halfWall
+        val right = centerX + halfWall
+        val top = centerY - (wallHeight * scale) / 2
+        val bottom = centerY + (wallHeight * scale) / 2
+
+       /* val rightWallPos = getSidePosition(wallXLat, wallYLat, direction, 1)  // Droite
+        if (isWall(rightWallPos)) {
+            val texture = BitmapFactory.decodeResource(resources, R.drawable.brick)
+            PerspectiveWallDrawer(canvas, texture).drawWallRightPerspective(right, top, wallWidth/depth, wallHeight/depth, depth)
+        } else {
+            drawWallToRight(canvas,wallForwardX, wallForwardY, right, top, bottom, wallWidth)
+        }*/
+        for (depth in 4 downTo 1) {
+
+            val scale = 1f / depth
+            val halfWall = (wallWidth * scale) / 2
+
+            val left = centerX - halfWall
+            val right = centerX + halfWall
+            val top = centerY - (wallHeight * scale) / 2
+            val bottom = centerY + (wallHeight * scale) / 2
+
+
+            // Vérifier et dessiner les murs latéraux
+            // Vérifier si un mur est devant
+            val (wallX, wallY) = getForwardPosition(playerX, playerY, direction, depth)
+            val (wallXLat, wallYLat) = getForwardPosition(playerX, playerY, direction, depth - 1)
+            // On ne prend pas les bons murs latéraux
+            val leftWallPos = getSidePosition(wallXLat, wallYLat, direction, -1) // Gauche
+            val rightWallPos = getSidePosition(wallXLat, wallYLat, direction, 1)  // Droite
+
+
+            if (wallY in dungeonGrid.indices && wallX in dungeonGrid[0].indices && dungeonGrid[wallY][wallX] == 1) {
+                val texture = BitmapFactory.decodeResource(resources, R.drawable.brick)
+                val myShader = BitmapShader(texture, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR)
+
+                val wallPaint = Paint().apply {
+                    this.shader = myShader
+                }
+
+
+                canvas.drawRect(left, top, right, bottom, paintWall)
+
+
+                //  canvas.drawRect(right, top, right + wallWidth /depth, bottom, paintWallRigt)
+               // break
+            }
+            drawWallToRight(canvas, wallX + 1,wallY, right, top, bottom, wallWidth/depth )
+        }
+
+
     }
 
     private fun drawDungeonPerspective(canvas: Canvas, screenWidth: Float, screenHeight: Float) {
@@ -76,7 +147,7 @@ class DungeonCanvasView(context: Context) : View(context) {
         val wallWidth = screenWidth / 2 // Largeur de base des murs
         val wallHeight = screenHeight / 2
 
-        for (depth in 1..2) {
+        for (depth in 1..4) {
             val scale = 1f / depth
             val halfWall = (wallWidth * scale) / 2
 
@@ -99,13 +170,15 @@ class DungeonCanvasView(context: Context) : View(context) {
                 // drawTrapezoid(canvas, left, right, top, bottom, true, depth) // Mur gauche
                 PerspectiveWallDrawer(canvas, texture).drawWallLeftPerspective( left, top, wallWidth/depth, wallHeight/depth, depth)
             }
+
+            //}
+
             if (isWall(rightWallPos)) {
                 val texture = BitmapFactory.decodeResource(resources, R.drawable.brick)
                 PerspectiveWallDrawer(canvas, texture).drawWallRightPerspective(right, top, wallWidth/depth, wallHeight/depth, depth)
 
-              //  drawTrapezoid(canvas, left, right, top, bottom, false, depth) // Mur droit
+                //  drawTrapezoid(canvas, left, right, top, bottom, false, depth) // Mur droit
             }
-            //}
 
 
             if (wallY in dungeonGrid.indices && wallX in dungeonGrid[0].indices && dungeonGrid[wallY][wallX] == 1) {
@@ -118,8 +191,31 @@ class DungeonCanvasView(context: Context) : View(context) {
 
 
                 canvas.drawRect(left, top, right, bottom, paintWall)
+
+              //  drawWallToRight(canvas, wallX + 1,wallY, right, top, bottom, wallWidth/depth )
+              //  canvas.drawRect(right, top, right + wallWidth /depth, bottom, paintWallRigt)
                 break
             }
+
+
+        }
+    }
+
+    private fun drawWallToRight(canvas: Canvas,
+                                wallX: Int,
+                               wallY: Int,
+                                posX: Float,
+                                top: Float,
+                                bottom: Float,
+                                wallWidth: Float)
+    {
+        if(posX < width) {
+        if (wallY in dungeonGrid.indices && wallX in dungeonGrid[0].indices && dungeonGrid[wallY][wallX] == 1) {
+            canvas.drawRect(posX, top, posX + wallWidth, bottom, paintWallRigt)
+
+
+        }
+            drawWallToRight(canvas, wallX + 1, wallY, posX + wallWidth, top, bottom, wallWidth)
         }
     }
 
