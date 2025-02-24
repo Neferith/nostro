@@ -20,7 +20,7 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) : PlayerRep
     val defaultPlayer = Player(
         id = "",
         entityPosition = EntityPosition(
-            Position(0, 0),
+            Position(1, 4),
             Orientation.NORTH
         )
     ) // Adapte les valeurs en fonction de ton modèle

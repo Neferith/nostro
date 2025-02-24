@@ -47,7 +47,7 @@ data class GameMap(val id: String,
 
         val width = 3 + 2 * (maxDepth - 1)
         val visibleTiles = mutableListOf<List<Tile>>()
-        for (depth in 1..maxDepth) {
+        for (depth in 0..maxDepth) {
             val row = mutableListOf<Tile>()
             for (i in -width / 2..width / 2) {
                 val (x, y) = when (playerPosition.orientation) {

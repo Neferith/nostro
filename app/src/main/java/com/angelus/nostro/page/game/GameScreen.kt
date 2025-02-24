@@ -36,7 +36,10 @@ fun GameScreen(navigator: GameScreenNavigator,
         modifier = Modifier.fillMaxSize()
     ) {
         Box(modifier = Modifier.width(350.dp).height(350.dp)) {
-            DungeonScreen()
+            val panorama = viewModel.panoramState.collectAsState().value
+            panorama?.let {
+                DungeonScreen(panorama.getSimpleGrid(), panorama.getPositionInSimpleGrid())
+            }
         }
         Text(text = "Joueur : ${playerState.value?.entityPosition?.orientation }")
         Text(text = "X : ${playerState.value?.entityPosition?.x }")

@@ -47,7 +47,7 @@ class DungeonCanvasView(context: Context) : View(context) {
         style = Paint.Style.FILL
     }
 
-    private val dungeonGrid = arrayOf(
+    private var dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1),
         intArrayOf(1, 0, 0, 1, 1),
         intArrayOf(1, 0, 0, 1, 1),
@@ -71,7 +71,8 @@ class DungeonCanvasView(context: Context) : View(context) {
 
         // Dessiner la perspective des murs
         //newDrawDungeonPerspective(canvas, width, height, 1)
-        newDrawDungeonPerspectiveBis(canvas, width, height, Position(playerX, playerY),1)
+        drawDungeonPerspective(canvas,width,height)
+       // newDrawDungeonPerspectiveBis(canvas, width, height, Position(playerX, playerY),1)
     }
 
     val DEPTH_MAX = 4
@@ -104,7 +105,7 @@ class DungeonCanvasView(context: Context) : View(context) {
 
         if (position.y in dungeonGrid.indices) {
             var wallRightIndex = 0
-            for(rightX in position.x +1 .. dungeonGrid[position.x].size) {
+            for(rightX in position.x +1 .. dungeonGrid[position.y].size) {
 
                 if (rightX in dungeonGrid[0].indices && dungeonGrid[position.y][rightX] == 1) {
                     val wallX = right +  (wallRightIndex * wallWidth)
@@ -354,6 +355,13 @@ class DungeonCanvasView(context: Context) : View(context) {
     private fun isWall(pos: Pair<Int, Int>): Boolean {
         val (x, y) = pos
         return y in dungeonGrid.indices && x in dungeonGrid[0].indices && dungeonGrid[y][x] == 1
+    }
+
+    fun updateGrid(simpleGrid: Array<IntArray>, positionInSimpleGrid: Position) {
+        dungeonGrid = simpleGrid
+        playerX = positionInSimpleGrid.x
+        playerY = positionInSimpleGrid.y
+        invalidate()
     }
 
     /*  fun moveForward() {

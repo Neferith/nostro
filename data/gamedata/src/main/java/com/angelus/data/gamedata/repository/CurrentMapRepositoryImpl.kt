@@ -19,9 +19,9 @@ class CurrentMapRepositoryImpl: CurrentMapRepository {
     private val dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1),
         intArrayOf(1, 0, 0, 0, 1),
-        intArrayOf(1, 1, 0, 1, 1),
-        intArrayOf(1, 0, 0, 1, 1),
-        intArrayOf(1, 0, 1, 1, 1),
+        intArrayOf(1, 0, 1, 0, 1),
+        intArrayOf(1, 0, 1, 0, 1),
+        intArrayOf(1, 0, 1, 0, 1),
         intArrayOf(1, 1, 1, 1, 1),
     )
 
@@ -47,7 +47,7 @@ class CurrentMapRepositoryImpl: CurrentMapRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun fetchPanoram(entityPosition: EntityPosition): Panorama {
+    override fun getPanorama(entityPosition: EntityPosition): Panorama {
        return Panorama(gameMap.getPlayerGridVisibility(entityPosition, 4))
     }
 

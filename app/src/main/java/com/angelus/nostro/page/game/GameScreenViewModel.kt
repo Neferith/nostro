@@ -3,27 +3,37 @@ package com.angelus.nostro.page.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.entities.Direction
+import com.angelus.gamedomain.entities.GameMap
+import com.angelus.gamedomain.entities.Panorama
 import com.angelus.gamedomain.entities.Player
 import com.angelus.gamedomain.entities.Rotation
+import com.angelus.gamedomain.usecase.GetPanoramaUseCase
 import com.angelus.gamedomain.usecase.MovePlayerParams
 import com.angelus.gamedomain.usecase.MovePlayerUseCase
+import com.angelus.gamedomain.usecase.ObserveCurrentMapUseCase
 import com.angelus.gamedomain.usecase.ObservePlayerUseCase
 import com.angelus.gamedomain.usecase.RotatePlayerParams
 import com.angelus.gamedomain.usecase.RotatePlayerUseCase
 import com.angelus.nostro.component.MoveAction
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+
+
 class GameScreenViewModel(
     params: Params,
-    private val useCases: UseCases
+    private val useCases: UseCases,
+    private val mapUseCases: MapUseCases
 ) : ViewModel() {
 
     val movePlayerUseCase get() = useCases.movePlayerUseCase
     val rotatePlayerUseCase get() = useCases.rotatePlayerUseCase
     val observePlayerUseCase get() = useCases.observePlayerUseCase
+    val observeCurrentMapUseCase get() = mapUseCases.observeCurrentMapUseCase
+    val getPanoramaUseCase get() = mapUseCases.getPanoramaUseCase
 
     data class UseCases(
         val movePlayerUseCase: MovePlayerUseCase,
@@ -31,11 +41,30 @@ class GameScreenViewModel(
         val observePlayerUseCase: ObservePlayerUseCase
     )
 
+    data class MapUseCases(
+        val observeCurrentMapUseCase: ObserveCurrentMapUseCase,
+        val getPanoramaUseCase: GetPanoramaUseCase
+    )
+
     data class Params(val playerId: String)
 
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<Player?> = observePlayerUseCase(params.playerId)
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
+    val currentMap: StateFlow<GameMap?> = observeCurrentMapUseCase("")
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
+
+    val panoramState: StateFlow<Panorama?> = combine(
+        currentPlayer,
+        currentMap
+    ) { player, map ->
+        if(player == null) {
+            null
+        } else {
+            getPanoramaUseCase(player.entityPosition)
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     fun processMoveAction(action: MoveAction) {
         val player = currentPlayer.value

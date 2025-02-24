@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CurrentMapRepository {
     suspend fun loadCurrentMap(id: String): GameMap
-    suspend fun fetchPanoram(entityPosition: EntityPosition): Panorama
+    fun getPanorama(entityPosition: EntityPosition): Panorama
     fun observeCurrentMap(): Flow<GameMap>
 }
