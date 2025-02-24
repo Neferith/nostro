@@ -2,6 +2,10 @@ package com.angelus.gamedomain.factory
 
 import com.angelus.gamedomain.repository.CurrentMapRepository
 import com.angelus.gamedomain.repository.PlayerRepository
+import com.angelus.gamedomain.usecase.FetchPanoramaUseCase
+import com.angelus.gamedomain.usecase.FetchPanoramaUseCaseImpl
+import com.angelus.gamedomain.usecase.LoadCurrentMapUseCase
+import com.angelus.gamedomain.usecase.LoadCurrentMapUseCaseImpl
 import com.angelus.gamedomain.usecase.MovePlayerUseCase
 import com.angelus.gamedomain.usecase.MovePlayerUseCaseImpl
 import com.angelus.gamedomain.usecase.ObserveCurrentMapUseCase
@@ -29,15 +33,17 @@ interface PlayerUseCaseFactory {
 }
 
 interface CurrentMapUseCaseFactory {
-
     val currentMapRepository: CurrentMapRepository
 
     fun makeObserveCurrentMapUseCase(): ObserveCurrentMapUseCase {
         return ObserveCurrentMapUseCaseImpl(currentMapRepository)
     }
 
-   /* fun makeLoadCurrentMapUseCase(): LoadCurrentMapUseCase {
+    fun makeLoadCurrentMapUseCase(): LoadCurrentMapUseCase {
         return LoadCurrentMapUseCaseImpl(currentMapRepository)
-    }*/
+    }
 
+    fun makeFetchPanorameUseCase(): FetchPanoramaUseCase {
+        return FetchPanoramaUseCaseImpl(currentMapRepository)
+    }
 }

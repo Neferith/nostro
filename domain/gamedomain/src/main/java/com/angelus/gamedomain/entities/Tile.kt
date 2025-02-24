@@ -1,8 +1,8 @@
 package com.angelus.gamedomain.entities
 
-enum class TileType(val defaultWalkable: Boolean) {
-    STONE_FLOOR(true),
-    STONE_WALL(false)
+enum class TileType(val defaultWalkable: Boolean, val isWall: Boolean) {
+    STONE_FLOOR(true, false),
+    STONE_WALL(false, true)
 }
 
 data class Tile(val type: TileType,

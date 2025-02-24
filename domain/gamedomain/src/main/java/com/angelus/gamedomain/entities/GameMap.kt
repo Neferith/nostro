@@ -39,4 +39,91 @@ data class GameMap(val id: String,
         }
         return grid
     }
+
+    fun getPlayerGridVisibility(
+        playerPosition: EntityPosition,
+        maxDepth: Int
+    ):List<List<Tile>>{
+
+        val width = 3 + 2 * (maxDepth - 1)
+        val visibleTiles = mutableListOf<List<Tile>>()
+        for (depth in 1..maxDepth) {
+            val row = mutableListOf<Tile>()
+            for (i in -width / 2..width / 2) {
+                val (x, y) = when (playerPosition.orientation) {
+                    Orientation.NORTH -> Pair(
+                        playerPosition.x + i,
+                        playerPosition.y - depth
+                    )
+                    Orientation.SOUTH -> Pair(
+                        playerPosition.x + i,
+                        playerPosition.y + depth
+                    )
+                    Orientation.EAST -> Pair(
+                        playerPosition.x + depth,
+                        playerPosition.y + i
+                    )
+                    Orientation.WEST -> Pair(
+                        playerPosition.x - depth,
+                        playerPosition.y + i
+                    )
+                }
+                row.add(getTileAt(Position(x,y)))
+            }
+            visibleTiles.add(row)
+        }
+        return visibleTiles.asReversed()
+    }
+
+
+
+    fun getVisibleAndHiddenTiles(
+        map: Array<Array<Tile>>,
+        playerX: Int,
+        playerY: Int,
+        direction: Orientation,
+        maxDepth: Int,
+        baseWidth: Int
+    ): Pair<List<List<Tile>>, List<Tile>> {
+        val visibleTiles = mutableListOf<List<Tile>>()
+        val allVisiblePositions = mutableSetOf<Pair<Int, Int>>()
+
+        for (depth in 1..maxDepth) {
+            val width = baseWidth + 2 * (depth - 1)
+            val row = mutableListOf<Tile>()
+
+            for (i in -width / 2..width / 2) {
+                val (x, y) = when (direction) {
+                    Orientation.NORTH -> Pair(playerX + i, playerY - depth)
+                    Orientation.SOUTH -> Pair(playerX + i, playerY + depth)
+                    Orientation.EAST  -> Pair(playerX + depth, playerY + i)
+                    Orientation.WEST  -> Pair(playerX - depth, playerY + i)
+                }
+
+                if (x in map.indices && y in map[0].indices) {
+                    val tile = map[x][y]
+                    row.add(tile)
+                    allVisiblePositions.add(Pair(x, y))
+
+                    if (tile.type.isWall == true) {
+                        // Bloque la vision au-delà de ce mur
+                        break
+                    }
+                }
+            }
+            visibleTiles.add(row)
+        }
+
+        // Récupérer les cases invisibles
+        val hiddenTiles = mutableListOf<Tile>()
+        for (y in map[0].indices) {
+            for (x in map.indices) {
+                if (!allVisiblePositions.contains(Pair(x, y))) {
+                    hiddenTiles.add(map[x][y])
+                }
+            }
+        }
+
+        return Pair(visibleTiles, hiddenTiles)
+    }
 }
