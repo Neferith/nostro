@@ -70,8 +70,15 @@ data class GameMap(val id: String,
                 }
                 row.add(getTileAt(Position(x,y)))
             }
-            visibleTiles.add(row)
+            // TODO: Améliorer ceci
+            if(playerPosition.orientation == Orientation.WEST ||playerPosition.orientation == Orientation.SOUTH ) {
+                visibleTiles.add(row.reversed())
+            } else {
+                visibleTiles.add(row)
+            }
+
         }
+        // TODO: Améliorer ceci
         return visibleTiles.asReversed()
     }
 

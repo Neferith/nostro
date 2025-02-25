@@ -361,6 +361,7 @@ class DungeonCanvasView(context: Context) : View(context) {
         dungeonGrid = simpleGrid
         playerX = positionInSimpleGrid.x
         playerY = positionInSimpleGrid.y
+        direction = 0
         invalidate()
     }
 
