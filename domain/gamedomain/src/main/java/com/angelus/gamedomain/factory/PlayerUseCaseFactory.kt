@@ -2,6 +2,8 @@ package com.angelus.gamedomain.factory
 
 import com.angelus.gamedomain.repository.CurrentMapRepository
 import com.angelus.gamedomain.repository.PlayerRepository
+import com.angelus.gamedomain.usecase.CheckMoveInMapUseCase
+import com.angelus.gamedomain.usecase.CheckMoveInMapUseCaseImpl
 import com.angelus.gamedomain.usecase.GetPanoramaUseCase
 import com.angelus.gamedomain.usecase.GetPanoramaUseCaseImpl
 import com.angelus.gamedomain.usecase.LoadCurrentMapUseCase
@@ -45,5 +47,9 @@ interface CurrentMapUseCaseFactory {
 
     fun makeFetchPanorameUseCase(): GetPanoramaUseCase {
         return GetPanoramaUseCaseImpl(currentMapRepository)
+    }
+
+    fun makeCheckMoveInMapUseCase(): CheckMoveInMapUseCase {
+        return CheckMoveInMapUseCaseImpl(currentMapRepository)
     }
 }

@@ -1,9 +1,9 @@
 package com.angelus.data.gamedata.repository
 
+import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.GameMap
 import com.angelus.gamedomain.entities.Panorama
-import com.angelus.gamedomain.entities.Player
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Size
 import com.angelus.gamedomain.entities.Tile
@@ -54,5 +54,25 @@ class CurrentMapRepositoryImpl: CurrentMapRepository {
     override fun observeCurrentMap(): Flow<GameMap> =
         _mapState.mapNotNull { it }
             .distinctUntilChanged()
+
+    override fun checkMoveInMap(
+        entityPosition: EntityPosition,
+        moveDistance: Int,
+        direction: Direction
+    ): Boolean {
+        _mapState.value.let { map ->
+            // On s'assure de ne pas modifier un objet existant.
+            val checkPosition =
+                EntityPosition(entityPosition.position.copy(), entityPosition.orientation)
+            for (i in 1..moveDistance) {
+                val nextPosition = checkPosition.changePosition(1, direction)
+                if (!map.getTileAt(nextPosition.position).walkable) {
+                    return false
+                }
+            }
+            return true
+        }
+        return false
+    }
 
 }

@@ -17,7 +17,8 @@ interface GameScreenPageFactory {
         )
         val mapUseCases = GameScreenViewModel.MapUseCases(
             currentMapUseCaseFactory.makeObserveCurrentMapUseCase(),
-            currentMapUseCaseFactory.makeFetchPanorameUseCase()
+            currentMapUseCaseFactory.makeFetchPanorameUseCase(),
+            currentMapUseCaseFactory.makeCheckMoveInMapUseCase()
         )
         return GameScreenViewModel(
             params,
