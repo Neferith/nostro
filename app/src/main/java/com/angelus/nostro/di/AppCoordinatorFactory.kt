@@ -1,5 +1,6 @@
 package com.angelus.nostro.di
 
+import com.angelus.gamedomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.page.game.GameScreenPageFactory
 
 class AppCoordinatorFactory() : GameScreenPageFactory {
@@ -9,5 +10,6 @@ class AppCoordinatorFactory() : GameScreenPageFactory {
     }
 
     // Accès aux use cases via domainDIContainer
-    override val gameDomainUseCaseFactory get() = domainDIContainer
+    override val playerUseCaseFactory get() = domainDIContainer
+    override val currentMapUseCaseFactory get() = domainDIContainer
 }

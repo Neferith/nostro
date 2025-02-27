@@ -4,6 +4,7 @@ import com.angelus.data.gamedata.data.PlayerDataSource
 import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Player
+import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Rotation
 import com.angelus.gamedomain.repository.PlayerRepository
@@ -16,7 +17,13 @@ import kotlinx.coroutines.flow.update
 class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) : PlayerRepository {
 
     // Création d'un Player par défaut
-    val defaultPlayer = Player(id = "", position = Position(0, 0, Orientation.NORTH)) // Adapte les valeurs en fonction de ton modèle
+    val defaultPlayer = Player(
+        id = "",
+        entityPosition = EntityPosition(
+            Position(1, 4),
+            Orientation.NORTH
+        )
+    ) // Adapte les valeurs en fonction de ton modèle
 
     // Initialisation du StateFlow avec un player par défaut
     private val _playersState = MutableStateFlow<Map<String, Player>>(
@@ -34,7 +41,7 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) : PlayerRep
     ): Player {
         val player = getOrFetchPlayer(playerId)
         val updatedPlayer = player.copy(
-            position = player.position.changePosition(distance, direction)
+            entityPosition = player.entityPosition.changePosition(distance, direction)
         )
         updatePlayer(updatedPlayer)
         return updatedPlayer
@@ -46,10 +53,10 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) : PlayerRep
     ): Player {
         val player = getOrFetchPlayer(playerId)
         val updatedPlayer = player.copy(
-            position = player.position.copy(
+            entityPosition = player.entityPosition.copy(
                 orientation = when (direction) {
-                    Rotation.LEFT -> player.position.orientation.rotateLeft()
-                    Rotation.RIGHT -> player.position.orientation.rotateRight()
+                    Rotation.LEFT -> player.entityPosition.orientation.rotateLeft()
+                    Rotation.RIGHT -> player.entityPosition.orientation.rotateRight()
                 }
             )
         )
