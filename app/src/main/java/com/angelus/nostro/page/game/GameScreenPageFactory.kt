@@ -2,11 +2,11 @@ package com.angelus.nostro.page.game
 
 import androidx.compose.runtime.Composable
 import com.angelus.gamedomain.factory.CurrentMapUseCaseFactory
-import com.angelus.gamedomain.factory.PlayerUseCaseFactory
+import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
 interface GameScreenPageFactory {
 
-    val playerUseCaseFactory: PlayerUseCaseFactory
+    val playerUseCaseFactory: com.angelus.playerdomain.factory.PlayerUseCaseFactory
     val currentMapUseCaseFactory: CurrentMapUseCaseFactory
 
     fun makeViewModel(params: GameScreenViewModel.Params): GameScreenViewModel {

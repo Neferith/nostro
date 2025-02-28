@@ -1,18 +1,17 @@
-package com.angelus.gamedomain.repository
+package com.angelus.playerdomain.repository
 
 import com.angelus.gamedomain.entities.Direction
-import com.angelus.gamedomain.entities.Player
 import com.angelus.gamedomain.entities.Rotation
 import kotlinx.coroutines.flow.Flow
 
 interface PlayerRepository {
-    fun observePlayer(playerId: String): Flow<Player>
+    fun observePlayer(playerId: String): Flow<com.angelus.playerdomain.entities.Player>
     suspend fun movePlayer(playerId: String,
                            distance: Int,
                            direction: Direction
-    ): Player
+    ): com.angelus.playerdomain.entities.Player
     suspend fun rotatePlayer(playerId: String,
                      direction: Rotation
-    ): Player
+    ): com.angelus.playerdomain.entities.Player
 
 }

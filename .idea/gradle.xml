@@ -13,8 +13,11 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/data/gamedata" />
+            <option value="$PROJECT_DIR$/data/playerdata" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/domain/gamedomain" />
+            <option value="$PROJECT_DIR$/domain/npcdomain" />
+            <option value="$PROJECT_DIR$/domain/playerdomain" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

@@ -1,5 +1,6 @@
 package com.angelus.nostro.component
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -310,6 +311,22 @@ class DungeonCanvasView(context: Context) : View(context) {
 
 
         }
+        drawMunster(canvas)
+    }
+
+    private fun drawMunster(canvas: Canvas) {
+        val texture = BitmapFactory.decodeResource(resources, R.drawable.goblin)
+        val myShader = BitmapShader(texture, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR)
+
+      //  if(mobsLeft == 0.0f) {
+           val mobsLeft = ((width - texture.width) / 2).toFloat() + offsetX
+            val mobsTop = ((height - texture.height) / 2).toFloat() + offsetY
+       // }
+
+        // Dessiner l'image sur le Canvas au centre
+        canvas.drawBitmap(texture, mobsLeft.toFloat(), mobsTop.toFloat(), null)
+
+        startShakingAnimation()
     }
 
     private fun drawWallToRight(canvas: Canvas,
@@ -363,6 +380,27 @@ class DungeonCanvasView(context: Context) : View(context) {
         playerY = positionInSimpleGrid.y
         direction = 0
         invalidate()
+    }
+
+    private var offsetX = 0f
+    private var offsetY = 0f
+
+    private fun startShakingAnimation() {
+        val shakeAnimator = ValueAnimator.ofFloat(-10f, 10f).apply {
+            duration = 50 // Oscillation rapide
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = ValueAnimator.INFINITE
+            addUpdateListener { animation ->
+                val shakeValue = animation.animatedValue as Float
+
+                // Alterner les tremblements sur X et Y de manière aléatoire
+                offsetX = (Math.random().toFloat() - 0.5f) * 20  // -10 à +10 pixels
+                offsetY = (Math.random().toFloat() - 0.5f) * 20  // -10 à +10 pixels
+
+                invalidate() // Redessiner l'image
+            }
+        }
+        shakeAnimator.start()
     }
 
     /*  fun moveForward() {

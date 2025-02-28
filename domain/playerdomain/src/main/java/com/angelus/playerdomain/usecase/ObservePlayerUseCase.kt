@@ -1,7 +1,7 @@
-package com.angelus.gamedomain.usecase
+package com.angelus.playerdomain.usecase
 
-import com.angelus.gamedomain.entities.Player
-import com.angelus.gamedomain.repository.PlayerRepository
+import com.angelus.playerdomain.entities.Player
+import com.angelus.playerdomain.repository.PlayerRepository
 import kotlinx.coroutines.flow.Flow
 
 interface ObservePlayerUseCase {

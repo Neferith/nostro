@@ -43,6 +43,9 @@ dependencies {
     implementation(project(":domain:gamedomain"))
     implementation(project(":data:gamedata"))
 
+    implementation(project(":domain:playerdomain"))
+    implementation(project(":data:playerdata"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
