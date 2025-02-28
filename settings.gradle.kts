@@ -23,3 +23,8 @@ rootProject.name = "Nostro"
 include(":app")
 include(":domain:gamedomain")
 include(":data:gamedata")
+include(":domain:npcdomain")
+include(":domain:playerdomain")
+include(":data:playerdata")
+include(":domain:mapdomain")
+include(":data:mapdata")
