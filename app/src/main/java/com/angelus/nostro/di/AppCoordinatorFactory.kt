@@ -1,6 +1,5 @@
 package com.angelus.nostro.di
 
-import com.angelus.gamedomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.page.game.GameScreenPageFactory
 
 class AppCoordinatorFactory() : GameScreenPageFactory {

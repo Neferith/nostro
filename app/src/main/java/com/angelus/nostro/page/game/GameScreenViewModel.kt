@@ -3,19 +3,13 @@ package com.angelus.nostro.page.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.entities.Direction
-import com.angelus.gamedomain.entities.GameMap
-import com.angelus.gamedomain.entities.Panorama
-import com.angelus.playerdomain.entities.Player
+import com.angelus.mapdomain.entities.GameMap
+import com.angelus.mapdomain.entities.Panorama
 import com.angelus.gamedomain.entities.Rotation
-import com.angelus.gamedomain.usecase.CheckMoveInMapUseCase
-import com.angelus.gamedomain.usecase.CheckMoveParams
-import com.angelus.gamedomain.usecase.GetPanoramaUseCase
-import com.angelus.playerdomain.usecase.MovePlayerParams
-import com.angelus.playerdomain.usecase.MovePlayerUseCase
-import com.angelus.gamedomain.usecase.ObserveCurrentMapUseCase
-import com.angelus.playerdomain.usecase.ObservePlayerUseCase
-import com.angelus.playerdomain.usecase.RotatePlayerParams
-import com.angelus.playerdomain.usecase.RotatePlayerUseCase
+import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
+import com.angelus.mapdomain.usecase.CheckMoveParams
+import com.angelus.mapdomain.usecase.GetPanoramaUseCase
+import com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase
 import com.angelus.nostro.component.MoveAction
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -45,9 +39,9 @@ class GameScreenViewModel(
     )
 
     data class MapUseCases(
-        val observeCurrentMapUseCase: ObserveCurrentMapUseCase,
-        val getPanoramaUseCase: GetPanoramaUseCase,
-        val checkMoveInMapUseCase: CheckMoveInMapUseCase
+        val observeCurrentMapUseCase: com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase,
+        val getPanoramaUseCase: com.angelus.mapdomain.usecase.GetPanoramaUseCase,
+        val checkMoveInMapUseCase: com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
     )
 
     data class Params(val playerId: String)
@@ -55,11 +49,11 @@ class GameScreenViewModel(
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase(params.playerId)
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
-    val currentMap: StateFlow<GameMap?> = observeCurrentMapUseCase("")
+    val currentMap: StateFlow<com.angelus.mapdomain.entities.GameMap?> = observeCurrentMapUseCase("")
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
 
-    val panoramState: StateFlow<Panorama?> = combine(
+    val panoramState: StateFlow<com.angelus.mapdomain.entities.Panorama?> = combine(
         currentPlayer,
         currentMap
     ) { player, map ->
@@ -80,7 +74,12 @@ class GameScreenViewModel(
                 when (action) {
                     MoveAction.FORWARD, MoveAction.BACKWARD, MoveAction.STRAFE_LEFT, MoveAction.STRAFE_RIGHT -> {
                         val direction = action.toDirection()
-                        if(checkMoveInMapUseCase(CheckMoveParams(player.entityPosition, action.toDirection()))) {
+                        if(checkMoveInMapUseCase(
+                                com.angelus.mapdomain.usecase.CheckMoveParams(
+                                    player.entityPosition,
+                                    action.toDirection()
+                                )
+                            )) {
                             movePlayerUseCase(
                                 com.angelus.playerdomain.usecase.MovePlayerParams(
                                     player.id,
