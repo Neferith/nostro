@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.angelus.gamedomain.entities.TurnType
 import com.angelus.nostro.component.DungeonScreen
 import com.angelus.nostro.component.MoveControls
 import kotlin.Suppress
@@ -27,6 +28,7 @@ interface  GameScreenNavigator
 fun GameScreen(navigator: GameScreenNavigator,
                viewModel: GameScreenViewModel) {
     val playerState = viewModel.currentPlayer.collectAsState()
+    val turnState = viewModel.currentTurn.collectAsState()
     val text = remember {
         mutableStateOf("")
     }
@@ -48,11 +50,13 @@ fun GameScreen(navigator: GameScreenNavigator,
             text.value = it
         })
 
-        MoveControls(
-            onMove = {
-                viewModel.processMoveAction(it)
-            }
-        )
+        if(turnState.value?.type == TurnType.PLAYER("")) {
+            MoveControls(
+                onMove = {
+                    viewModel.processMoveAction(it)
+                }
+            )
+        }
 
     }
 }

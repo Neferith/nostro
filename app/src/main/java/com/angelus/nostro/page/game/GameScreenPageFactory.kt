@@ -1,15 +1,22 @@
 package com.angelus.nostro.page.game
 
 import androidx.compose.runtime.Composable
+import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
+import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
 interface GameScreenPageFactory {
 
-    val playerUseCaseFactory: com.angelus.playerdomain.factory.PlayerUseCaseFactory
-    val currentMapUseCaseFactory: com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
+    val playerUseCaseFactory: PlayerUseCaseFactory
+    val currentMapUseCaseFactory: CurrentMapUseCaseFactory
+    val gameUseCaseFactory: TurnUseCaseFactory
 
     fun makeViewModel(params: GameScreenViewModel.Params): GameScreenViewModel {
-        val useCases = GameScreenViewModel.UseCases(
+        val gameUseCases = GameScreenViewModel.GameUseCases(
+            gameUseCaseFactory.makeObserveTurnUseCase(),
+            gameUseCaseFactory.makeNextTurnUseCase()
+        )
+        val playerUseCases = GameScreenViewModel.PlayerUseCases(
             playerUseCaseFactory.makeMovePlayerUseCase(),
             playerUseCaseFactory.makeRotatePlayerUseCase(),
             playerUseCaseFactory.makeObservePlayerUseCase()
@@ -20,9 +27,10 @@ interface GameScreenPageFactory {
             currentMapUseCaseFactory.makeCheckMoveInMapUseCase()
         )
         return GameScreenViewModel(
-            params,
-            useCases,
-            mapUseCases
+            params = params,
+            gameUseCases = gameUseCases,
+            playerUseCases = playerUseCases,
+            mapUseCases = mapUseCases
         )
     }
     @Composable
