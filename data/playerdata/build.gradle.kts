@@ -38,6 +38,11 @@ dependencies {
     implementation(project(":domain:gamedomain"))
     implementation(project(":domain:playerdomain"))
 
+
+    implementation("androidx.datastore:datastore-core:1.1.3")
+    implementation("androidx.datastore:datastore-preferences:1.1.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

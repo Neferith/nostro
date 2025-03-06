@@ -11,6 +11,8 @@ import com.angelus.nostro.MainScreen
 import com.angelus.nostro.di.AppCoordinatorFactory
 import com.angelus.nostro.page.game.GameScreenNavigator
 import com.angelus.nostro.page.game.GameScreenViewModel
+import com.angelus.nostro.page.menu.MenuNavigator
+import com.angelus.nostro.page.menu.MenuScreen
 
 
 // Screen.kt
@@ -24,24 +26,28 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
 
     NavHost(navController = navController, startDestination = Screen.Main.route) {
         composable(route = Screen.Main.route) {
-            MainScreen(appCoordinator)
+            //MainScreen(appCoordinator)
+            MenuScreen(appCoordinator)
         }
         composable(
-            route = Screen.Game.route + "?text={text}",
+            route = Screen.Game.route + "?name={defaultName}",
             arguments = listOf(
-                navArgument("text") {
+                navArgument("defaultName") {
                     type = NavType.StringType
                     nullable = true
                 }
             )
         ) {
+            val playerName = it.arguments?.getString("defaultName") ?: "Joueur inconnu"
+
             appCoordinator.factory.MakeGameScreenPage(GameScreenViewModel.Params(""), appCoordinator)
            // GameScreen(appCoordinator, GameScreenViewModel())
         }
     }
 }
 
-class AppCoordinator(private val navController: NavHostController) : MainNavigator, GameScreenNavigator {
+class AppCoordinator(private val navController: NavHostController) : MainNavigator,
+    GameScreenNavigator, MenuNavigator {
     //val navController = rememberNavController()
 
     val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory() }
@@ -53,6 +59,12 @@ class AppCoordinator(private val navController: NavHostController) : MainNavigat
 
     override fun goToDetail(value: String) {
         navController.navigate(route = Screen.Game.route )
+    }
+
+    override fun goToGame() {
+        navController.navigate(route = Screen.Game.route +"?name=defaultName")
+
+        TODO("Not yet implemented")
     }
 }
 

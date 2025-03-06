@@ -70,7 +70,11 @@ class CurrentMapRepositoryImpl: com.angelus.mapdomain.repository.CurrentMapRepos
         _mapState.value.let { map ->
             // On s'assure de ne pas modifier un objet existant.
             val checkPosition =
-                EntityPosition(entityPosition.position.copy(), entityPosition.orientation)
+                EntityPosition(
+                    entityPosition.mapId,
+                    entityPosition.position.copy(),
+                    entityPosition.orientation
+                )
             for (i in 1..moveDistance) {
                 val nextPosition = checkPosition.changePosition(1, direction)
                 if (!map.getTileAt(nextPosition.position).walkable) {

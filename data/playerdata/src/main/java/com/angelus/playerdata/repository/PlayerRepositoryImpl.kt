@@ -21,26 +21,26 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
     val defaultPlayer = Player(
         id = "",
         entityPosition = EntityPosition(
+            "",
             Position(1, 4),
             Orientation.NORTH
         )
     ) // Adapte les valeurs en fonction de ton modèle
 
     // Initialisation du StateFlow avec un player par défaut
-    private val _playersState = MutableStateFlow<Map<String, Player>>(
-        mapOf("" to defaultPlayer) // La carte contient le joueur par défaut
+    private val _playersState = MutableStateFlow<Player>(
+        defaultPlayer // La carte contient le joueur par défaut
     )
 
-    override fun observePlayer(playerId: String): Flow<Player> =
-        _playersState.mapNotNull { it[playerId] }
+    override fun observePlayer(): Flow<Player> =
+        _playersState.mapNotNull { it }
             .distinctUntilChanged()
 
     override suspend fun movePlayer(
-        playerId: String,
         distance: Int,
         direction: Direction
     ): Player {
-        val player = getOrFetchPlayer(playerId)
+        val player = getOrFetchPlayer()
         val updatedPlayer = player.copy(
             entityPosition = player.entityPosition.changePosition(distance, direction)
         )
@@ -49,10 +49,9 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
     }
 
     override suspend fun rotatePlayer(
-        playerId: String,
         direction: Rotation
     ): Player {
-        val player = getOrFetchPlayer(playerId)
+        val player = getOrFetchPlayer()
         val updatedPlayer = player.copy(
             entityPosition = player.entityPosition.copy(
                 orientation = when (direction) {
@@ -65,14 +64,14 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
         return updatedPlayer
     }
 
-    private suspend fun getOrFetchPlayer(playerId: String): Player {
-        return _playersState.value[playerId] ?: dataSource.fetchPlayer(playerId).also {
+    private suspend fun getOrFetchPlayer(): Player {
+        return _playersState.value ?: dataSource.fetchPlayer().also {
             updatePlayer(it)
         }
     }
 
     private suspend fun updatePlayer(player: Player) {
-        dataSource.updatePlayer(player)
-        _playersState.update { it + (player.id to player) }
+        dataSource.updatePlayer()
+        _playersState.update { player }
     }
 }

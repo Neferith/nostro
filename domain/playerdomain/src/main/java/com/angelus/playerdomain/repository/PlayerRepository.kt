@@ -6,13 +6,12 @@ import com.angelus.playerdomain.entities.Player
 import kotlinx.coroutines.flow.Flow
 
 interface PlayerRepository {
-    fun observePlayer(playerId: String): Flow<Player>
-    suspend fun movePlayer(playerId: String,
-                           distance: Int,
+    fun observePlayer(): Flow<Player>
+    suspend fun movePlayer(distance: Int,
                            direction: Direction
     ): Player
-    suspend fun rotatePlayer(playerId: String,
-                     direction: Rotation
+    suspend fun rotatePlayer(
+        direction: Rotation
     ): Player
 
 }

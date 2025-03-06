@@ -58,7 +58,7 @@ class GameScreenViewModel(
     data class Params(val playerId: String)
 
     // Observe le joueur courant via le UseCase
-    val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase(params.playerId)
+    val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
     val currentMap: StateFlow<com.angelus.mapdomain.entities.GameMap?> = observeCurrentMapUseCase("")
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
@@ -122,7 +122,6 @@ class GameScreenViewModel(
                             )) {
                             movePlayerUseCase(
                                 com.angelus.playerdomain.usecase.MovePlayerParams(
-                                    player.id,
                                     direction
                                 )
                             )
@@ -137,7 +136,6 @@ class GameScreenViewModel(
                         val rotation = action.toRotation()
                         rotatePlayerUseCase(
                             com.angelus.playerdomain.usecase.RotatePlayerParams(
-                                player.id,
                                 rotation
                             )
                         )
