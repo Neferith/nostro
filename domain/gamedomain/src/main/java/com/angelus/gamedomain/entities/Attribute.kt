@@ -1,0 +1,25 @@
+package com.angelus.gamedomain.entities
+
+data class Attribute(val min: Int, val max: Int, val permanent: Int) {
+
+}
+
+data class Attributes(
+    val musculature: Attribute,
+    val flexibility: Attribute,
+    val brain: Attribute,
+    val vitality: Attribute
+) {
+
+
+}
+
+data class AttributesModifier(
+    val musculature: Int,
+    val flexibility: Int,
+    val brain: Int,
+    val vitality: Int
+) {
+
+
+}
