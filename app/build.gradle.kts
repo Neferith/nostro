@@ -65,4 +65,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("androidx.core:core-ktx:1.9.0") // pour WindowInsetsControllerCompat
+    implementation("androidx.compose.ui:ui:1.5.0") // selon la version de Compose utilisée
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 }

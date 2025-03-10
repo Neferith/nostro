@@ -10,6 +10,7 @@ data class Description(
 
 data class Character(
     val mainAttributes: Attributes,
+    val characterLevel: CharacterLevel,
     val description: Description,
     val skills: CharacterSkills
 )

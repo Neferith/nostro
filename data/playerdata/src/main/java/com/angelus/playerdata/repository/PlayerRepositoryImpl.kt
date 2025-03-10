@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 
+class PlayerNotFoundException: Exception()
+
 class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
     PlayerRepository {
 
@@ -39,34 +41,43 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
     override suspend fun movePlayer(
         distance: Int,
         direction: Direction
-    ): Player {
+    ): Result<Player> {
         val player = getOrFetchPlayer()
-        val updatedPlayer = player.copy(
-            entityPosition = player.entityPosition.changePosition(distance, direction)
-        )
-        updatePlayer(updatedPlayer)
-        return updatedPlayer
+        if(player != null) {
+            val updatedPlayer = player.copy(
+                entityPosition = player.entityPosition.changePosition(distance, direction)
+            )
+            updatePlayer(updatedPlayer)
+            return Result.success(updatedPlayer)
+        }
+        return Result.failure(PlayerNotFoundException())
     }
+
 
     override suspend fun rotatePlayer(
         direction: Rotation
-    ): Player {
+    ): Result<Player> {
         val player = getOrFetchPlayer()
-        val updatedPlayer = player.copy(
-            entityPosition = player.entityPosition.copy(
-                orientation = when (direction) {
-                    Rotation.LEFT -> player.entityPosition.orientation.rotateLeft()
-                    Rotation.RIGHT -> player.entityPosition.orientation.rotateRight()
-                }
+        if(player != null) {
+            val updatedPlayer = player.copy(
+                entityPosition = player.entityPosition.copy(
+                    orientation = when (direction) {
+                        Rotation.LEFT -> player.entityPosition.orientation.rotateLeft()
+                        Rotation.RIGHT -> player.entityPosition.orientation.rotateRight()
+                    }
+                )
             )
-        )
-        updatePlayer(updatedPlayer)
-        return updatedPlayer
+            updatePlayer(updatedPlayer)
+            return Result.success(updatedPlayer)
+        }
+        return Result.failure(PlayerNotFoundException())
     }
 
-    private suspend fun getOrFetchPlayer(): Player {
+    private suspend fun getOrFetchPlayer(): Player? {
         return _playersState.value ?: dataSource.fetchPlayer().also {
+            if(it!= null) {
             updatePlayer(it)
+                }
         }
     }
 
@@ -74,4 +85,5 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
         dataSource.updatePlayer()
         _playersState.update { player }
     }
+
 }

@@ -9,7 +9,7 @@ data class MovePlayerParams(
 )
 
 interface MovePlayerUseCase {
-    suspend operator fun invoke(params: MovePlayerParams): Player
+    suspend operator fun invoke(params: MovePlayerParams): Result<Player>
 }
 
 class MovePlayerUseCaseImpl(private val repository: PlayerRepository) : MovePlayerUseCase {
@@ -17,7 +17,7 @@ class MovePlayerUseCaseImpl(private val repository: PlayerRepository) : MovePlay
         const val MOVE_DISTANCE = 1
     }
 
-    override suspend fun invoke(params: MovePlayerParams): Player {
+    override suspend fun invoke(params: MovePlayerParams): Result<Player> {
         return repository.movePlayer(
             MOVE_DISTANCE,
             params.direction

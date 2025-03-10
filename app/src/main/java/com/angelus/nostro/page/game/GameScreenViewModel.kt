@@ -9,10 +9,11 @@ import com.angelus.gamedomain.entities.TurnType
 import com.angelus.gamedomain.usecase.NextTurnUseCase
 import com.angelus.gamedomain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
+import com.angelus.mapdomain.usecase.CheckMoveParams
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
 import com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase
 import com.angelus.nostro.component.MoveAction
-import kotlinx.coroutines.delay
+import com.angelus.playerdomain.usecase.MovePlayerParams
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -112,16 +113,19 @@ class GameScreenViewModel(
         viewModelScope.launch {
             try {
                 when (action) {
-                    MoveAction.FORWARD, MoveAction.BACKWARD, MoveAction.STRAFE_LEFT, MoveAction.STRAFE_RIGHT -> {
+                    MoveAction.FORWARD,
+                    MoveAction.BACKWARD,
+                    MoveAction.STRAFE_LEFT,
+                    MoveAction.STRAFE_RIGHT -> {
                         val direction = action.toDirection()
                         if(checkMoveInMapUseCase(
-                                com.angelus.mapdomain.usecase.CheckMoveParams(
+                                CheckMoveParams(
                                     player.entityPosition,
                                     action.toDirection()
                                 )
                             )) {
                             movePlayerUseCase(
-                                com.angelus.playerdomain.usecase.MovePlayerParams(
+                                MovePlayerParams(
                                     direction
                                 )
                             )

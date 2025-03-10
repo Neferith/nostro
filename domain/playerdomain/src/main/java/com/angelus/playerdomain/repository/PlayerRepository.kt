@@ -9,9 +9,9 @@ interface PlayerRepository {
     fun observePlayer(): Flow<Player>
     suspend fun movePlayer(distance: Int,
                            direction: Direction
-    ): Player
+    ): Result<Player>
     suspend fun rotatePlayer(
         direction: Rotation
-    ): Player
+    ): Result<Player>
 
 }
