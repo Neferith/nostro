@@ -65,7 +65,7 @@ fun MenuPage(viewModel: MenuViewModel,
                 // Bouton Nouvelle Partie
                 FantasyButton(
                     text = "Nouvelle Partie",
-                    onClick = {  }
+                    onClick = { navigator.startNewGame() }
                 )
 
                 // Bouton Continuer

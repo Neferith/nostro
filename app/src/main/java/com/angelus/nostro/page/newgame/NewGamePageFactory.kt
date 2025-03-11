@@ -6,7 +6,7 @@ import com.angelus.nostro.page.menu.MenuPage
 
 
 interface NewGamePageFactory {
-    fun makeViewModel(): NewGameViewModel {
+    private fun makeViewModel(): NewGameViewModel {
         return NewGameViewModel()
     }
 

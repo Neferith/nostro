@@ -13,12 +13,14 @@ import com.angelus.nostro.page.game.GameScreenNavigator
 import com.angelus.nostro.page.game.GameScreenViewModel
 import com.angelus.nostro.page.menu.MenuNavigator
 import com.angelus.nostro.page.menu.MenuPage
+import com.angelus.nostro.page.newgame.NewGameNavigator
 import com.angelus.nostro.page.newgame.NewGamePageFactory
 
 
 // Screen.kt
 sealed class Screen(val route: String) {
     object Main : Screen("main_screen")
+    object NewGame : Screen("new_game")
     object Game : Screen("game_screen")
 }
 
@@ -29,6 +31,10 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
         composable(route = Screen.Main.route) {
             //MainScreen(appCoordinator)
             appCoordinator.factory.MakeMenuPage(appCoordinator)
+        }
+        composable(route = Screen.NewGame.route) {
+            //MainScreen(appCoordinator)
+            appCoordinator.factory.MakeNewGamePage(appCoordinator)
         }
         composable(
             route = Screen.Game.route + "?name={defaultName}",
@@ -50,7 +56,8 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
 class AppCoordinator(private val navController: NavHostController) : MainNavigator,
     GameScreenNavigator,
     MenuNavigator,
-    NewGamePageFactory {
+    NewGamePageFactory,
+NewGameNavigator{
     //val navController = rememberNavController()
 
     val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory() }
@@ -65,7 +72,7 @@ class AppCoordinator(private val navController: NavHostController) : MainNavigat
     }
 
     override fun startNewGame() {
-        navController.navigate(route = Screen.Game.route +"?name=defaultName")
+        navController.navigate(route = Screen.NewGame.route)
     }
 }
 

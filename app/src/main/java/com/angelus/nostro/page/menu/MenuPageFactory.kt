@@ -7,7 +7,7 @@ import com.angelus.nostro.page.game.GameScreenViewModel
 
 interface MenuPageFactory {
 
-    fun makeViewModel(): MenuViewModel {
+    private fun makeViewModel(): MenuViewModel {
         return MenuViewModel()
     }
     @Composable

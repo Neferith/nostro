@@ -7,8 +7,9 @@ import com.angelus.nostro.page.game.GameScreenNavigator
 import com.angelus.nostro.page.game.GameScreenPageFactory
 import com.angelus.nostro.page.game.GameScreenViewModel
 import com.angelus.nostro.page.menu.MenuPageFactory
+import com.angelus.nostro.page.newgame.NewGamePageFactory
 
-class AppCoordinatorFactory(): MenuPageFactory /*: GameScreenPageFactory */{
+class AppCoordinatorFactory(): MenuPageFactory, NewGamePageFactory /*: GameScreenPageFactory */{
     // Initialise le DomainDIContainer de manière lazy (lorsqu'il est utilisé pour la première fois)
   /*  private val domainDIContainer: DomainDIContainer by lazy {
         DomainDIContainer() // Exemple avec PlayerRepositoryImpl et PlayerDataSource
