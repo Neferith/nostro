@@ -7,12 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.angelus.nostro.MainNavigator
-import com.angelus.nostro.MainScreen
 import com.angelus.nostro.di.AppCoordinatorFactory
 import com.angelus.nostro.page.game.GameScreenNavigator
-import com.angelus.nostro.page.game.GameScreenViewModel
 import com.angelus.nostro.page.menu.MenuNavigator
-import com.angelus.nostro.page.menu.MenuPage
 import com.angelus.nostro.page.newgame.NewGameNavigator
 import com.angelus.nostro.page.newgame.NewGamePageFactory
 
@@ -32,9 +29,9 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
             //MainScreen(appCoordinator)
             appCoordinator.factory.MakeMenuPage(appCoordinator)
         }
-        composable(route = Screen.NewGame.route) {
+        composable(route = Screen.NewGame.route) { backStackEntry ->
             //MainScreen(appCoordinator)
-            appCoordinator.factory.MakeNewGamePage(appCoordinator)
+            appCoordinator.factory.MakeNewGamePage(appCoordinator, backStackEntry)
         }
         composable(
             route = Screen.Game.route + "?name={defaultName}",

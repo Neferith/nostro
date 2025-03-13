@@ -1,19 +1,22 @@
 package com.angelus.nostro.page.newgame
 
 import androidx.compose.runtime.Composable
-import com.angelus.nostro.page.menu.MenuNavigator
-import com.angelus.nostro.page.menu.MenuPage
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 
 
 interface NewGamePageFactory {
-    private fun makeViewModel(): NewGameViewModel {
-        return NewGameViewModel()
+    @Composable
+    private fun MakeViewModel(navBackStackEntry: NavBackStackEntry): NewGameViewModel {
+        //return NewGameViewModel(navBackStackEntry)
+        return viewModel<NewGameViewModel>(navBackStackEntry)
     }
 
     @Composable
-    fun MakeNewGamePage(navigator: NewGameNavigator
+    fun MakeNewGamePage(navigator: NewGameNavigator,
+                        navBackStackEntry: NavBackStackEntry
     ) {
-        val viewModel = makeViewModel()
+        val viewModel = MakeViewModel(navBackStackEntry)
         return NewGamePage(viewModel, navigator)
     }
 }

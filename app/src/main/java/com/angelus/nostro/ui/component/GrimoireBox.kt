@@ -1,4 +1,4 @@
-package com.angelus.nostro.page.newgame.composables
+package com.angelus.nostro.ui.component
 
 import FantasyTypography
 import androidx.compose.foundation.background

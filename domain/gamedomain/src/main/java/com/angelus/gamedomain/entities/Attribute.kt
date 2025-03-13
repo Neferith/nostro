@@ -20,6 +20,13 @@ data class AttributesModifier(
     val brain: Int,
     val vitality: Int
 ) {
-
+    operator fun plus(other: AttributesModifier): AttributesModifier {
+        return AttributesModifier(
+            musculature = this.musculature + other.musculature,
+            flexibility = this.flexibility + other.flexibility,
+            brain = this.brain + other.brain,
+            vitality = this.vitality + other.vitality
+        )
+    }
 
 }

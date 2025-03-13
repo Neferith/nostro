@@ -3,7 +3,7 @@ package com.angelus.gamedomain.entities
 enum class CharacterSize(
     val minHeightCm: Int,
     val maxHeightCm: Int,
-    modifier: AttributesModifier
+    val modifier: AttributesModifier
 ) {
     DWARF(
         130,
