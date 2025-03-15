@@ -14,6 +14,13 @@ data class Attributes(
 
 }
 
+data class AttributeRequierment(
+    val musculature: Int? = null,
+    val flexibility: Int? = null,
+    val brain: Int? = null,
+    val vitality: Int? = null
+)
+
 data class AttributesModifier(
     val musculature: Int,
     val flexibility: Int,

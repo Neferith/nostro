@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/domain/mapdomain" />
             <option value="$PROJECT_DIR$/domain/npcdomain" />
             <option value="$PROJECT_DIR$/domain/playerdomain" />
+            <option value="$PROJECT_DIR$/modulea" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

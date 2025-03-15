@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":modulea"))
+
     implementation(project(":domain:gamedomain"))
     implementation(project(":domain:playerdomain"))
     implementation(project(":domain:mapdomain"))
