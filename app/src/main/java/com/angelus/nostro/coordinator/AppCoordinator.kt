@@ -53,7 +53,7 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
 class AppCoordinator(private val navController: NavHostController) : MainNavigator,
     GameScreenNavigator,
     MenuNavigator,
-    NewGamePageFactory,
+   // NewGamePageFactory,
 NewGameNavigator{
     //val navController = rememberNavController()
 

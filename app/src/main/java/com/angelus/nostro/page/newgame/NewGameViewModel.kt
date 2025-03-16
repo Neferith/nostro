@@ -6,18 +6,26 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.angelus.gamedomain.entities.AttributesModifier
+import com.angelus.gamedomain.entities.Background
 import com.angelus.gamedomain.entities.CharacterGender
 import com.angelus.gamedomain.entities.CharacterSensitivity
 import com.angelus.gamedomain.entities.CharacterSize
 import com.angelus.gamedomain.entities.CharacterWeight
+import com.angelus.gamedomain.usecase.GetAllBackgroundStoriesUseCase
 
-class NewGameViewModel: ViewModel() {
+class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUseCase): ViewModel() {
 
-    enum class STEP {
-        GENDER, SIZE, WEIGHT, SENSITIVITY
+    enum class STEP(val order: Int) {
+        GENDER(1),
+        SIZE(2),
+        WEIGHT(3),
+        SENSITIVITY(4),
+        BACKGROUND(5)
     }
 
-    val stepOrder: List<STEP> = listOf(STEP.GENDER, STEP.SIZE, STEP.WEIGHT, STEP.SENSITIVITY)
+    val backgroundTypes = getAllBackgroundStoriesUseCase.invoke()
+
+    val stepOrder: List<STEP> = enumValues<STEP>().sortedBy { it.order }
 
     private var currentStep: MutableState<STEP> = mutableStateOf<STEP>(STEP.GENDER)
     val currentStepState:State<STEP> = currentStep
@@ -33,6 +41,9 @@ class NewGameViewModel: ViewModel() {
 
     private var _currentSensitivity: MutableState<CharacterSensitivity?> = mutableStateOf(null)
     val currentSensitivity: State<CharacterSensitivity?> = _currentSensitivity
+
+    private var _currentBackgrounds: MutableState<List<Background>> = mutableStateOf(emptyList())
+    val currentBackgrounds: State<List<Background>> = _currentBackgrounds
 
     fun updateGender(gender: CharacterGender) {
         this._genderState.value = gender
@@ -55,12 +66,19 @@ class NewGameViewModel: ViewModel() {
         STEP.SIZE -> sizeState.value != null // À compléter plus tard
         STEP.WEIGHT -> _currentWeight.value != null // À compléter plus tard
         STEP.SENSITIVITY -> _currentSensitivity.value != null // À compléter plus tard
+        STEP.BACKGROUND -> {
+            _currentBackgrounds.value?.size == backgroundTypes.size
+        }
     }
 
     fun nextStep() {
         if(checkCurrentStep()) {
             currentStep.value = stepOrder.nextStep(currentStep.value )
         }
+    }
+
+    val currentBackgroundList: State<List<Background>> = derivedStateOf {
+         backgroundTypes.get(currentBackgrounds.value.size).backgrounds
     }
 
     val totalPointsState: State<AttributesModifier> = derivedStateOf {

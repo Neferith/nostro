@@ -1,6 +1,7 @@
 package com.angelus.nostro.di
 
 import androidx.compose.runtime.Composable
+import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
 import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.nostro.page.game.GameScreen
 import com.angelus.nostro.page.game.GameScreenNavigator
@@ -27,4 +28,7 @@ class AppCoordinatorFactory(): MenuPageFactory, NewGamePageFactory /*: GameScree
         val container = GameDIContainer(GameParams(defaultName))
         container.MakeGameScreenPage(GameScreenViewModel.Params(""), navigator)
     }
+
+    override val currentGameUseCaseFactory: CurrentGameUseCaseFactory
+        get() = NewGameDIContainer()
 }

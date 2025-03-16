@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.angelus.nostro.R
+import com.angelus.nostro.page.newgame.composables.BackgroundSelectionView
 import com.angelus.nostro.page.newgame.composables.CharacterStepContainer
 import com.angelus.nostro.page.newgame.composables.GenderSelector
 import com.angelus.nostro.page.newgame.composables.SensitivitySelector
@@ -112,6 +113,15 @@ fun NewGamePage(
                                     onSensitivitySelected = {
                                         viewModel.updateSensitivity(it)
                                     }
+                                )
+                            }
+
+                            NewGameViewModel.STEP.BACKGROUND -> {
+
+                                BackgroundSelectionView(
+                                    backgrounds = viewModel.currentBackgroundList.value,
+                                    selectedBackground = null,
+                                    onBackgroundSelected = { }
                                 )
                             }
                         }
