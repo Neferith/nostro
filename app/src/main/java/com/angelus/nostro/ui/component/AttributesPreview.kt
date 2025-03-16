@@ -10,11 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.angelus.gamedomain.entities.Attributes
 import com.angelus.gamedomain.entities.AttributesModifier
 import com.angelus.nostro.ui.theme.FantasyColors
 
 @Composable
-fun AttributesPreview(currentAttributes: AttributesModifier?, modifier: Modifier = Modifier) {
+fun AttributesPreview(currentAttributes: Attributes?, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -32,10 +33,10 @@ fun AttributesPreview(currentAttributes: AttributesModifier?, modifier: Modifier
             )
             if (currentAttributes != null) {
 
-                AttributeRow("Musculature", currentAttributes.musculature)
-                AttributeRow("Flexibilité", currentAttributes.flexibility)
-                AttributeRow("Intelligence", currentAttributes.brain)
-                AttributeRow("Vitalité", currentAttributes.vitality)
+                AttributeRow("Musculature", currentAttributes.musculature.permanent)
+                AttributeRow("Flexibilité", currentAttributes.flexibility.permanent)
+                AttributeRow("Intelligence", currentAttributes.brain.permanent)
+                AttributeRow("Vitalité", currentAttributes.vitality.permanent)
             } else {
                 Text("Sélectionnez un genre pour voir les attributs", color = FantasyColors.Surface)
             }

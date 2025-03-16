@@ -4,7 +4,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
+import com.angelus.gamedomain.entities.Attributes
 import com.angelus.gamedomain.entities.AttributesModifier
 import com.angelus.gamedomain.entities.Background
 import com.angelus.gamedomain.entities.CharacterGender
@@ -49,6 +51,9 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
     private var _currentCharacterStory: MutableState<List<Background>> = mutableStateOf(emptyList())
     private val currentCharacterStoryState: State<List<Background>> = _currentCharacterStory
 
+    private var _currentAttributes: MutableState<Attributes> = mutableStateOf(Attributes.Empty)
+    val currentAttributes: State<Attributes> = _currentAttributes
+
     fun updateGender(gender: CharacterGender) {
         this._genderState.value = gender
     }
@@ -81,6 +86,15 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
     }
 
     fun nextStep() {
+
+        when(currentStep.value) {
+            STEP.GENDER -> genderState.value?.modifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
+            STEP.SIZE -> sizeState.value?.modifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
+            STEP.WEIGHT -> currentWeightState.value?.modifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
+            STEP.SENSITIVITY -> currentSensitivity.value?.modifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
+            STEP.BACKGROUND -> _currentBackground.value?.attributesModifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
+        }
+
         // HOTFIX FOR SELECT BACKGROUND
         val currentBackground = _currentBackground.value
         if(currentBackground != null) {
@@ -89,7 +103,11 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
             _currentBackground.value = null
         }
         // END OF HOTFIX
+
+
         if(checkCurrentStep()) {
+
+
 
             currentStep.value = stepOrder.nextStep(currentStep.value )
         }
@@ -102,6 +120,8 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
         null
         }
     }
+
+
 
     val totalPointsState: State<AttributesModifier> = derivedStateOf {
         var total = AttributesModifier(0,0,0,0)
@@ -119,6 +139,14 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
 
         currentSensitivity.value?.modifier?.let {
             total += it
+        }
+
+        currentBackground.value?.attributesModifier?.let {
+            total += it
+        }
+
+        currentCharacterStoryState.value?.forEach {
+            total += it.attributesModifier
         }
 
         total

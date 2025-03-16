@@ -1,6 +1,11 @@
 package com.angelus.gamedomain.entities
 
-data class Attribute(val min: Int, val max: Int, val permanent: Int) {
+import kotlin.math.sign
+
+data class Attribute(
+    val permanent: Int,
+    val min: Int = -10,
+    val max: Int = +10,) {
 
 }
 
@@ -10,6 +15,29 @@ data class Attributes(
     val brain: Attribute,
     val vitality: Attribute
 ) {
+    companion object {
+        val Empty = Attributes(
+            musculature = Attribute(0),
+            flexibility = Attribute(0),
+            brain = Attribute(0),
+            vitality = Attribute(0)
+        )
+
+        private fun randomBetweenZeroAnd(value: Int): Int {
+            return if (value == 0) 0
+            else kotlin.random.Random.nextInt(0, kotlin.math.abs(value) + 1) * value.sign
+        }
+    }
+
+    fun applyModifier(modifier: AttributesModifier): Attributes {
+        return Attributes(
+            musculature = Attribute( permanent = musculature.permanent + randomBetweenZeroAnd(modifier.musculature)),
+            flexibility = Attribute( permanent = flexibility.permanent + randomBetweenZeroAnd(modifier.flexibility)),
+            brain = Attribute( permanent = brain.permanent + randomBetweenZeroAnd(modifier.brain)), //brain + modifier.brain,
+            vitality = Attribute( permanent = vitality.permanent + randomBetweenZeroAnd(modifier.vitality)), //vitality + modifier.vitality
+        )
+    }
+
 
 
 }

@@ -55,6 +55,7 @@ fun NewGamePage(
     val selectedSensitivity by viewModel.currentSensitivity
     val selectedBackground by viewModel.currentBackground
     val currentStep by viewModel.currentStepState
+    val currentAttributes by viewModel.currentAttributes
     FantasyTheme {
         Image(
             painter = painterResource(id = R.drawable.stone_wall_texture),
@@ -130,7 +131,7 @@ fun NewGamePage(
                         }
                     },
                     attributesContent = {
-                        AttributesPreview(currentAttributes = viewModel.totalPointsState.value)
+                        AttributesPreview(currentAttributes = currentAttributes)
                     },
                     modifier = modifier
                 )
