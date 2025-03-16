@@ -53,6 +53,7 @@ fun NewGamePage(
     val selectedSize by viewModel.sizeState
     val selectedWeight by viewModel.currentWeightState
     val selectedSensitivity by viewModel.currentSensitivity
+    val selectedBackground by viewModel.currentBackground
     val currentStep by viewModel.currentStepState
     FantasyTheme {
         Image(
@@ -117,12 +118,14 @@ fun NewGamePage(
                             }
 
                             NewGameViewModel.STEP.BACKGROUND -> {
+                                viewModel.currentBackgroundList.value?.let {
+                                    BackgroundSelectionView(
+                                        backgrounds = it,
+                                        selectedBackground = selectedBackground,
+                                        onBackgroundSelected = { viewModel.updateBackground(background = it) }
+                                    )
+                                }
 
-                                BackgroundSelectionView(
-                                    backgrounds = viewModel.currentBackgroundList.value,
-                                    selectedBackground = null,
-                                    onBackgroundSelected = { }
-                                )
                             }
                         }
                     },

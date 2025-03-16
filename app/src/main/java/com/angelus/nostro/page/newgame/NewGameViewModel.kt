@@ -23,17 +23,17 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
         BACKGROUND(5)
     }
 
-    val backgroundTypes = getAllBackgroundStoriesUseCase.invoke()
+    private val backgroundTypes = getAllBackgroundStoriesUseCase.invoke()
 
-    val stepOrder: List<STEP> = enumValues<STEP>().sortedBy { it.order }
+    private val stepOrder: List<STEP> = enumValues<STEP>().sortedBy { it.order }
 
-    private var currentStep: MutableState<STEP> = mutableStateOf<STEP>(STEP.GENDER)
+    private var currentStep: MutableState<STEP> = mutableStateOf(STEP.GENDER)
     val currentStepState:State<STEP> = currentStep
 
-    private var _genderState:MutableState<CharacterGender?> = mutableStateOf<CharacterGender?>(null)
+    private var _genderState:MutableState<CharacterGender?> = mutableStateOf(null)
     val genderState:State<CharacterGender?> = _genderState
 
-    private var _sizeState:MutableState<CharacterSize?> = mutableStateOf<CharacterSize?>(null)
+    private var _sizeState:MutableState<CharacterSize?> = mutableStateOf(null)
     val sizeState:State<CharacterSize?> = _sizeState
 
     private var _currentWeight: MutableState<CharacterWeight?> = mutableStateOf(null)
@@ -42,8 +42,12 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
     private var _currentSensitivity: MutableState<CharacterSensitivity?> = mutableStateOf(null)
     val currentSensitivity: State<CharacterSensitivity?> = _currentSensitivity
 
-    private var _currentBackgrounds: MutableState<List<Background>> = mutableStateOf(emptyList())
-    val currentBackgrounds: State<List<Background>> = _currentBackgrounds
+   private var _currentBackground: MutableState<Background?> = mutableStateOf(null)
+    val currentBackground: State<Background?> = _currentBackground
+
+
+    private var _currentCharacterStory: MutableState<List<Background>> = mutableStateOf(emptyList())
+    private val currentCharacterStoryState: State<List<Background>> = _currentCharacterStory
 
     fun updateGender(gender: CharacterGender) {
         this._genderState.value = gender
@@ -61,28 +65,46 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
         this._currentSensitivity.value = sensitivity
     }
 
+    fun updateBackground(background: Background) {
+        _currentBackground.value = background
+        //this._currentCharacterStory.value = _currentCharacterStory.value + background
+    }
+
     private fun checkCurrentStep(): Boolean = when (currentStepState.value) {
         STEP.GENDER -> genderState.value != null
         STEP.SIZE -> sizeState.value != null // À compléter plus tard
         STEP.WEIGHT -> _currentWeight.value != null // À compléter plus tard
         STEP.SENSITIVITY -> _currentSensitivity.value != null // À compléter plus tard
         STEP.BACKGROUND -> {
-            _currentBackgrounds.value?.size == backgroundTypes.size
+            _currentCharacterStory.value.size == backgroundTypes.size
         }
     }
 
     fun nextStep() {
+        // HOTFIX FOR SELECT BACKGROUND
+        val currentBackground = _currentBackground.value
+        if(currentBackground != null) {
+
+            this._currentCharacterStory.value += currentBackground
+            _currentBackground.value = null
+        }
+        // END OF HOTFIX
         if(checkCurrentStep()) {
+
             currentStep.value = stepOrder.nextStep(currentStep.value )
         }
     }
 
-    val currentBackgroundList: State<List<Background>> = derivedStateOf {
-         backgroundTypes.get(currentBackgrounds.value.size).backgrounds
+    val currentBackgroundList: State<List<Background>?> = derivedStateOf {
+        if(backgroundTypes.size > currentCharacterStoryState.value.size) {
+            backgroundTypes[currentCharacterStoryState.value.size].backgrounds
+        } else {
+        null
+        }
     }
 
     val totalPointsState: State<AttributesModifier> = derivedStateOf {
-        var total: AttributesModifier = AttributesModifier(0,0,0,0)
+        var total = AttributesModifier(0,0,0,0)
 
         genderState.value?.modifier?.let {
             total += it
@@ -107,13 +129,4 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
 fun <T> List<T>.nextStep(current: T): T {
     val currentIndex = indexOf(current)
     return if (currentIndex != -1 && currentIndex + 1 < size) this[currentIndex + 1] else current
-}
-
-fun AttributesModifier.merge(other: AttributesModifier): AttributesModifier {
-    return AttributesModifier(
-        musculature = this.musculature + other.musculature,
-        flexibility = this.flexibility + other.flexibility,
-        brain = this.brain + other.brain,
-        vitality = this.vitality + other.vitality
-    )
 }
