@@ -22,6 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.angelus.gamedomain.entities.genderToSizeMap
+import com.angelus.gamedomain.entities.sizeToWeigth
+import com.angelus.gamedomain.entities.weightToSensitivity
 import com.angelus.nostro.R
 import com.angelus.nostro.page.newgame.composables.BackgroundSelectionView
 import com.angelus.nostro.page.newgame.composables.CharacterStepContainer
@@ -105,6 +107,7 @@ fun NewGamePage(
                             }
                             NewGameViewModel.STEP.WEIGHT -> {
                                 WeightSelector (
+                                    values = selectedSize?.sizeToWeigth()?: emptyList(),
                                     selectedWeight = selectedWeight,
                                     onWeightSelected = {
                                         viewModel.updateWeight(it)
@@ -113,6 +116,7 @@ fun NewGamePage(
                             }
                             NewGameViewModel.STEP.SENSITIVITY -> {
                                 SensitivitySelector (
+                                    values = selectedWeight?.weightToSensitivity()?: emptyList(),
                                     selectedSensitivity = selectedSensitivity,
                                     onSensitivitySelected = {
                                         viewModel.updateSensitivity(it)

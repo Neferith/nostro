@@ -18,6 +18,7 @@ import com.angelus.nostro.ui.theme.FantasyColors
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SensitivitySelector (
+    values: List<CharacterSensitivity>,
     selectedSensitivity: CharacterSensitivity?,
     onSensitivitySelected: (CharacterSensitivity) -> Unit
 ) {
@@ -35,7 +36,7 @@ fun SensitivitySelector (
         horizontalArrangement = Arrangement.spacedBy(16.dp), // Espace horizontal entre items
         verticalArrangement = Arrangement.spacedBy(16.dp),   // Espace vertical entre lignes
     ) {
-        CharacterSensitivity.entries.forEach { sensitivity ->
+        values.forEach { sensitivity ->
             SelectableCard(
                 text = sensitivity.name.lowercase().replaceFirstChar { it.uppercase() }, // "Male", "Female"
                 isSelected = sensitivity == selectedSensitivity,

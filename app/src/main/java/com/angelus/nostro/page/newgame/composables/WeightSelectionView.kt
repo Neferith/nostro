@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.angelus.gamedomain.entities.CharacterSize
 import com.angelus.gamedomain.entities.CharacterWeight
 import com.angelus.nostro.ui.component.SelectableCard
 import com.angelus.nostro.ui.theme.FantasyColors
@@ -18,6 +19,7 @@ import com.angelus.nostro.ui.theme.FantasyColors
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WeightSelector(
+    values: List<CharacterWeight>,
     selectedWeight: CharacterWeight?,
     onWeightSelected: (CharacterWeight) -> Unit
 ) {
@@ -35,7 +37,7 @@ fun WeightSelector(
         horizontalArrangement = Arrangement.spacedBy(16.dp), // Espace horizontal entre items
         verticalArrangement = Arrangement.spacedBy(16.dp),   // Espace vertical entre lignes
     ) {
-        CharacterWeight.entries.forEach { weight ->
+        values.forEach { weight ->
             SelectableCard(
                 text = weight.name.lowercase().replaceFirstChar { it.uppercase() }, // "Male", "Female"
                 isSelected = weight == selectedWeight,

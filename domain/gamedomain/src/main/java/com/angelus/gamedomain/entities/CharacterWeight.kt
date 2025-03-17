@@ -52,31 +52,30 @@ enum class CharacterWeight(
     )
 }
 
-val sizeToWeightMap: Map<CharacterSize, List<CharacterWeight>> = mapOf(
-    CharacterSize.DWARF to listOf(CharacterWeight.LIGHT, CharacterWeight.AVERAGE),
-    CharacterSize.SMALL to listOf(
-        CharacterWeight.LIGHT,
-        CharacterWeight.AVERAGE,
-        CharacterWeight.HEAVY
-    ),
-    CharacterSize.MEDIUM to listOf(
-        CharacterWeight.LIGHT,
-        CharacterWeight.AVERAGE,
-        CharacterWeight.HEAVY,
-        CharacterWeight.VERY_HEAVY
-    ),
-    CharacterSize.TALL to listOf(
-        CharacterWeight.AVERAGE,
-        CharacterWeight.HEAVY,
-        CharacterWeight.VERY_HEAVY
-    ),
-    CharacterSize.LARGE to listOf(
-        CharacterWeight.HEAVY,
-        CharacterWeight.VERY_HEAVY,
-        CharacterWeight.EXTREME
-    ),
-    CharacterSize.GIANT to listOf(
-        CharacterWeight.VERY_HEAVY,
-        CharacterWeight.EXTREME
-    )
-)
+fun CharacterWeight.weightToSensitivity(): List<CharacterSensitivity> {
+
+    when(this) {
+        CharacterWeight.LIGHT -> return listOf(
+            CharacterSensitivity.HYPERSENSITIVE,
+            CharacterSensitivity.HIGH_SENSITIVITY,
+        )
+        CharacterWeight.AVERAGE ->  return listOf(
+            CharacterSensitivity.HIGH_SENSITIVITY,
+            CharacterSensitivity.NORMAL,
+            CharacterSensitivity.LOW_SENSITIVITY,
+        )
+        CharacterWeight.HEAVY -> return listOf(
+            CharacterSensitivity.HIGH_SENSITIVITY,
+            CharacterSensitivity.NORMAL,
+            CharacterSensitivity.LOW_SENSITIVITY,
+        )
+        CharacterWeight.VERY_HEAVY -> return listOf(
+            CharacterSensitivity.NORMAL,
+            CharacterSensitivity.LOW_SENSITIVITY,
+        )
+        CharacterWeight.EXTREME -> return listOf(
+            CharacterSensitivity.LOW_SENSITIVITY,
+            CharacterSensitivity.INSENSITIVE,
+        )
+    }
+}

@@ -65,19 +65,39 @@ enum class CharacterSize(
 
 }
 
-fun CharacterGender.genderToSizeMap(): List<CharacterSize> {
+fun CharacterSize.sizeToWeigth(): List<CharacterWeight> {
 
     when(this) {
-        CharacterGender.MALE -> {
-            return CharacterSize.values().toList()
-        }
-        CharacterGender.FEMALE -> {
-            return listOf(
-                CharacterSize.DWARF,
-                CharacterSize.SMALL,
-                CharacterSize.MEDIUM,
-                CharacterSize.TALL
-            )
-        }
+        CharacterSize.DWARF -> return listOf(
+            CharacterWeight.LIGHT,
+            CharacterWeight.AVERAGE,
+        )
+        CharacterSize.SMALL -> return listOf(
+            CharacterWeight.LIGHT,
+            CharacterWeight.AVERAGE,
+            CharacterWeight.HEAVY,
+        )
+        CharacterSize.MEDIUM -> return listOf(
+            CharacterWeight.LIGHT,
+            CharacterWeight.AVERAGE,
+            CharacterWeight.HEAVY,
+            CharacterWeight.VERY_HEAVY
+        )
+        CharacterSize.TALL -> return listOf(
+            CharacterWeight.AVERAGE,
+            CharacterWeight.HEAVY,
+            CharacterWeight.VERY_HEAVY
+        )
+        CharacterSize.LARGE -> return listOf(
+            CharacterWeight.HEAVY,
+            CharacterWeight.VERY_HEAVY,
+            CharacterWeight.EXTREME
+        )
+        CharacterSize.GIANT -> return listOf(
+            CharacterWeight.VERY_HEAVY,
+            CharacterWeight.EXTREME
+        )
     }
 }
+
+
