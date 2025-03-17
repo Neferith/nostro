@@ -19,6 +19,7 @@ import com.angelus.nostro.ui.theme.FantasyColors
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SizeSelector(
+    values: List<CharacterSize>,
     selectedSize: CharacterSize?,
     onSizeSelected: (CharacterSize) -> Unit
 ) {
@@ -36,11 +37,11 @@ fun SizeSelector(
         horizontalArrangement = Arrangement.spacedBy(16.dp), // Espace horizontal entre items
         verticalArrangement = Arrangement.spacedBy(16.dp),   // Espace vertical entre lignes
     ) {
-        CharacterSize.entries.forEach { gender ->
+        values.forEach { size ->
             SelectableCard(
-                text = gender.name.lowercase().replaceFirstChar { it.uppercase() }, // "Male", "Female"
-                isSelected = gender == selectedSize,
-                onClick = { onSizeSelected(gender) }
+                text = size.name.lowercase().replaceFirstChar { it.uppercase() }, // "Male", "Female"
+                isSelected = size == selectedSize,
+                onClick = { onSizeSelected(size) }
             )
         }
     }

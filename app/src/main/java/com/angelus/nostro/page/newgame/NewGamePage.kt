@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.angelus.gamedomain.entities.genderToSizeMap
 import com.angelus.nostro.R
 import com.angelus.nostro.page.newgame.composables.BackgroundSelectionView
 import com.angelus.nostro.page.newgame.composables.CharacterStepContainer
@@ -95,6 +96,7 @@ fun NewGamePage(
                             }
                             NewGameViewModel.STEP.SIZE -> {
                                 SizeSelector (
+                                    values = selectedGender?.genderToSizeMap()?: emptyList(),
                                     selectedSize = selectedSize,
                                     onSizeSelected = {
                                         viewModel.updateSize(it)

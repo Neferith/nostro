@@ -60,4 +60,24 @@ enum class CharacterSize(
             vitality = +2
         )
     )
+
+
+
+}
+
+fun CharacterGender.genderToSizeMap(): List<CharacterSize> {
+
+    when(this) {
+        CharacterGender.MALE -> {
+            return CharacterSize.values().toList()
+        }
+        CharacterGender.FEMALE -> {
+            return listOf(
+                CharacterSize.DWARF,
+                CharacterSize.SMALL,
+                CharacterSize.MEDIUM,
+                CharacterSize.TALL
+            )
+        }
+    }
 }
