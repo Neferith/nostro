@@ -11,6 +11,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.angelus.playerdomain.entities.PlayerBand
 import convertPlayerFromDTO
 import convertPlayerToDTO
 import kotlinx.coroutines.flow.first
@@ -33,7 +34,8 @@ class PlayerDataSourceImpl : PlayerDataSource {
                 0
             ),
             Orientation.NORTH
-        )
+        ),
+        PlayerBand(emptyList())
     )
 
 

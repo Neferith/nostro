@@ -28,10 +28,12 @@ import com.angelus.nostro.R
 import com.angelus.nostro.page.newgame.composables.BackgroundSelectionView
 import com.angelus.nostro.page.newgame.composables.CharacterStepContainer
 import com.angelus.nostro.page.newgame.composables.GenderSelector
+import com.angelus.nostro.page.newgame.composables.NameSelectionView
 import com.angelus.nostro.page.newgame.composables.SensitivitySelector
 import com.angelus.nostro.page.newgame.composables.SizeSelector
 import com.angelus.nostro.page.newgame.composables.WeightSelector
 import com.angelus.nostro.ui.component.AttributesPreview
+import com.angelus.nostro.ui.component.FantasyTextField
 import com.angelus.nostro.ui.theme.FantasyColors
 import com.angelus.nostro.ui.theme.FantasyTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -52,6 +54,7 @@ fun NewGamePage(
 
     systemUiController.setSystemBarsColor(color = statusBarColor)
 
+    val selectedName by viewModel.nameState
     val selectedGender by viewModel.genderState
     val selectedSize by viewModel.sizeState
     val selectedWeight by viewModel.currentWeightState
@@ -88,6 +91,16 @@ fun NewGamePage(
                     selectorContent = {
 
                         when(currentStep) {
+                            NewGameViewModel.STEP.NAME -> {
+                                NameSelectionView(
+                                    firstname = selectedName?.firstname?:"",
+                                    lastname = selectedName?.lastname?:"",
+                                    onFirstNameChange = {viewModel.updateFirstname(it)},
+                                    onLastNameChange = {viewModel.updateLastname(it)}
+                                )
+
+
+                            }
                             NewGameViewModel.STEP.GENDER -> {
                                 GenderSelector (
                                     selectedGender = selectedGender,
@@ -145,15 +158,26 @@ fun NewGamePage(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // Exemple : Bouton "Suivant" si un genre est sélectionné
-                Button(
-                    onClick = { viewModel.nextStep() },
-                    enabled = selectedGender != null,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = FantasyColors.Primary
-                    )
-                ) {
-                    Text("Suivant", color = FantasyColors.onPrimary)
+                if(!viewModel.checkIsLastStep()) {
+                    // Exemple : Bouton "Suivant" si un genre est sélectionné
+                    Button(
+                        onClick = { viewModel.nextStep() },
+                        enabled = viewModel.checkCurrentStep(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = FantasyColors.Primary
+                        )
+                    ) {
+                        Text("Suivant", color = FantasyColors.onPrimary)
+                    }
+                } else {
+                    Button(
+                        onClick = { viewModel.submitCharacter() },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = FantasyColors.Primary
+                        )
+                    ) {
+                        Text("Valider", color = FantasyColors.onPrimary)
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Position
 import com.angelus.playerdomain.entities.Player
+import com.angelus.playerdomain.entities.PlayerBand
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -41,7 +42,7 @@ fun PlayerDTO.convertPlayerFromDTO(): Player {
         position,
         this.entityPosition.orientation.toOrientation()
     )
-    return Player(this.id, entityPosition)
+    return Player(this.id, entityPosition, PlayerBand(emptyList()))
 }
 
 fun String.toOrientation(): Orientation {

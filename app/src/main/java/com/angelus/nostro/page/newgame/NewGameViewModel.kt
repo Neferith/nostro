@@ -10,6 +10,7 @@ import com.angelus.gamedomain.entities.Attributes
 import com.angelus.gamedomain.entities.AttributesModifier
 import com.angelus.gamedomain.entities.Background
 import com.angelus.gamedomain.entities.CharacterGender
+import com.angelus.gamedomain.entities.CharacterName
 import com.angelus.gamedomain.entities.CharacterSensitivity
 import com.angelus.gamedomain.entities.CharacterSize
 import com.angelus.gamedomain.entities.CharacterWeight
@@ -18,19 +19,23 @@ import com.angelus.gamedomain.usecase.GetAllBackgroundStoriesUseCase
 class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUseCase): ViewModel() {
 
     enum class STEP(val order: Int) {
-        GENDER(1),
-        SIZE(2),
-        WEIGHT(3),
-        SENSITIVITY(4),
-        BACKGROUND(5)
+        NAME(1),
+        GENDER(2),
+        SIZE(3),
+        WEIGHT(4),
+        SENSITIVITY(5),
+        BACKGROUND(6)
     }
 
     private val backgroundTypes = getAllBackgroundStoriesUseCase.invoke()
 
     private val stepOrder: List<STEP> = enumValues<STEP>().sortedBy { it.order }
 
-    private var currentStep: MutableState<STEP> = mutableStateOf(STEP.GENDER)
+    private var currentStep: MutableState<STEP> = mutableStateOf(STEP.NAME)
     val currentStepState:State<STEP> = currentStep
+
+    private var _nameState:MutableState<CharacterName?> = mutableStateOf(null)
+    val nameState:State<CharacterName?> = _nameState
 
     private var _genderState:MutableState<CharacterGender?> = mutableStateOf(null)
     val genderState:State<CharacterGender?> = _genderState
@@ -54,6 +59,14 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
     private var _currentAttributes: MutableState<Attributes> = mutableStateOf(Attributes.Empty)
     val currentAttributes: State<Attributes> = _currentAttributes
 
+    fun updateFirstname(firstname: String) {
+        this._nameState.value = CharacterName(firstname, _nameState.value?.lastname?:"")
+    }
+
+    fun updateLastname(lastname: String) {
+        this._nameState.value = CharacterName(_nameState.value?.firstname?:"", lastname =  lastname)
+    }
+
     fun updateGender(gender: CharacterGender) {
         this._genderState.value = gender
     }
@@ -75,24 +88,36 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
         //this._currentCharacterStory.value = _currentCharacterStory.value + background
     }
 
-    private fun checkCurrentStep(): Boolean = when (currentStepState.value) {
+     fun checkCurrentStep(): Boolean = when (currentStepState.value) {
+        STEP.NAME -> (nameState.value?.firstname?.isNotEmpty()?:false && nameState.value?.lastname?.isNotEmpty()?:false)
         STEP.GENDER -> genderState.value != null
         STEP.SIZE -> sizeState.value != null // À compléter plus tard
         STEP.WEIGHT -> _currentWeight.value != null // À compléter plus tard
         STEP.SENSITIVITY -> _currentSensitivity.value != null // À compléter plus tard
         STEP.BACKGROUND -> {
-            _currentCharacterStory.value.size == backgroundTypes.size
+            _currentBackground.value != null
+           // _currentCharacterStory.value.size == backgroundTypes.size
         }
+
+
+    }
+
+    fun checkIsLastStep(): Boolean {
+        return _currentCharacterStory.value.size == backgroundTypes.size
     }
 
     fun nextStep() {
 
         when(currentStep.value) {
+            STEP.NAME -> {
+
+            }
             STEP.GENDER -> genderState.value?.modifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
             STEP.SIZE -> sizeState.value?.modifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
             STEP.WEIGHT -> currentWeightState.value?.modifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
             STEP.SENSITIVITY -> currentSensitivity.value?.modifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
             STEP.BACKGROUND -> _currentBackground.value?.attributesModifier?.let { _currentAttributes.value = _currentAttributes.value.applyModifier(it) }
+
         }
 
         // HOTFIX FOR SELECT BACKGROUND
@@ -111,6 +136,12 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
 
             currentStep.value = stepOrder.nextStep(currentStep.value )
         }
+
+
+    }
+
+    fun submitCharacter() {
+
     }
 
     val currentBackgroundList: State<List<Background>?> = derivedStateOf {

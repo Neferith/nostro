@@ -7,6 +7,7 @@ import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Rotation
 import com.angelus.playerdata.data.PlayerDataSource
+import com.angelus.playerdomain.entities.PlayerBand
 import com.angelus.playerdomain.repository.PlayerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,8 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
             "",
             Position(1, 4),
             Orientation.NORTH
-        )
+        ),
+        PlayerBand(emptyList())
     ) // Adapte les valeurs en fonction de ton modèle
 
     // Initialisation du StateFlow avec un player par défaut
