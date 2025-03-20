@@ -1,3 +1,9 @@
+import com.angelus.gamedata.data.CharacterDTO
+import com.angelus.gamedata.data.EntityPositionDTO
+import com.angelus.gamedata.data.PositionDTO
+import com.angelus.gamedata.data.convertCharacterFromDTO
+import com.angelus.gamedata.data.convertCharacterToDTO
+import com.angelus.gamedomain.entities.Character
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Position
@@ -7,21 +13,25 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PlayerDTO(val id: String,
-                  var entityPosition: EntityPositionDTO
+                     val entityPosition: EntityPositionDTO,
+                     val  playerBand: PlayerBandDTO
 )
 
 @Serializable
-data class PositionDTO(
-    val x: Int,
-    val y: Int
-)
+data class PlayerBandDTO(val characters:List<CharacterDTO>)
 
-@Serializable
-data class EntityPositionDTO(
-    val mapId: String,
-    val position: PositionDTO,
-    val orientation: String
-)
+fun PlayerBand.convertToDTO(): PlayerBandDTO {
+
+    return PlayerBandDTO(
+        characters = this.characters.map { it.convertCharacterToDTO() }
+    )
+}
+
+fun PlayerBandDTO.convertPlayerFromDTO(): PlayerBand {
+    return PlayerBand(
+        characters = this.characters.map { it.convertCharacterFromDTO() }
+    )
+}
 
 fun Player.convertPlayerToDTO(): PlayerDTO {
     val positionDTO = PositionDTO(this.entityPosition.x, this.entityPosition.y)
@@ -31,7 +41,7 @@ fun Player.convertPlayerToDTO(): PlayerDTO {
         positionDTO,
         this.entityPosition.orientation.toString()
         )
-    return PlayerDTO(this.id, entityPositionDTO)
+    return PlayerDTO(this.id, entityPositionDTO, this.band.convertToDTO())
 }
 
 fun PlayerDTO.convertPlayerFromDTO(): Player {
@@ -42,7 +52,10 @@ fun PlayerDTO.convertPlayerFromDTO(): Player {
         position,
         this.entityPosition.orientation.toOrientation()
     )
-    return Player(this.id, entityPosition, PlayerBand(emptyList()))
+    return Player(this.id,
+        entityPosition,
+        this.playerBand.convertPlayerFromDTO()
+    )
 }
 
 fun String.toOrientation(): Orientation {

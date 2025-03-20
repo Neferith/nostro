@@ -1,6 +1,6 @@
 package com.angelus.modulea.skill
 
-import com.angelus.gamedomain.entities.AttributeRequierment
+import com.angelus.gamedomain.entities.AttributeRequirement
 import com.angelus.gamedomain.entities.AttributesModifier
 import com.angelus.gamedomain.entities.Skill
 import com.angelus.gamedomain.entities.SkillType
@@ -11,7 +11,7 @@ object Acrobaty : Skill {
     override val type = SkillType.TECHNICAL
     override val description = "Permet de grimper sur certains obstacles."
 
-    override val required: AttributeRequierment = AttributeRequierment(
+    override val required: AttributeRequirement = AttributeRequirement(
         musculature = 1,
         flexibility = 1,
     )

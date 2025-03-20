@@ -42,7 +42,7 @@ data class Attributes(
 
 }
 
-data class AttributeRequierment(
+data class AttributeRequirement(
     val musculature: Int? = null,
     val flexibility: Int? = null,
     val brain: Int? = null,

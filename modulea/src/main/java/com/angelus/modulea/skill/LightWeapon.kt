@@ -1,6 +1,6 @@
 package com.angelus.modulea.skill
 
-import com.angelus.gamedomain.entities.AttributeRequierment
+import com.angelus.gamedomain.entities.AttributeRequirement
 import com.angelus.gamedomain.entities.AttributesModifier
 import com.angelus.gamedomain.entities.Skill
 import com.angelus.gamedomain.entities.SkillType
@@ -11,7 +11,7 @@ object LightWeapon : Skill {
     override val description = "Arme légère"
     override val type = SkillType.KNOWNESS
 
-    override val required: AttributeRequierment = AttributeRequierment(
+    override val required: AttributeRequirement = AttributeRequirement(
         musculature = -2,
         flexibility = 0,
     )

@@ -11,7 +11,7 @@ data class CharacterDescription(
     val size: CharacterSize,
     val weight: CharacterWeight,
     val sensitivity: CharacterSensitivity,
-    val background: List<Background>,
+    val background: List<String>,
 )
 
 data class Character(

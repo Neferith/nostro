@@ -1,4 +1,4 @@
-package com.angelus.nostro.di
+package com.angelus.nostro.di.domain
 
 import com.angelus.gamedata.repository.TurnRepositoryImpl
 import com.angelus.gamedomain.factory.TurnUseCaseFactory
@@ -9,7 +9,7 @@ import com.angelus.mapdomain.repository.CurrentMapRepository
 import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 import com.angelus.playerdomain.repository.PlayerRepository
 
-class GameDomainDIContainer(params: GameParams) : PlayerUseCaseFactory,
+class DomainDIContainer : PlayerUseCaseFactory,
     CurrentMapUseCaseFactory,
     TurnUseCaseFactory {
     private val playerDataSource: com.angelus.playerdata.data.PlayerDataSource by lazy {
@@ -26,5 +26,6 @@ class GameDomainDIContainer(params: GameParams) : PlayerUseCaseFactory,
     override val turnRepository: TurnRepository by lazy {
         TurnRepositoryImpl()
     }
+
 
 }

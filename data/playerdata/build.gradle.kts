@@ -34,6 +34,7 @@ android {
 
 dependencies {
 
+    implementation(project(":data:gamedata"))
 
     implementation(project(":domain:gamedomain"))
     implementation(project(":domain:playerdomain"))

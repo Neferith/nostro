@@ -14,16 +14,16 @@ interface Skill {
     val name: String
     val type: SkillType
     val description: String
-    val required: AttributeRequierment
+    val required: AttributeRequirement
     var modifier: AttributesModifier
 }
 
-data class CharacterSkill(val skill: Skill, val level: Int)
+data class CharacterSkill(val skillId: String, val level: Int)
 
 data class CharacterSkills(val skills: Map<String, CharacterSkill>) {
 
     fun addSkill(newSkill: CharacterSkill): CharacterSkills {
-        return this.copy(skills = skills + (newSkill.skill.id to newSkill))
+        return this.copy(skills = skills + (newSkill.skillId to newSkill))
     }
 
     fun getSkillById(id: String): CharacterSkill? = skills[id]

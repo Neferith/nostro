@@ -1,5 +1,6 @@
 package com.angelus.nostro.di
 
+import com.angelus.nostro.di.domain.GameDomainDIContainer
 import com.angelus.nostro.page.game.GameScreenPageFactory
 
 data class GameParams(val gamename: String)

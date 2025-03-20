@@ -2,9 +2,9 @@ package com.angelus.gamedata.repository
 
 import com.angelus.gamedomain.entities.BackgroundType
 import com.angelus.gamedomain.entities.Module
-import com.angelus.gamedomain.repository.CurrentGameRepository
+import com.angelus.gamedomain.repository.CurrentModuleRepository
 
-class CurrentGameRepositoryImpl(val module: Module): CurrentGameRepository {
+class CurrentModuleRepositoryImpl(val module: Module): CurrentModuleRepository {
     override fun getAllBackgroundStories(): List<BackgroundType> {
         return module.backgrounds
     }

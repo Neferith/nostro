@@ -1,16 +1,16 @@
 package com.angelus.gamedomain.usecase
 
 import com.angelus.gamedomain.entities.BackgroundType
-import com.angelus.gamedomain.repository.CurrentGameRepository
+import com.angelus.gamedomain.repository.CurrentModuleRepository
 
 interface GetAllBackgroundStoriesUseCase {
     operator fun invoke(): List<BackgroundType>
 }
 
 class GetAllBackgroundStoriesUseCaseImpl(
-    val currentGameRepository: CurrentGameRepository
+    val currentModuleRepository: CurrentModuleRepository
 ): GetAllBackgroundStoriesUseCase {
     override fun invoke(): List<BackgroundType> {
-       return currentGameRepository.getAllBackgroundStories()
+       return currentModuleRepository.getAllBackgroundStories()
     }
 }
