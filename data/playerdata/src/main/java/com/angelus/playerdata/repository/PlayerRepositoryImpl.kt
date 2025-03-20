@@ -75,6 +75,11 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
         return Result.failure(PlayerNotFoundException())
     }
 
+    override suspend fun initializePlayer(player: Player): Result<Player> {
+       updatePlayer(player)
+        return Result.success(player)
+    }
+
     private suspend fun getOrFetchPlayer(): Player? {
         return _playersState.value ?: dataSource.fetchPlayer().also {
             if(it!= null) {
@@ -84,7 +89,7 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
     }
 
     private suspend fun updatePlayer(player: Player) {
-        dataSource.updatePlayer()
+        dataSource.updatePlayer(player)
         _playersState.update { player }
     }
 

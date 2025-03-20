@@ -2,24 +2,13 @@ package com.angelus.nostro.di
 
 import androidx.compose.runtime.Composable
 import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
-import com.angelus.gamedomain.factory.TurnUseCaseFactory
-import com.angelus.nostro.page.game.GameScreen
 import com.angelus.nostro.page.game.GameScreenNavigator
-import com.angelus.nostro.page.game.GameScreenPageFactory
 import com.angelus.nostro.page.game.GameScreenViewModel
 import com.angelus.nostro.page.menu.MenuPageFactory
 import com.angelus.nostro.page.newgame.NewGamePageFactory
+import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
-class AppCoordinatorFactory(): MenuPageFactory, NewGamePageFactory /*: GameScreenPageFactory */{
-    // Initialise le DomainDIContainer de manière lazy (lorsqu'il est utilisé pour la première fois)
-  /*  private val domainDIContainer: DomainDIContainer by lazy {
-        DomainDIContainer() // Exemple avec PlayerRepositoryImpl et PlayerDataSource
-    }
-
-    // Accès aux use cases via domainDIContainer
-    override val playerUseCaseFactory get() = domainDIContainer
-    override val currentMapUseCaseFactory get() = domainDIContainer
-    override val gameUseCaseFactory get() = domainDIContainer*/
+class AppCoordinatorFactory: MenuPageFactory, NewGamePageFactory {
 
     @Composable
     fun MakeGameScreenPage(defaultName: String,
@@ -30,5 +19,7 @@ class AppCoordinatorFactory(): MenuPageFactory, NewGamePageFactory /*: GameScree
     }
 
     override val currentGameUseCaseFactory: CurrentGameUseCaseFactory
+        get() = NewGameDIContainer()
+    override val playerUseCaseFactory: PlayerUseCaseFactory
         get() = NewGameDIContainer()
 }

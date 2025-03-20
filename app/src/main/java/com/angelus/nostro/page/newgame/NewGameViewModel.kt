@@ -4,8 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.entities.Attributes
 import com.angelus.gamedomain.entities.AttributesModifier
 import com.angelus.gamedomain.entities.Background
@@ -19,8 +19,21 @@ import com.angelus.gamedomain.entities.CharacterSize
 import com.angelus.gamedomain.entities.CharacterSkills
 import com.angelus.gamedomain.entities.CharacterWeight
 import com.angelus.gamedomain.usecase.GetAllBackgroundStoriesUseCase
+import com.angelus.gamedomain.usecase.GetStartPositionUseCase
+import com.angelus.playerdomain.entities.Player
+import com.angelus.playerdomain.usecase.InitializePlayerParams
+import com.angelus.playerdomain.usecase.InitializePlayerUseCase
+import kotlinx.coroutines.launch
 
-class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUseCase) :
+data class NewGameUseCases(
+    val getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUseCase,
+    val getStartPositionUseCase: GetStartPositionUseCase,
+    val inialPlayerUseCase: InitializePlayerUseCase
+)
+
+class NewGameViewModel(
+    val useCases: NewGameUseCases
+) :
     ViewModel() {
 
     enum class STEP(val order: Int) {
@@ -32,7 +45,7 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
         BACKGROUND(6)
     }
 
-    private val backgroundTypes = getAllBackgroundStoriesUseCase.invoke()
+    private val backgroundTypes = useCases.getAllBackgroundStoriesUseCase()
 
     private val stepOrder: List<STEP> = enumValues<STEP>().sortedBy { it.order }
 
@@ -63,6 +76,9 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
 
     private var _currentAttributes: MutableState<Attributes> = mutableStateOf(Attributes.Empty)
     val currentAttributes: State<Attributes> = _currentAttributes
+
+    private var _playerResult: MutableState<Result<Player>?> = mutableStateOf(null)
+     val playerResult: State<Result<Player>?> = _playerResult
 
     fun updateFirstname(firstname: String) {
         this._nameState.value = CharacterName(firstname, _nameState.value?.lastname ?: "")
@@ -175,21 +191,31 @@ class NewGameViewModel(getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUs
             size != null &&
             weight != null && sensitivity != null
         ) {
-            val character = Character(
-                mainAttributes = currentAttributes.value,
-                characterLevel = CharacterLevel(0, 0),
-                description = CharacterDescription(
-                    name = name,
-                    gender = gender,
-                    size = size,
-                    weight = weight,
-                    sensitivity = sensitivity,
-                    background = stories.map { it.id }
-                ),
-                skills = CharacterSkills(
-                    skills = emptyMap()
-                ),
-            )
+
+
+            viewModelScope.launch {
+                val character = Character(
+                    mainAttributes = currentAttributes.value,
+                    characterLevel = CharacterLevel(0, 0),
+                    description = CharacterDescription(
+                        name = name,
+                        gender = gender,
+                        size = size,
+                        weight = weight,
+                        sensitivity = sensitivity,
+                        background = stories.map { it.id }
+                    ),
+                    skills = CharacterSkills(
+                        skills = emptyMap()
+                    ),
+                )
+                val startPosition = useCases.getStartPositionUseCase()
+                 val result = useCases.inialPlayerUseCase(InitializePlayerParams(
+                    startPosition = startPosition,
+                    character = character
+                ))
+                _playerResult.value = result
+            }
         }
 
     }

@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 interface NewGameNavigator {
 
+    fun goToGame()
 }
 
 @Composable
@@ -62,6 +64,15 @@ fun NewGamePage(
     val selectedBackground by viewModel.currentBackground
     val currentStep by viewModel.currentStepState
     val currentAttributes by viewModel.currentAttributes
+    val playerCreated by viewModel.playerResult
+
+    LaunchedEffect(playerCreated) {
+        if (playerCreated?.isSuccess == true) {
+            newGameNavigator.goToGame()
+            // Naviguer vers une autre vue
+           // navController.navigate("destination_screen")
+        }
+    }
     FantasyTheme {
         Image(
             painter = painterResource(id = R.drawable.stone_wall_texture),

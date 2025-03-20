@@ -8,6 +8,8 @@ import com.angelus.playerdomain.usecase.ObservePlayerUseCaseImpl
 import com.angelus.playerdomain.usecase.RotatePlayerUseCase
 import com.angelus.playerdomain.usecase.RotatePlayerUseCaseImpl
 import com.angelus.playerdomain.repository.PlayerRepository
+import com.angelus.playerdomain.usecase.InitializePlayerUseCase
+import com.angelus.playerdomain.usecase.InitializePlayerUseCaseImpl
 
 interface PlayerUseCaseFactory {
 
@@ -23,6 +25,10 @@ interface PlayerUseCaseFactory {
 
     fun makeObservePlayerUseCase(): ObservePlayerUseCase {
         return ObservePlayerUseCaseImpl(playerRepository)
+    }
+
+    fun makeInitializePlayerUseCase(): InitializePlayerUseCase {
+        return InitializePlayerUseCaseImpl(playerRepository)
     }
 }
 

@@ -1,13 +1,13 @@
 package com.angelus.modulea
 
-import com.angelus.gamedomain.entities.Background
-import com.angelus.gamedomain.entities.BackgroundType
+import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Module
+import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Skill
 import com.angelus.modulea.background.primary.Origins
 import com.angelus.modulea.background.secondary.Antecedent
-import com.angelus.modulea.skill.Bow
 import com.angelus.modulea.skill.Acrobaty
+import com.angelus.modulea.skill.Bow
 import com.angelus.modulea.skill.CommonLanguage
 import com.angelus.modulea.skill.EvilEnergy
 import com.angelus.modulea.skill.HeavyWeapon
@@ -43,6 +43,12 @@ class ModuleA() : Module {
         Origins,
         Antecedent
     )
+    override val startPosition: EntityPosition
+        get() = EntityPosition(
+            mapId = "",
+            position = Position(0,0),
+            orientation = com.angelus.gamedomain.entities.Orientation.NORTH
+        )
 }
 
 

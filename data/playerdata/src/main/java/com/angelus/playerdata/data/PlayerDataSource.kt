@@ -20,7 +20,7 @@ import kotlinx.serialization.encodeToString
 
 interface PlayerDataSource {
     suspend fun fetchPlayer(): Player?
-    suspend fun updatePlayer()
+    suspend fun updatePlayer(player: Player)
 }
 
 class PlayerDataSourceImpl : PlayerDataSource {
@@ -43,7 +43,7 @@ class PlayerDataSourceImpl : PlayerDataSource {
         return player
     }
 
-    override suspend fun updatePlayer() {
+    override suspend fun updatePlayer(player: Player) {
         this.player = player
     }
 
@@ -65,11 +65,7 @@ class PlayerDataStore(private val context: Context, private val gameName: String
         }
     }
 
-    override suspend fun updatePlayer() {
-        TODO("Not yet implemented")
-    }
-
-    suspend fun updatePlayer(player: Player) {
+    override suspend fun updatePlayer(player: Player) {
         context.dataStore.edit { preferences ->
             preferences[playerKey] = Json.encodeToString(player.convertPlayerToDTO())
         }

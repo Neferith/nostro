@@ -14,4 +14,8 @@ interface PlayerRepository {
         direction: Rotation
     ): Result<Player>
 
+    suspend fun initializePlayer(
+        player: Player
+    ): Result<Player>
+
 }

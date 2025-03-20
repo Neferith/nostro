@@ -11,7 +11,6 @@ import com.angelus.nostro.di.AppCoordinatorFactory
 import com.angelus.nostro.page.game.GameScreenNavigator
 import com.angelus.nostro.page.menu.MenuNavigator
 import com.angelus.nostro.page.newgame.NewGameNavigator
-import com.angelus.nostro.page.newgame.NewGamePageFactory
 
 
 // Screen.kt
@@ -70,6 +69,10 @@ NewGameNavigator{
 
     override fun startNewGame() {
         navController.navigate(route = Screen.NewGame.route)
+    }
+
+    override fun goToGame() {
+        navController.navigate(route = Screen.Game.route)
     }
 }
 

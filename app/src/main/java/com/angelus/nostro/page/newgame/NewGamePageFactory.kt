@@ -6,21 +6,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
-import com.angelus.gamedomain.factory.TurnUseCaseFactory
-import com.angelus.gamedomain.usecase.GetAllBackgroundStoriesUseCase
+import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
 
 interface NewGamePageFactory {
 
     val currentGameUseCaseFactory: CurrentGameUseCaseFactory
+    val playerUseCaseFactory: PlayerUseCaseFactory
 
     class NewGameViewModelFactory(
-        private val getAllBackgroundStoriesUseCase: GetAllBackgroundStoriesUseCase
+        private val useCases: NewGameUseCases
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(NewGameViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return NewGameViewModel(getAllBackgroundStoriesUseCase) as T
+                return NewGameViewModel(useCases) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
@@ -30,9 +30,14 @@ interface NewGamePageFactory {
     @Composable
     private fun MakeViewModel(navBackStackEntry: NavBackStackEntry): NewGameViewModel {
         //return NewGameViewModel(navBackStackEntry)
+        val useCases = NewGameUseCases(
+            getAllBackgroundStoriesUseCase = currentGameUseCaseFactory.makeGetAGetAllBackgroundStoriesUseCase(),
+            getStartPositionUseCase = currentGameUseCaseFactory.makeGetStartPositionUseCase(),
+            inialPlayerUseCase = playerUseCaseFactory.makeInitializePlayerUseCase()
+        )
         return viewModel(
             navBackStackEntry,
-            factory = NewGameViewModelFactory(currentGameUseCaseFactory.makeGetAGetAllBackgroundStoriesUseCase())
+            factory = NewGameViewModelFactory(useCases)
         )
     }
 
