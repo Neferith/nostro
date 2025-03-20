@@ -43,6 +43,7 @@ data class Position(
 )
 
 data class EntityPosition(
+    val mapId: String,
     val position: Position,
     val orientation: Orientation
 ) {

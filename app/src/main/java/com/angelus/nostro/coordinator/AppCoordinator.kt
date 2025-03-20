@@ -7,15 +7,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.angelus.nostro.MainNavigator
-import com.angelus.nostro.MainScreen
 import com.angelus.nostro.di.AppCoordinatorFactory
 import com.angelus.nostro.page.game.GameScreenNavigator
-import com.angelus.nostro.page.game.GameScreenViewModel
+import com.angelus.nostro.page.menu.MenuNavigator
+import com.angelus.nostro.page.newgame.NewGameNavigator
 
 
 // Screen.kt
 sealed class Screen(val route: String) {
     object Main : Screen("main_screen")
+    object NewGame : Screen("new_game")
     object Game : Screen("game_screen")
 }
 
@@ -24,24 +25,35 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
 
     NavHost(navController = navController, startDestination = Screen.Main.route) {
         composable(route = Screen.Main.route) {
-            MainScreen(appCoordinator)
+            //MainScreen(appCoordinator)
+            appCoordinator.factory.MakeMenuPage(appCoordinator)
+        }
+        composable(route = Screen.NewGame.route) { backStackEntry ->
+            //MainScreen(appCoordinator)
+            appCoordinator.factory.MakeNewGamePage(appCoordinator, backStackEntry)
         }
         composable(
-            route = Screen.Game.route + "?text={text}",
+            route = Screen.Game.route + "?name={defaultName}",
             arguments = listOf(
-                navArgument("text") {
+                navArgument("defaultName") {
                     type = NavType.StringType
                     nullable = true
                 }
             )
         ) {
-            appCoordinator.factory.MakeGameScreenPage(GameScreenViewModel.Params(""), appCoordinator)
+            val playerName = it.arguments?.getString("defaultName") ?: "Joueur inconnu"
+
+            appCoordinator.factory.MakeGameScreenPage("", appCoordinator)
            // GameScreen(appCoordinator, GameScreenViewModel())
         }
     }
 }
 
-class AppCoordinator(private val navController: NavHostController) : MainNavigator, GameScreenNavigator {
+class AppCoordinator(private val navController: NavHostController) : MainNavigator,
+    GameScreenNavigator,
+    MenuNavigator,
+   // NewGamePageFactory,
+NewGameNavigator{
     //val navController = rememberNavController()
 
     val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory() }
@@ -53,6 +65,14 @@ class AppCoordinator(private val navController: NavHostController) : MainNavigat
 
     override fun goToDetail(value: String) {
         navController.navigate(route = Screen.Game.route )
+    }
+
+    override fun startNewGame() {
+        navController.navigate(route = Screen.NewGame.route)
+    }
+
+    override fun goToGame() {
+        navController.navigate(route = Screen.Game.route)
     }
 }
 

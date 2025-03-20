@@ -5,12 +5,11 @@ import com.angelus.playerdomain.entities.Player
 import com.angelus.playerdomain.repository.PlayerRepository
 
 data class MovePlayerParams(
-    val playerId: String,
     val direction: Direction
 )
 
 interface MovePlayerUseCase {
-    suspend operator fun invoke(params: MovePlayerParams): Player
+    suspend operator fun invoke(params: MovePlayerParams): Result<Player>
 }
 
 class MovePlayerUseCaseImpl(private val repository: PlayerRepository) : MovePlayerUseCase {
@@ -18,9 +17,8 @@ class MovePlayerUseCaseImpl(private val repository: PlayerRepository) : MovePlay
         const val MOVE_DISTANCE = 1
     }
 
-    override suspend fun invoke(params: MovePlayerParams): Player {
+    override suspend fun invoke(params: MovePlayerParams): Result<Player> {
         return repository.movePlayer(
-            params.playerId,
             MOVE_DISTANCE,
             params.direction
         )

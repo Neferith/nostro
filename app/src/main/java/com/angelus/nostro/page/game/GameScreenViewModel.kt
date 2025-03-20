@@ -3,54 +3,95 @@ package com.angelus.nostro.page.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.entities.Direction
-import com.angelus.mapdomain.entities.GameMap
-import com.angelus.mapdomain.entities.Panorama
 import com.angelus.gamedomain.entities.Rotation
+import com.angelus.gamedomain.entities.Turn
+import com.angelus.gamedomain.entities.TurnType
+import com.angelus.gamedomain.usecase.NextTurnUseCase
+import com.angelus.gamedomain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
 import com.angelus.mapdomain.usecase.CheckMoveParams
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
 import com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase
 import com.angelus.nostro.component.MoveAction
+import com.angelus.playerdomain.usecase.MovePlayerParams
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
-
 class GameScreenViewModel(
     params: Params,
-    private val useCases: UseCases,
+    private val gameUseCases: GameUseCases,
+    private val playerUseCases: PlayerUseCases,
     private val mapUseCases: MapUseCases
 ) : ViewModel() {
 
-    val movePlayerUseCase get() = useCases.movePlayerUseCase
-    val rotatePlayerUseCase get() = useCases.rotatePlayerUseCase
-    val observePlayerUseCase get() = useCases.observePlayerUseCase
+    val movePlayerUseCase get() = playerUseCases.movePlayerUseCase
+    val rotatePlayerUseCase get() = playerUseCases.rotatePlayerUseCase
+    val observePlayerUseCase get() = playerUseCases.observePlayerUseCase
     val observeCurrentMapUseCase get() = mapUseCases.observeCurrentMapUseCase
     val getPanoramaUseCase get() = mapUseCases.getPanoramaUseCase
     val checkMoveInMapUseCase get() = mapUseCases.checkMoveInMapUseCase
+    val observeTurnUseCase get() = gameUseCases.observeTurnUseCase
+    val nextTurnUseCase get() = gameUseCases.nextTurnUseCase
 
-    data class UseCases(
+    data class PlayerUseCases(
         val movePlayerUseCase: com.angelus.playerdomain.usecase.MovePlayerUseCase,
         val rotatePlayerUseCase: com.angelus.playerdomain.usecase.RotatePlayerUseCase,
         val observePlayerUseCase: com.angelus.playerdomain.usecase.ObservePlayerUseCase
     )
 
     data class MapUseCases(
-        val observeCurrentMapUseCase: com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase,
-        val getPanoramaUseCase: com.angelus.mapdomain.usecase.GetPanoramaUseCase,
-        val checkMoveInMapUseCase: com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
+        val observeCurrentMapUseCase: ObserveCurrentMapUseCase,
+        val getPanoramaUseCase: GetPanoramaUseCase,
+        val checkMoveInMapUseCase: CheckMoveInMapUseCase
+    )
+
+    data class GameUseCases(
+        val observeTurnUseCase: ObserveTurnUseCase,
+        val nextTurnUseCase: NextTurnUseCase
     )
 
     data class Params(val playerId: String)
 
     // Observe le joueur courant via le UseCase
-    val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase(params.playerId)
+    val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
     val currentMap: StateFlow<com.angelus.mapdomain.entities.GameMap?> = observeCurrentMapUseCase("")
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
+    val currentTurn: StateFlow<Turn?> = observeTurnUseCase().stateIn(viewModelScope, SharingStarted.Lazily, null )
+
+    init {
+        observeTurnUseCase().onEach { newTurn ->
+            // Déclencher un événement à chaque fois que le tour change
+            handleNewTurn(newTurn)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun handleNewTurn(newTurn: Turn?) {
+        // Logique à exécuter à chaque nouveau tour, par exemple
+        if (newTurn != null) {
+            when (newTurn.type) {
+                is TurnType.NPC -> {
+                    // TODO: LOCK UI
+                    executeNPCTurn(newTurn)
+                }
+                is TurnType.PLAYER -> {
+                        // TODO: UNLOCK UI AFTER DELAY
+                }
+            }
+        }
+    }
+
+    private fun executeNPCTurn(turn: Turn) {
+
+        nextTurnUseCase()  // Passe au tour suivant
+
+    }
 
 
     val panoramState: StateFlow<com.angelus.mapdomain.entities.Panorama?> = combine(
@@ -72,20 +113,23 @@ class GameScreenViewModel(
         viewModelScope.launch {
             try {
                 when (action) {
-                    MoveAction.FORWARD, MoveAction.BACKWARD, MoveAction.STRAFE_LEFT, MoveAction.STRAFE_RIGHT -> {
+                    MoveAction.FORWARD,
+                    MoveAction.BACKWARD,
+                    MoveAction.STRAFE_LEFT,
+                    MoveAction.STRAFE_RIGHT -> {
                         val direction = action.toDirection()
                         if(checkMoveInMapUseCase(
-                                com.angelus.mapdomain.usecase.CheckMoveParams(
+                                CheckMoveParams(
                                     player.entityPosition,
                                     action.toDirection()
                                 )
                             )) {
                             movePlayerUseCase(
-                                com.angelus.playerdomain.usecase.MovePlayerParams(
-                                    player.id,
+                                MovePlayerParams(
                                     direction
                                 )
                             )
+                            nextTurnUseCase()
                         } else {
                             // TODO: QUe faire
                         }
@@ -96,7 +140,6 @@ class GameScreenViewModel(
                         val rotation = action.toRotation()
                         rotatePlayerUseCase(
                             com.angelus.playerdomain.usecase.RotatePlayerParams(
-                                player.id,
                                 rotation
                             )
                         )
