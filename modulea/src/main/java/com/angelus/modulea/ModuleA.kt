@@ -45,10 +45,21 @@ class ModuleA() : Module {
     )
     override val startPosition: EntityPosition
         get() = EntityPosition(
-            mapId = "",
-            position = Position(0,0),
-            orientation = com.angelus.gamedomain.entities.Orientation.NORTH
+            mapId = MapIds.CELL.toString(),
+            position = Position(5,3),
+            orientation = com.angelus.gamedomain.entities.Orientation.WEST
         )
+    override val mapList: List<String>
+        get() =  listOf(
+            MapIds.LEVEL_1.toString(),
+            MapIds.LEVEL_2.toString(),
+            MapIds.LEVEL_3.toString(),
+            MapIds.CELL.toString()
+    )
+}
+
+enum class MapIds {
+    LEVEL_1, LEVEL_2, LEVEL_3, CELL
 }
 
 
