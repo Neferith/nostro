@@ -38,7 +38,7 @@ fun GameScreen(navigator: GameScreenNavigator,
         modifier = Modifier.fillMaxSize()
     ) {
         Box(modifier = Modifier.width(350.dp).height(350.dp)) {
-            val panorama = viewModel.panoramState.collectAsState().value
+            val panorama = viewModel.panoramaState.collectAsState().value
             panorama?.let {
                 DungeonScreen(panorama.getSimpleGrid(), panorama.getPositionInSimpleGrid())
             }

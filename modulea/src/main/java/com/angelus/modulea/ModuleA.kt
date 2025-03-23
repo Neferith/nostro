@@ -4,8 +4,13 @@ import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Module
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Skill
+import com.angelus.mapdomain.entities.GameMap
 import com.angelus.modulea.background.primary.Origins
 import com.angelus.modulea.background.secondary.Antecedent
+import com.angelus.modulea.map.Cell
+import com.angelus.modulea.map.Level1
+import com.angelus.modulea.map.Level2
+import com.angelus.modulea.map.Level3
 import com.angelus.modulea.skill.Acrobaty
 import com.angelus.modulea.skill.Bow
 import com.angelus.modulea.skill.CommonLanguage
@@ -56,6 +61,15 @@ class ModuleA() : Module {
             MapIds.LEVEL_3.toString(),
             MapIds.CELL.toString()
     )
+
+    fun getAllMaps(): Map<String, GameMap> {
+        return mapOf(
+            MapIds.LEVEL_1.toString() to Level1().gameMap,
+            MapIds.LEVEL_2.toString() to Level2().gameMap,
+            MapIds.LEVEL_3.toString() to Level3().gameMap,
+            MapIds.CELL.toString() to Cell().gameMap
+        )
+    }
 }
 
 enum class MapIds {

@@ -2,10 +2,9 @@ package com.angelus.mapdata.repository
 
 import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.EntityPosition
-import com.angelus.mapdomain.entities.GameMap
-import com.angelus.mapdomain.entities.Panorama
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Size
+import com.angelus.mapdomain.entities.GameMap
 import com.angelus.mapdomain.entities.Tile
 import com.angelus.mapdomain.entities.TileType
 import com.angelus.mapdomain.repository.CurrentMapRepository
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapNotNull
 
-class CurrentMapRepositoryImpl: com.angelus.mapdomain.repository.CurrentMapRepository {
+class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapRepository {
 
     private val dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1),
@@ -25,13 +24,13 @@ class CurrentMapRepositoryImpl: com.angelus.mapdomain.repository.CurrentMapRepos
         intArrayOf(1, 1, 1, 1, 1),
     )
 
-    private val gameMap: com.angelus.mapdomain.entities.GameMap by lazy {
-        val gameMap = com.angelus.mapdomain.entities.GameMap("", Size(5, 6), com.angelus.mapdomain.entities.TileType.STONE_WALL)
+    private val gameMap: GameMap by lazy {
+        val gameMap = GameMap("", Size(5, 6), TileType.STONE_WALL)
         for (y in 0 .. dungeonGrid.size -1) {
             for (x in 0 .. dungeonGrid[y].size -1) {
                 if(dungeonGrid[y][x] == 0) {
                     gameMap.setTileAt(Position(x,y),
-                        com.angelus.mapdomain.entities.Tile(com.angelus.mapdomain.entities.TileType.STONE_FLOOR)
+                        Tile(TileType.STONE_FLOOR)
                     )
                 }
             }
@@ -40,12 +39,12 @@ class CurrentMapRepositoryImpl: com.angelus.mapdomain.repository.CurrentMapRepos
     }
 
     // Initialisation du StateFlow avec un player par défaut
-    private val _mapState = MutableStateFlow<com.angelus.mapdomain.entities.GameMap>(
+    private val _mapState = MutableStateFlow<GameMap>(
         gameMap
     )
 
 
-    override suspend fun loadCurrentMap(id: String): com.angelus.mapdomain.entities.GameMap {
+    override suspend fun loadCurrentMap(id: String): GameMap {
         TODO("Not yet implemented")
     }
 
@@ -58,7 +57,7 @@ class CurrentMapRepositoryImpl: com.angelus.mapdomain.repository.CurrentMapRepos
        )
     }
 
-    override fun observeCurrentMap(): Flow<com.angelus.mapdomain.entities.GameMap> =
+    override fun observeCurrentMap(): Flow<GameMap> =
         _mapState.mapNotNull { it }
             .distinctUntilChanged()
 

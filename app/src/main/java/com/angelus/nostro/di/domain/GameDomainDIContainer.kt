@@ -22,7 +22,7 @@ class GameDomainDIContainer(params: GameParams) : PlayerUseCaseFactory,
     }
 
     override val currentMapRepository: CurrentMapRepository by lazy {
-        CurrentMapRepositoryImpl()
+        CurrentMapRepositoryImpl(ModuleAContainer().getMaps())
     }
     override val turnRepository: TurnRepository by lazy {
         TurnRepositoryImpl()

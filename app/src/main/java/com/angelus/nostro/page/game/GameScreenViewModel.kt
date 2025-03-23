@@ -8,15 +8,16 @@ import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnType
 import com.angelus.gamedomain.usecase.NextTurnUseCase
 import com.angelus.gamedomain.usecase.ObserveTurnUseCase
+import com.angelus.mapdomain.entities.Panorama
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
 import com.angelus.mapdomain.usecase.CheckMoveParams
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
 import com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase
 import com.angelus.nostro.component.MoveAction
 import com.angelus.playerdomain.usecase.MovePlayerParams
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -70,6 +71,15 @@ class GameScreenViewModel(
             // Déclencher un événement à chaque fois que le tour change
             handleNewTurn(newTurn)
         }.launchIn(viewModelScope)
+
+        currentPlayer.onEach { player ->
+
+            if(player == null) {
+                null
+            } else {
+               _panoramaState.emit(getPanoramaUseCase(player.entityPosition))
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun handleNewTurn(newTurn: Turn?) {
@@ -94,6 +104,11 @@ class GameScreenViewModel(
     }
 
 
+    var _panoramaState: MutableStateFlow<Panorama?> = MutableStateFlow<Panorama?>(null)
+    val panoramaState: StateFlow<Panorama?> = _panoramaState
+ /*   val panoramState: State<Panorama?> = derivedStateOf {
+
+    }
     val panoramState: StateFlow<com.angelus.mapdomain.entities.Panorama?> = combine(
         currentPlayer,
         currentMap
@@ -103,7 +118,7 @@ class GameScreenViewModel(
         } else {
             getPanoramaUseCase(player.entityPosition)
         }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
+    }.stateIn(viewModelScope, SharingStarted.Lazily, null)*/
 
     fun processMoveAction(action: MoveAction) {
         val player = currentPlayer.value
