@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.mapNotNull
 
 class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapRepository {
 
-    private val dungeonGrid = arrayOf(
+   private val dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1),
         intArrayOf(1, 0, 0, 0, 1),
         intArrayOf(1, 0, 1, 0, 1),
@@ -48,13 +48,17 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
         TODO("Not yet implemented")
     }
 
-    override fun getPanorama(entityPosition: EntityPosition): com.angelus.mapdomain.entities.Panorama {
+    override fun getPanorama(entityPosition: EntityPosition): com.angelus.mapdomain.entities.Panorama? {
+
+        maps.get(entityPosition.mapId)?.let {
        return com.angelus.mapdomain.entities.Panorama(
-           gameMap.getPlayerGridVisibility(
+           it.getPlayerGridVisibility(
                entityPosition,
                4
            )
        )
+        }
+        return null
     }
 
     override fun observeCurrentMap(): Flow<GameMap> =
@@ -66,7 +70,7 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
         moveDistance: Int,
         direction: Direction
     ): Boolean {
-        _mapState.value.let { map ->
+        maps.get(entityPosition.mapId)?.let { map ->
             // On s'assure de ne pas modifier un objet existant.
             val checkPosition =
                 EntityPosition(

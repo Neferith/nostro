@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,15 +21,18 @@ import com.angelus.nostro.component.DungeonScreen
 import com.angelus.nostro.component.MoveControls
 import kotlin.Suppress
 
-interface  GameScreenNavigator
+interface GameScreenNavigator
 
 
 @Suppress("unused")
 @Composable
-fun GameScreen(navigator: GameScreenNavigator,
-               viewModel: GameScreenViewModel) {
+fun GameScreen(
+    navigator: GameScreenNavigator,
+    viewModel: GameScreenViewModel
+) {
     val playerState = viewModel.currentPlayer.collectAsState()
     val turnState = viewModel.currentTurn.collectAsState()
+    val panoramaState by viewModel.panoramaState
     val text = remember {
         mutableStateOf("")
     }
@@ -37,20 +41,24 @@ fun GameScreen(navigator: GameScreenNavigator,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Box(modifier = Modifier.width(350.dp).height(350.dp)) {
-            val panorama = viewModel.panoramaState.collectAsState().value
-            panorama?.let {
-                DungeonScreen(panorama.getSimpleGrid(), panorama.getPositionInSimpleGrid())
+        Box(modifier = Modifier
+            .width(350.dp)
+            .height(350.dp)) {
+            panoramaState?.let { panorama ->
+                DungeonScreen(
+                    panorama.getSimpleGrid(),
+                    panorama.getPositionInSimpleGrid()
+                )
             }
         }
-        Text(text = "Joueur : ${playerState.value?.entityPosition?.orientation }")
-        Text(text = "X : ${playerState.value?.entityPosition?.x }")
-        Text(text = "Y : ${playerState.value?.entityPosition?.y }")
+        Text(text = "Joueur : ${playerState.value?.entityPosition?.orientation}")
+        Text(text = "X : ${playerState.value?.entityPosition?.x}")
+        Text(text = "Y : ${playerState.value?.entityPosition?.y}")
         OutlinedTextField(value = text.value, onValueChange = {
             text.value = it
         })
 
-        if(turnState.value?.type == TurnType.PLAYER("")) {
+        if (turnState.value?.type == TurnType.PLAYER("")) {
             MoveControls(
                 onMove = {
                     viewModel.processMoveAction(it)

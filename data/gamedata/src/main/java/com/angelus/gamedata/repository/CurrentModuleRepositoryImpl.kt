@@ -13,10 +13,6 @@ class CurrentModuleRepositoryImpl(val module: Module): CurrentModuleRepository {
     }
 
     override fun getStartPosition(): EntityPosition {
-        return EntityPosition(
-            mapId = "",
-            position = Position(0,0),
-            orientation = Orientation.NORTH
-        )
+        return module.startPosition
     }
 }

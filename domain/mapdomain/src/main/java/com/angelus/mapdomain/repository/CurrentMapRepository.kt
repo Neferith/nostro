@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CurrentMapRepository {
     suspend fun loadCurrentMap(id: String): GameMap
-    fun getPanorama(entityPosition: EntityPosition): Panorama
+    fun getPanorama(entityPosition: EntityPosition): Panorama?
     fun observeCurrentMap(): Flow<GameMap>
     fun checkMoveInMap(
         entityPosition: EntityPosition,

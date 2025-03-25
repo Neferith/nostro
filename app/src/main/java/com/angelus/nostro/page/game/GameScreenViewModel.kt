@@ -1,5 +1,8 @@
 package com.angelus.nostro.page.game
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.entities.Direction
@@ -59,6 +62,9 @@ class GameScreenViewModel(
 
     data class Params(val playerId: String)
 
+    private var _panoramaState: MutableState<Panorama?> = mutableStateOf(null)
+    val panoramaState: State<Panorama?> = _panoramaState
+
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
@@ -77,7 +83,11 @@ class GameScreenViewModel(
             if(player == null) {
                 null
             } else {
-               _panoramaState.emit(getPanoramaUseCase(player.entityPosition))
+                val panorama = getPanoramaUseCase(player.entityPosition)
+                if (panorama != null) {
+                    _panoramaState.value = panorama
+                   // _panoramaState.emit(panorama)
+                }
             }
         }.launchIn(viewModelScope)
     }
@@ -104,8 +114,7 @@ class GameScreenViewModel(
     }
 
 
-    var _panoramaState: MutableStateFlow<Panorama?> = MutableStateFlow<Panorama?>(null)
-    val panoramaState: StateFlow<Panorama?> = _panoramaState
+
  /*   val panoramState: State<Panorama?> = derivedStateOf {
 
     }

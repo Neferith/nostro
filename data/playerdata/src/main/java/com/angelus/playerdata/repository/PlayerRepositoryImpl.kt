@@ -21,7 +21,7 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
     PlayerRepository {
 
     // Création d'un Player par défaut
-    val defaultPlayer = Player(
+  /*  val defaultPlayer = Player(
         id = "",
         entityPosition = EntityPosition(
             "",
@@ -29,11 +29,11 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
             Orientation.NORTH
         ),
         PlayerBand(emptyList())
-    ) // Adapte les valeurs en fonction de ton modèle
+    ) // Adapte les valeurs en fonction de ton modèle*/
 
     // Initialisation du StateFlow avec un player par défaut
-    private val _playersState = MutableStateFlow<Player>(
-        defaultPlayer // La carte contient le joueur par défaut
+    private val _playersState = MutableStateFlow<Player?>(
+        null // La carte contient le joueur par défaut
     )
 
     override fun observePlayer(): Flow<Player> =
