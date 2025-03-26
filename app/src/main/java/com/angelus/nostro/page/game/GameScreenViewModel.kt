@@ -12,11 +12,14 @@ import com.angelus.gamedomain.entities.TurnType
 import com.angelus.gamedomain.usecase.NextTurnUseCase
 import com.angelus.gamedomain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.entities.Panorama
+import com.angelus.mapdomain.repository.MoveType
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
 import com.angelus.mapdomain.usecase.CheckMoveParams
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
 import com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase
 import com.angelus.nostro.component.MoveAction
+import com.angelus.playerdomain.usecase.ChangePlayerZoneParams
+import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCase
 import com.angelus.playerdomain.usecase.MovePlayerParams
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -46,7 +49,8 @@ class GameScreenViewModel(
     data class PlayerUseCases(
         val movePlayerUseCase: com.angelus.playerdomain.usecase.MovePlayerUseCase,
         val rotatePlayerUseCase: com.angelus.playerdomain.usecase.RotatePlayerUseCase,
-        val observePlayerUseCase: com.angelus.playerdomain.usecase.ObservePlayerUseCase
+        val observePlayerUseCase: com.angelus.playerdomain.usecase.ObservePlayerUseCase,
+        val changePlayerZoneUseCase: ChangePlayerZoneUseCase
     )
 
     data class MapUseCases(
@@ -142,7 +146,15 @@ class GameScreenViewModel(
                     MoveAction.STRAFE_LEFT,
                     MoveAction.STRAFE_RIGHT -> {
                         val direction = action.toDirection()
-                        if(checkMoveInMapUseCase(
+                        val moveType = checkMoveInMapUseCase(CheckMoveParams(
+                            player.entityPosition,
+                            action.toDirection()
+                        )
+                        )
+                        if(movePlayer(moveType, direction)) {
+                            nextTurnUseCase()
+                        }
+                        /*if(checkMoveInMapUseCase(
                                 CheckMoveParams(
                                     player.entityPosition,
                                     action.toDirection()
@@ -156,7 +168,7 @@ class GameScreenViewModel(
                             nextTurnUseCase()
                         } else {
                             // TODO: QUe faire
-                        }
+                        }*/
 
                     }
 
@@ -171,6 +183,24 @@ class GameScreenViewModel(
                 }
             } catch (e: Exception) {
                 // Gérer l'erreur (ex: affichage d'un message d'erreur)
+            }
+        }
+    }
+
+    suspend fun movePlayer(moveType: MoveType, direction: Direction): Boolean {
+        when(moveType) {
+            MoveType.blocked -> return false
+            is MoveType.transition -> {
+                playerUseCases.changePlayerZoneUseCase(ChangePlayerZoneParams(moveType.position))
+                return true
+            }
+            MoveType.walkable -> {
+                movePlayerUseCase(
+                    MovePlayerParams(
+                        direction
+                    )
+                )
+                return true
             }
         }
     }

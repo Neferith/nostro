@@ -8,6 +8,7 @@ import com.angelus.mapdomain.entities.GameMap
 import com.angelus.mapdomain.entities.Tile
 import com.angelus.mapdomain.entities.TileType
 import com.angelus.mapdomain.repository.CurrentMapRepository
+import com.angelus.mapdomain.repository.MoveType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -69,7 +70,7 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
         entityPosition: EntityPosition,
         moveDistance: Int,
         direction: Direction
-    ): Boolean {
+    ): MoveType {
         maps.get(entityPosition.mapId)?.let { map ->
             // On s'assure de ne pas modifier un objet existant.
             val checkPosition =
@@ -81,12 +82,16 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
             for (i in 1..moveDistance) {
                 val nextPosition = checkPosition.changePosition(1, direction)
                 if (!map.getTileAt(nextPosition.position).walkable) {
-                    return false
+                    return MoveType.blocked
+                }
+                val transition = map.getTileAt(nextPosition.position).transition
+                if (transition != null) {
+                    return MoveType.transition(transition)
                 }
             }
-            return true
+            return MoveType.walkable
         }
-        return false
+        return return MoveType.blocked
     }
 
 }

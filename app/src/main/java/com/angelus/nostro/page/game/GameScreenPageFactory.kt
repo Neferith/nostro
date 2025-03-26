@@ -19,7 +19,8 @@ interface GameScreenPageFactory {
         val playerUseCases = GameScreenViewModel.PlayerUseCases(
             playerUseCaseFactory.makeMovePlayerUseCase(),
             playerUseCaseFactory.makeRotatePlayerUseCase(),
-            playerUseCaseFactory.makeObservePlayerUseCase()
+            playerUseCaseFactory.makeObservePlayerUseCase(),
+            playerUseCaseFactory.makeChangePlayerZoneUseCase()
         )
         val mapUseCases = GameScreenViewModel.MapUseCases(
             currentMapUseCaseFactory.makeObserveCurrentMapUseCase(),

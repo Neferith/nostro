@@ -6,6 +6,12 @@ import com.angelus.mapdomain.entities.GameMap
 import com.angelus.mapdomain.entities.Panorama
 import kotlinx.coroutines.flow.Flow
 
+sealed class MoveType {
+    object blocked: MoveType()
+    object walkable: MoveType()
+    data class transition(val position: EntityPosition): MoveType()
+}
+
 interface CurrentMapRepository {
     suspend fun loadCurrentMap(id: String): GameMap
     fun getPanorama(entityPosition: EntityPosition): Panorama?
@@ -14,5 +20,5 @@ interface CurrentMapRepository {
         entityPosition: EntityPosition,
         moveDistance: Int,
         direction: Direction
-    ): Boolean
+    ): MoveType
 }

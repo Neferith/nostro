@@ -80,6 +80,18 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
         return Result.success(player)
     }
 
+    override suspend fun changePlayerZone(transition: EntityPosition): Result<Player> {
+        val player = getOrFetchPlayer()
+        if(player != null) {
+            val updatedPlayer = player.copy(
+                entityPosition = transition
+            )
+            updatePlayer(updatedPlayer)
+            return Result.success(updatedPlayer)
+        }
+        return Result.failure(PlayerNotFoundException())
+    }
+
     private suspend fun getOrFetchPlayer(): Player? {
         return _playersState.value ?: dataSource.fetchPlayer().also {
             if(it!= null) {
