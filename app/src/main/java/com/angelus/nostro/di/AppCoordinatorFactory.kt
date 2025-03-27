@@ -14,12 +14,13 @@ class AppCoordinatorFactory: MenuPageFactory, NewGamePageFactory {
     fun MakeGameScreenPage(defaultName: String,
                            navigator: GameScreenNavigator
     ) {
-        val container = GameDIContainer(GameParams(defaultName))
+        val container = GameDIContainer(
+            GameParams(defaultName),
+            playerUseCaseFactory = playerUseCaseFactory
+        )
         container.MakeGameScreenPage(GameScreenViewModel.Params(""), navigator)
     }
 
-    override val currentGameUseCaseFactory: CurrentGameUseCaseFactory
-        get() = NewGameDIContainer()
-    override val playerUseCaseFactory: PlayerUseCaseFactory
-        get() = NewGameDIContainer()
+    override val currentGameUseCaseFactory: CurrentGameUseCaseFactory = NewGameDIContainer()
+    override val playerUseCaseFactory: PlayerUseCaseFactory = NewGameDIContainer()
 }

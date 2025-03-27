@@ -3,6 +3,7 @@ package com.angelus.mapdomain.usecase
 import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.mapdomain.repository.CurrentMapRepository
+import com.angelus.mapdomain.repository.MoveType
 
 data class CheckMoveParams(
     val position: EntityPosition,
@@ -10,7 +11,7 @@ data class CheckMoveParams(
 )
 
 interface CheckMoveInMapUseCase {
-    operator fun invoke(params: CheckMoveParams): Boolean
+    operator fun invoke(params: CheckMoveParams): MoveType
 }
 
 class CheckMoveInMapUseCaseImpl(private val repository: CurrentMapRepository) :
@@ -19,7 +20,7 @@ class CheckMoveInMapUseCaseImpl(private val repository: CurrentMapRepository) :
         const val MOVE_DISTANCE = 1
     }
 
-    override operator fun invoke(params: CheckMoveParams): Boolean {
+    override operator fun invoke(params: CheckMoveParams): MoveType {
         return repository.checkMoveInMap(
             params.position,
             MOVE_DISTANCE,

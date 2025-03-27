@@ -1,6 +1,7 @@
 package com.angelus.playerdomain.repository
 
 import com.angelus.gamedomain.entities.Direction
+import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Rotation
 import com.angelus.playerdomain.entities.Player
 import kotlinx.coroutines.flow.Flow
@@ -17,5 +18,7 @@ interface PlayerRepository {
     suspend fun initializePlayer(
         player: Player
     ): Result<Player>
+
+    suspend fun changePlayerZone(transition: EntityPosition): Result<Player>
 
 }

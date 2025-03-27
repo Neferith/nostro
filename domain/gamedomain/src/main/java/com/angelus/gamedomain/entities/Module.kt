@@ -6,4 +6,7 @@ interface Module {
 
     val startPosition: EntityPosition
 
+    val mapList: List<String>
+
 }
+

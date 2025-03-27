@@ -35,6 +35,7 @@ android {
 dependencies {
 
     implementation(project(":domain:gamedomain"))
+    implementation(project(":domain:mapdomain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

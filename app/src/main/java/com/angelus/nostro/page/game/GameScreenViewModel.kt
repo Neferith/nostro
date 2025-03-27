@@ -1,5 +1,8 @@
 package com.angelus.nostro.page.game
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.entities.Direction
@@ -8,15 +11,19 @@ import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnType
 import com.angelus.gamedomain.usecase.NextTurnUseCase
 import com.angelus.gamedomain.usecase.ObserveTurnUseCase
+import com.angelus.mapdomain.entities.Panorama
+import com.angelus.mapdomain.repository.MoveType
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
 import com.angelus.mapdomain.usecase.CheckMoveParams
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
 import com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase
 import com.angelus.nostro.component.MoveAction
+import com.angelus.playerdomain.usecase.ChangePlayerZoneParams
+import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCase
 import com.angelus.playerdomain.usecase.MovePlayerParams
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -42,7 +49,8 @@ class GameScreenViewModel(
     data class PlayerUseCases(
         val movePlayerUseCase: com.angelus.playerdomain.usecase.MovePlayerUseCase,
         val rotatePlayerUseCase: com.angelus.playerdomain.usecase.RotatePlayerUseCase,
-        val observePlayerUseCase: com.angelus.playerdomain.usecase.ObservePlayerUseCase
+        val observePlayerUseCase: com.angelus.playerdomain.usecase.ObservePlayerUseCase,
+        val changePlayerZoneUseCase: ChangePlayerZoneUseCase
     )
 
     data class MapUseCases(
@@ -58,6 +66,9 @@ class GameScreenViewModel(
 
     data class Params(val playerId: String)
 
+    private var _panoramaState: MutableState<Panorama?> = mutableStateOf(null)
+    val panoramaState: State<Panorama?> = _panoramaState
+
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
@@ -69,6 +80,19 @@ class GameScreenViewModel(
         observeTurnUseCase().onEach { newTurn ->
             // Déclencher un événement à chaque fois que le tour change
             handleNewTurn(newTurn)
+        }.launchIn(viewModelScope)
+
+        currentPlayer.onEach { player ->
+
+            if(player == null) {
+                null
+            } else {
+                val panorama = getPanoramaUseCase(player.entityPosition)
+                if (panorama != null) {
+                    _panoramaState.value = panorama
+                   // _panoramaState.emit(panorama)
+                }
+            }
         }.launchIn(viewModelScope)
     }
 
@@ -94,6 +118,10 @@ class GameScreenViewModel(
     }
 
 
+
+ /*   val panoramState: State<Panorama?> = derivedStateOf {
+
+    }
     val panoramState: StateFlow<com.angelus.mapdomain.entities.Panorama?> = combine(
         currentPlayer,
         currentMap
@@ -103,7 +131,7 @@ class GameScreenViewModel(
         } else {
             getPanoramaUseCase(player.entityPosition)
         }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
+    }.stateIn(viewModelScope, SharingStarted.Lazily, null)*/
 
     fun processMoveAction(action: MoveAction) {
         val player = currentPlayer.value
@@ -118,7 +146,15 @@ class GameScreenViewModel(
                     MoveAction.STRAFE_LEFT,
                     MoveAction.STRAFE_RIGHT -> {
                         val direction = action.toDirection()
-                        if(checkMoveInMapUseCase(
+                        val moveType = checkMoveInMapUseCase(CheckMoveParams(
+                            player.entityPosition,
+                            action.toDirection()
+                        )
+                        )
+                        if(movePlayer(moveType, direction)) {
+                            nextTurnUseCase()
+                        }
+                        /*if(checkMoveInMapUseCase(
                                 CheckMoveParams(
                                     player.entityPosition,
                                     action.toDirection()
@@ -132,7 +168,7 @@ class GameScreenViewModel(
                             nextTurnUseCase()
                         } else {
                             // TODO: QUe faire
-                        }
+                        }*/
 
                     }
 
@@ -147,6 +183,24 @@ class GameScreenViewModel(
                 }
             } catch (e: Exception) {
                 // Gérer l'erreur (ex: affichage d'un message d'erreur)
+            }
+        }
+    }
+
+    suspend fun movePlayer(moveType: MoveType, direction: Direction): Boolean {
+        when(moveType) {
+            MoveType.blocked -> return false
+            is MoveType.transition -> {
+                playerUseCases.changePlayerZoneUseCase(ChangePlayerZoneParams(moveType.position))
+                return true
+            }
+            MoveType.walkable -> {
+                movePlayerUseCase(
+                    MovePlayerParams(
+                        direction
+                    )
+                )
+                return true
             }
         }
     }
