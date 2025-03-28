@@ -40,10 +40,10 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
                     nullable = true
                 }
             )
-        ) {
-            val playerName = it.arguments?.getString("defaultName") ?: "Joueur inconnu"
+        ) { backStackEntry ->
+            val playerName = backStackEntry.arguments?.getString("defaultName") ?: "Joueur inconnu"
 
-            appCoordinator.factory.MakeGameScreenPage("", appCoordinator)
+            appCoordinator.factory.MakeGameScreenPage("", appCoordinator, backStackEntry)
            // GameScreen(appCoordinator, GameScreenViewModel())
         }
     }
