@@ -264,7 +264,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                 ) // Autre ligne
                 close() // Ferme la forme (revient au point initial)
             }
-            canvas.drawPath(pathFloor, paintWallRigt)
+            canvas.drawPath(pathFloor, cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor, dungeonSquare))
 
             val path = Path().apply {
                 moveTo(
@@ -285,7 +285,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                 ) // Autre ligne
                 close() // Ferme la forme (revient au point initial)
             }
-            canvas.drawPath(path, paintWallLeft)
+            canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(resources,R.drawable.cell_floor, dungeonSquare))
            // canvas.drawRect(left, top, right, bottom, paintFloor)
         }
        // drawMunster(canvas)
