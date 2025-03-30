@@ -171,8 +171,54 @@ class DungeonCanvasView2(context: Context) : View(context) {
 
 
 
-                } else {
-                    //   canvas.drawRect(left, top, right, bottom, paintFloor)
+                } else if (dungeonGrid[index][posX] == 0) {
+                    val floorPath = Path().apply {
+                        moveTo(
+                            leftDungeonSquare.leftBack,
+                            leftDungeonSquare.bottomBack
+                        ) // Début du path
+                        lineTo(
+                            leftDungeonSquare.rightBack,
+                            leftDungeonSquare.bottomBack
+                        ) // Ligne vers un point
+                        lineTo(
+                            leftDungeonSquare.rightFoward,
+                            leftDungeonSquare.bottomForward
+                        ) // Autre ligne
+                        lineTo(
+                            leftDungeonSquare.leftForward,
+                            leftDungeonSquare.bottomForward
+                        ) // Autre ligne
+                        close() // Ferme la forme (revient au point initial)
+                    }
+                  //  canvas.drawPath(floorPath, paintWallLeft)
+
+                    //val wallPaint =
+                    canvas.drawPath(floorPath, cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,leftDungeonSquare))
+
+                    val path = Path().apply {
+                        moveTo(
+                            leftDungeonSquare.leftBack,
+                            leftDungeonSquare.topBack
+                        ) // Début du path
+                        lineTo(
+                            leftDungeonSquare.rightBack,
+                            leftDungeonSquare.topBack
+                        ) // Ligne vers un point
+                        lineTo(
+                            leftDungeonSquare.rightFoward,
+                            leftDungeonSquare.topForward
+                        ) // Autre ligne
+                        lineTo(
+                            leftDungeonSquare.leftForward,
+                            leftDungeonSquare.topForward
+                        ) // Autre ligne
+                        close() // Ferme la forme (revient au point initial)
+                    }
+                //    canvas.drawPath(path, paintWallLeft)
+
+               //     val wallPaint = cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,leftDungeonSquare)
+                    canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(resources,R.drawable.cell_ceiling,leftDungeonSquare))
                 }
 
             }
@@ -225,6 +271,55 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         cacheWallPaint.createFrontWallPaint(
                             resources, R.drawable.cell_wall,newSquareWidth.width.toInt(), newSquareWidth.height.toInt())//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
                     )
+
+                } else if (dungeonGrid[index][posX] == 0) {
+                    val floorPath = Path().apply {
+                        moveTo(
+                            rightDungeonSquare.leftBack,
+                            rightDungeonSquare.bottomBack
+                        ) // Début du path
+                        lineTo(
+                            rightDungeonSquare.rightBack,
+                            rightDungeonSquare.bottomBack
+                        ) // Ligne vers un point
+                        lineTo(
+                            rightDungeonSquare.rightFoward,
+                            rightDungeonSquare.bottomForward
+                        ) // Autre ligne
+                        lineTo(
+                            rightDungeonSquare.leftForward,
+                            rightDungeonSquare.bottomForward
+                        ) // Autre ligne
+                        close() // Ferme la forme (revient au point initial)
+                    }
+                    //  canvas.drawPath(floorPath, paintWallLeft)
+
+                    //val wallPaint =
+                    canvas.drawPath(floorPath, cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,rightDungeonSquare))
+
+                    val path = Path().apply {
+                        moveTo(
+                            rightDungeonSquare.leftBack,
+                            rightDungeonSquare.topBack
+                        ) // Début du path
+                        lineTo(
+                            rightDungeonSquare.rightBack,
+                            rightDungeonSquare.topBack
+                        ) // Ligne vers un point
+                        lineTo(
+                            rightDungeonSquare.rightFoward,
+                            rightDungeonSquare.topForward
+                        ) // Autre ligne
+                        lineTo(
+                            rightDungeonSquare.leftForward,
+                            rightDungeonSquare.topForward
+                        ) // Autre ligne
+                        close() // Ferme la forme (revient au point initial)
+                    }
+                    //    canvas.drawPath(path, paintWallLeft)
+
+                    //     val wallPaint = cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,leftDungeonSquare)
+                    canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(resources,R.drawable.cell_ceiling,rightDungeonSquare))
 
                 }
             }
