@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.angelus.gamedomain.entities.Position
+import com.angelus.nostro.component.dungeon.DungeonCanvasView2
 
 
 @Composable

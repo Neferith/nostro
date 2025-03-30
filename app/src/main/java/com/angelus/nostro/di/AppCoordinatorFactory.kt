@@ -28,6 +28,4 @@ class AppCoordinatorFactory: MenuPageFactory, NewGamePageFactory {
 
     override val currentGameUseCaseFactory: CurrentGameUseCaseFactory = NewGameDIContainer()
     override val playerUseCaseFactory: PlayerUseCaseFactory = NewGameDIContainer()
- //   override val currentMapUseCaseFactory: CurrentMapUseCaseFactory = NewGameDIContainer()
- //   override val gameUseCaseFactory: TurnUseCaseFactory = NewGameDIContainer()
 }
