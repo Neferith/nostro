@@ -243,8 +243,50 @@ class DungeonCanvasView2(context: Context) : View(context) {
                     newSquareWidth.height.toInt()
                 )
             )
-        } else {
-            canvas.drawRect(left, top, right, bottom, paintFloor)
+        } else if(dungeonGrid[index][playerX] == 0) {
+
+            val pathFloor = Path().apply {
+                moveTo(
+                    dungeonSquare.leftForward,
+                    dungeonSquare.bottomForward
+                ) // Début du path
+                lineTo(
+                    dungeonSquare.rightFoward,
+                    dungeonSquare.bottomForward
+                ) // Ligne vers un point
+                lineTo(
+                    dungeonSquare.rightBack,
+                    dungeonSquare.bottomBack
+                ) // Autre ligne
+                lineTo(
+                    dungeonSquare.leftBack,
+                    dungeonSquare.bottomBack
+                ) // Autre ligne
+                close() // Ferme la forme (revient au point initial)
+            }
+            canvas.drawPath(pathFloor, paintWallRigt)
+
+            val path = Path().apply {
+                moveTo(
+                    dungeonSquare.leftForward,
+                    dungeonSquare.topForward
+                ) // Début du path
+                lineTo(
+                    dungeonSquare.rightFoward,
+                    dungeonSquare.topForward
+                ) // Ligne vers un point
+                lineTo(
+                    dungeonSquare.rightBack,
+                    dungeonSquare.topBack
+                ) // Autre ligne
+                lineTo(
+                    dungeonSquare.leftBack,
+                    dungeonSquare.topBack
+                ) // Autre ligne
+                close() // Ferme la forme (revient au point initial)
+            }
+            canvas.drawPath(path, paintWallLeft)
+           // canvas.drawRect(left, top, right, bottom, paintFloor)
         }
        // drawMunster(canvas)
 
