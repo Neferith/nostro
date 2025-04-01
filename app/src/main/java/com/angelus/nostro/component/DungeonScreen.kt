@@ -21,10 +21,10 @@ import com.angelus.nostro.component.dungeon.DungeonCanvasView2
 
 
 @Composable
-fun DungeonScreen(simpleGrid: Array<IntArray>, positionInSimpleGrid: Position) {
+fun DungeonScreen(mapType: String, simpleGrid: Array<IntArray>, positionInSimpleGrid: Position) {
     val context = LocalContext.current
     val dungeonView = remember { DungeonCanvasView2(context) }.apply {
-        updateGrid(simpleGrid,positionInSimpleGrid)
+        updateGrid(mapType,simpleGrid,positionInSimpleGrid)
     }
 
     Column(

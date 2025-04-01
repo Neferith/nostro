@@ -46,6 +46,7 @@ fun GameScreen(
             .height(350.dp)) {
             panoramaState?.let { panorama ->
                 DungeonScreen(
+                    panorama.mapType,
                     panorama.getSimpleGrid(),
                     panorama.getPositionInSimpleGrid()
                 )

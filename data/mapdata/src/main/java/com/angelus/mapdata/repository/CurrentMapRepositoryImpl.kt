@@ -26,7 +26,7 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
     )
 
     private val gameMap: GameMap by lazy {
-        val gameMap = GameMap("", Size(5, 6), TileType.STONE_WALL)
+        val gameMap = GameMap("","", Size(5, 6), TileType.STONE_WALL)
         for (y in 0 .. dungeonGrid.size -1) {
             for (x in 0 .. dungeonGrid[y].size -1) {
                 if(dungeonGrid[y][x] == 0) {
@@ -53,7 +53,8 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
 
         maps.get(entityPosition.mapId)?.let {
        return com.angelus.mapdomain.entities.Panorama(
-           it.getPlayerGridVisibility(
+           mapType = it.mapType,
+           tiles = it.getPlayerGridVisibility(
                entityPosition,
                4
            )

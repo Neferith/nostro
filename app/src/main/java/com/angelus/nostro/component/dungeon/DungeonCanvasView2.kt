@@ -14,6 +14,7 @@ import android.graphics.Path
 import android.graphics.Shader
 import android.util.Log
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.Offset
 import com.angelus.gamedomain.entities.Position
@@ -22,10 +23,65 @@ import com.angelus.nostro.utils.WallPoints
 import com.angelus.nostro.utils.drawPerspectiveWallShape
 
 
+interface DungeonTextureProvider {
+    enum class TextureType {
+         WALL, FLOOR, CEILING
+    }
+    fun getTexture(mapType: String, textureType: TextureType): Bitmap
+}
+
+class DungeonTextureProviderImpl(val context: Context): DungeonTextureProvider {
+
+
+    var caches: MutableMap<Pair<String, DungeonTextureProvider.TextureType>, Bitmap> = mutableMapOf()
+
+    override fun getTexture(mapType: String, textureType: DungeonTextureProvider.TextureType): Bitmap {
+       val cache = caches.get(Pair(mapType, textureType))
+        if(cache != null) {
+            return cache
+        } else {
+            val texture = if(mapType.lowercase() == "cell") {
+                getCellTexture(textureType)
+            } else {
+                 getDefaultTexture(textureType)
+            }
+            if(caches.size > 15) {
+                caches.clear()
+            }
+            caches.put(Pair(mapType, textureType), texture)
+
+            return texture
+        }
+    }
+
+    fun getCellTexture(textureType: DungeonTextureProvider.TextureType): Bitmap {
+
+       return when(textureType) {
+            DungeonTextureProvider.TextureType.WALL -> BitmapFactory.decodeResource(context.resources,R.drawable.cell_wall_low)
+            DungeonTextureProvider.TextureType.FLOOR -> BitmapFactory.decodeResource(context.resources,R.drawable.cell_floor_low)
+            DungeonTextureProvider.TextureType.CEILING -> BitmapFactory.decodeResource(context.resources,R.drawable.cell_ceiling_low)
+        }
+
+    }
+
+    fun getDefaultTexture(textureType: DungeonTextureProvider.TextureType): Bitmap {
+
+        return when(textureType) {
+            DungeonTextureProvider.TextureType.WALL -> BitmapFactory.decodeResource(context.resources,R.drawable.brick)
+            DungeonTextureProvider.TextureType.FLOOR -> BitmapFactory.decodeResource(context.resources,R.drawable.brick)
+            DungeonTextureProvider.TextureType.CEILING -> BitmapFactory.decodeResource(context.resources,R.drawable.brick)
+        }
+
+    }
+
+}
+
+
 
 class DungeonCanvasView2(context: Context) : View(context) {
 
-    private val cacheWallPaint: DungeonPaintCache = DungeonPaintCache()
+    // Use dependency injection
+    private val cacheWallPaint: DungeonPaintCache = DungeonPaintCache(DungeonTextureProviderImpl(context))
 
     private val paintWall = Paint().apply {
         color = Color.DKGRAY
@@ -54,6 +110,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
         intArrayOf(1, 0, 1, 0, 1),
         intArrayOf(1, 1, 1, 1, 1),
     )
+    private var mapType: String = ""
 
     private var playerX = 1
     private var playerY = 4
@@ -157,7 +214,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                     }
                     canvas.drawPath(path, paintWallLeft)
 
-                    val wallPaint = cacheWallPaint.createLeftWallPaint(resources,R.drawable.cell_wall,leftDungeonSquare)
+                    val wallPaint = cacheWallPaint.createLeftWallPaint(mapType,leftDungeonSquare)
                     // Dessiner le mur avec la texture
                     canvas.drawPath(path, wallPaint)
 
@@ -166,7 +223,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         leftDungeonSquare.topForward,
                         leftDungeonSquare.rightFoward,
                         leftDungeonSquare.bottomForward,
-                        cacheWallPaint.createFrontWallPaint(resources, R.drawable.cell_wall,newSquareWidth.width.toInt(), newSquareWidth.height.toInt())//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
+                        cacheWallPaint.createFrontWallPaint(mapType,newSquareWidth.width.toInt(), newSquareWidth.height.toInt())//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
                     )
 
 
@@ -194,7 +251,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                   //  canvas.drawPath(floorPath, paintWallLeft)
 
                     //val wallPaint =
-                    canvas.drawPath(floorPath, cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,leftDungeonSquare))
+                    canvas.drawPath(floorPath, cacheWallPaint.createFloorWallPaint(mapType,leftDungeonSquare))
 
                     val path = Path().apply {
                         moveTo(
@@ -218,7 +275,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                 //    canvas.drawPath(path, paintWallLeft)
 
                //     val wallPaint = cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,leftDungeonSquare)
-                    canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(resources,R.drawable.cell_ceiling,leftDungeonSquare))
+                    canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(mapType,leftDungeonSquare))
                 }
 
             }
@@ -260,7 +317,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         close() // Ferme la forme (revient au point initial)
                     }
 
-                    val wallPaint = cacheWallPaint.createRightWallPaint(resources,R.drawable.cell_wall,rightDungeonSquare)
+                    val wallPaint = cacheWallPaint.createRightWallPaint(mapType,rightDungeonSquare)
                     canvas.drawPath(path, wallPaint)
 
                     canvas.drawRect(
@@ -269,7 +326,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         rightDungeonSquare.rightFoward,
                         rightDungeonSquare.bottomForward,
                         cacheWallPaint.createFrontWallPaint(
-                            resources, R.drawable.cell_wall,newSquareWidth.width.toInt(), newSquareWidth.height.toInt())//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
+                            mapType,newSquareWidth.width.toInt(), newSquareWidth.height.toInt())//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
                     )
 
                 } else if (dungeonGrid[index][posX] == 0) {
@@ -295,7 +352,10 @@ class DungeonCanvasView2(context: Context) : View(context) {
                     //  canvas.drawPath(floorPath, paintWallLeft)
 
                     //val wallPaint =
-                    canvas.drawPath(floorPath, cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,rightDungeonSquare))
+                    canvas.drawPath(
+                        floorPath,
+                        cacheWallPaint.createFloorWallPaint(mapType,rightDungeonSquare)
+                    )
 
                     val path = Path().apply {
                         moveTo(
@@ -319,7 +379,10 @@ class DungeonCanvasView2(context: Context) : View(context) {
                     //    canvas.drawPath(path, paintWallLeft)
 
                     //     val wallPaint = cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,leftDungeonSquare)
-                    canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(resources,R.drawable.cell_ceiling,rightDungeonSquare))
+                    canvas.drawPath(
+                        path,
+                        cacheWallPaint.createCeilingWallPaint(mapType,rightDungeonSquare)
+                    )
 
                 }
             }
@@ -333,8 +396,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                 dungeonSquare.rightFoward,
                 dungeonSquare.bottomForward,
                 cacheWallPaint.createFrontWallPaint(
-                    resources,
-                    R.drawable.cell_wall,newSquareWidth.width.toInt(),
+                    mapType,newSquareWidth.width.toInt(),
                     newSquareWidth.height.toInt()
                 )
             )
@@ -359,7 +421,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                 ) // Autre ligne
                 close() // Ferme la forme (revient au point initial)
             }
-            canvas.drawPath(pathFloor, cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor, dungeonSquare))
+            canvas.drawPath(pathFloor, cacheWallPaint.createFloorWallPaint(mapType, dungeonSquare))
 
             val path = Path().apply {
                 moveTo(
@@ -380,10 +442,11 @@ class DungeonCanvasView2(context: Context) : View(context) {
                 ) // Autre ligne
                 close() // Ferme la forme (revient au point initial)
             }
-            canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(resources,R.drawable.cell_floor, dungeonSquare))
-           // canvas.drawRect(left, top, right, bottom, paintFloor)
+            canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(mapType, dungeonSquare))
+
+
         }
-       // drawMunster(canvas)
+        drawMunster(canvas)
 
     }
 
@@ -411,7 +474,8 @@ class DungeonCanvasView2(context: Context) : View(context) {
         return y in dungeonGrid.indices && x in dungeonGrid[0].indices && dungeonGrid[y][x] == 1
     }
 
-    fun updateGrid(simpleGrid: Array<IntArray>, positionInSimpleGrid: Position) {
+    fun updateGrid(mapType: String, simpleGrid: Array<IntArray>, positionInSimpleGrid: Position) {
+        this.mapType = mapType
         dungeonGrid = simpleGrid
         playerX = positionInSimpleGrid.x
         playerY = positionInSimpleGrid.y
