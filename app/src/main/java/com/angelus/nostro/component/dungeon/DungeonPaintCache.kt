@@ -1,58 +1,26 @@
 package com.angelus.nostro.component.dungeon
 
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Shader
 import android.util.Log
 
-class DungeonPaintCache(val provider: DungeonTextureProvider) {
+class DungeonPaintCache(
+    private val provider: DungeonTextureProvider
+) {
     private val cache = mutableMapOf<String, Paint>()
 
-    @Deprecated("Use fun createFrontWallPaint(resources: Resources, texture: Bitmap, width: Int, height: Int): Paint")
-    fun createFrontWallPaint(resources: Resources, textureId: Int, width: Int, height: Int): Paint {
-        val key =
-            textureId.toString() + width.toString() + height.toString()//Triple(textureId, width, height)
+    fun createFrontWallPaint(mapType: String, wallPoints: DungeonSquare): Paint {
+        val key = "WALL_" + mapType + wallPoints.hashCode()
 
         return cache[key] ?: run {
-            val texture = BitmapFactory.decodeResource(resources, textureId)
-            val scaledTexture = Bitmap.createScaledBitmap(texture, width, height, true)
-
-            val shader = BitmapShader(scaledTexture, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
-            val paint = Paint().apply { this.shader = shader }
-
-            cache[key] = paint
-            paint
-        }
-    }
-
-    fun createFrontWallPaint(mapType: String, width: Int, height: Int): Paint {
-        val key =
-            mapType.toString() + width.toString() + height.toString()//Triple(textureId, width, height)
-
-        return cache[key] ?: run {
-            val texture = provider.getTexture(mapType, DungeonTextureProvider.TextureType.WALL)
-            val scaledTexture = Bitmap.createScaledBitmap(texture, width, height, true)
-
-            val shader = BitmapShader(scaledTexture, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
-            val paint = Paint().apply { this.shader = shader }
-
-            cache[key] = paint
-            paint
-        }
-    }
-
-    fun createFloorWallPaint(mapType: String, wallPoints: DungeonSquare): Paint {
-        val key = "FLOOR_" + mapType + wallPoints.hashCode()
-
-        return cache[key] ?: run {
-            val texture = provider.getTexture(mapType, DungeonTextureProvider.TextureType.FLOOR)//BitmapFactory.decodeResource(resources, textureId)
+            val texture = provider.getTexture(
+                mapType,
+                DungeonTextureProvider.TextureType.WALL
+            )
 
             val matrix = Matrix()
-            // Points source (rect normal)
             val src = floatArrayOf(
                 0f, 0f,                   // Haut gauche de la texture
                 texture.width.toFloat(), 0f,  // Haut droit de la texture
@@ -60,8 +28,8 @@ class DungeonPaintCache(val provider: DungeonTextureProvider) {
                 0f, texture.height.toFloat() // Bas gauche
             )
             val dst = floatArrayOf(
-                wallPoints.leftBack, wallPoints.bottomBack,  // Haut avant droit
-                wallPoints.rightBack, wallPoints.bottomBack,      // Haut arrière droit
+                wallPoints.leftForward, wallPoints.topForward,  // Haut avant droit
+                wallPoints.rightFoward, wallPoints.topForward,      // Haut arrière droit
                 wallPoints.rightFoward, wallPoints.bottomForward,   // Bas arrière droit
                 wallPoints.leftForward, wallPoints.bottomForward // Bas avant droit
             )
@@ -83,12 +51,14 @@ class DungeonPaintCache(val provider: DungeonTextureProvider) {
         }
     }
 
-    @Deprecated("not used it")
-    fun createFloorWallPaint(resources: Resources, textureId: Int, wallPoints: DungeonSquare): Paint {
-        val key = "FLOOR_" + textureId.toString() + wallPoints.hashCode()
+    fun createFloorWallPaint(mapType: String, wallPoints: DungeonSquare): Paint {
+        val key = "FLOOR_" + mapType + wallPoints.hashCode()
 
         return cache[key] ?: run {
-            val texture = BitmapFactory.decodeResource(resources, textureId)
+            val texture = provider.getTexture(
+                mapType,
+                DungeonTextureProvider.TextureType.FLOOR
+            )
 
             val matrix = Matrix()
             // Points source (rect normal)
@@ -126,46 +96,10 @@ class DungeonPaintCache(val provider: DungeonTextureProvider) {
         val key = "CEILING_" + mapType + wallPoints.hashCode()
 
         return cache[key] ?: run {
-            val texture = provider.getTexture(mapType, DungeonTextureProvider.TextureType.CEILING)//BitmapFactory.decodeResource(resources, textureId)
-
-            val matrix = Matrix()
-            // Points source (rect normal)
-            val src = floatArrayOf(
-                0f, 0f,                   // Haut gauche de la texture
-                texture.width.toFloat(), 0f,  // Haut droit de la texture
-                texture.width.toFloat(), texture.height.toFloat(),  // Bas droit
-                0f, texture.height.toFloat() // Bas gauche
+            val texture = provider.getTexture(
+                mapType,
+                DungeonTextureProvider.TextureType.CEILING
             )
-            val dst = floatArrayOf(
-                wallPoints.leftBack, wallPoints.topBack,  // Haut avant droit
-                wallPoints.rightBack, wallPoints.topBack,      // Haut arrière droit
-                wallPoints.rightFoward, wallPoints.topForward,   // Bas arrière droit
-                wallPoints.leftForward, wallPoints.topForward // Bas avant droit
-            )
-
-            // Appliquer la transformation
-            val success = matrix.setPolyToPoly(src, 0, dst, 0, 4)
-            if (!success) {
-                Log.e("ERROR", "Échec de la transformation de la texture")
-            }
-
-            val shader = BitmapShader(texture, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-            shader.setLocalMatrix(matrix)
-
-            val wallPaint = Paint().apply {
-                this.shader = shader
-            }
-            cache[key] = wallPaint
-            return wallPaint
-        }
-    }
-
-    @Deprecated("")
-    fun createCeilingWallPaint(resources: Resources, textureId: Int, wallPoints: DungeonSquare): Paint {
-        val key = "CEILING_" + textureId.toString() + wallPoints.hashCode()
-
-        return cache[key] ?: run {
-            val texture = BitmapFactory.decodeResource(resources, textureId)
 
             val matrix = Matrix()
             // Points source (rect normal)
@@ -204,10 +138,11 @@ class DungeonPaintCache(val provider: DungeonTextureProvider) {
         wallPoints: DungeonSquare
     ): Paint {
         val key = "LEFT_" + mapType + wallPoints.hashCode()
-
-
         return cache[key] ?: run {
-            val texture = provider.getTexture(mapType, DungeonTextureProvider.TextureType.WALL)//BitmapFactory.decodeResource(resources, textureId)
+            val texture = provider.getTexture(
+                mapType,
+                DungeonTextureProvider.TextureType.WALL
+            )
 
             val matrix = Matrix()
             // Points source (rect normal)
@@ -238,51 +173,6 @@ class DungeonPaintCache(val provider: DungeonTextureProvider) {
             }
             cache[key] = wallPaint
             return wallPaint
-            //  return shader
-        }
-    }
-
-    @Deprecated("")
-    fun createLeftWallPaint(
-        resources: Resources, textureId: Int,
-        wallPoints: DungeonSquare
-    ): Paint {
-        val key = "LEFT_" + textureId.toString() + wallPoints.hashCode()
-
-
-        return cache[key] ?: run {
-            val texture = BitmapFactory.decodeResource(resources, textureId)
-
-            val matrix = Matrix()
-            // Points source (rect normal)
-            val src = floatArrayOf(
-                0f, 0f,                   // Haut gauche de la texture
-                texture.width.toFloat(), 0f,  // Haut droit de la texture
-                texture.width.toFloat(), texture.height.toFloat(),  // Bas droit
-                0f, texture.height.toFloat() // Bas gauche
-            )
-            val dst = floatArrayOf(
-                wallPoints.rightFoward, wallPoints.topForward,  // Haut avant droit
-                wallPoints.rightBack, wallPoints.topBack,      // Haut arrière droit
-                wallPoints.rightBack, wallPoints.bottomBack,   // Bas arrière droit
-                wallPoints.rightFoward, wallPoints.bottomForward // Bas avant droit
-            )
-
-            // Appliquer la transformation
-            val success = matrix.setPolyToPoly(src, 0, dst, 0, 4)
-            if (!success) {
-                Log.e("ERROR", "Échec de la transformation de la texture")
-            }
-
-            val shader = BitmapShader(texture, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-            shader.setLocalMatrix(matrix)
-
-            val wallPaint = Paint().apply {
-                this.shader = shader
-            }
-            cache[key] = wallPaint
-            return wallPaint
-            //  return shader
         }
     }
 
@@ -294,7 +184,9 @@ class DungeonPaintCache(val provider: DungeonTextureProvider) {
 
 
         return cache[key] ?: run {
-            val texture = provider.getTexture(mapType, DungeonTextureProvider.TextureType.WALL)//BitmapFactory.decodeResource(resources, textureId)
+            val texture = provider.getTexture(
+                mapType,
+                DungeonTextureProvider.TextureType.WALL)
 
             val matrix = Matrix()
 
@@ -307,7 +199,6 @@ class DungeonPaintCache(val provider: DungeonTextureProvider) {
                 0f, texture.height.toFloat() // Bas gauche
             )
 
-// Points de destination : Ceux du mur droit
             val dst = floatArrayOf(
                 wallPoints.leftBack, wallPoints.topBack,  // Haut avant gauche
                 wallPoints.leftForward, wallPoints.topForward,        // Haut arrière gauche
@@ -315,56 +206,6 @@ class DungeonPaintCache(val provider: DungeonTextureProvider) {
                 wallPoints.leftBack, wallPoints.bottomBack // Bas avant gauche
             )
 
-            // Appliquer la transformation
-            //  matrix.setScale(scaleX, scaleY)
-            val success = matrix.setPolyToPoly(src, 0, dst, 0, 4)
-            if (!success) {
-                Log.e("ERROR", "Échec de la transformation de la texture")
-            }
-
-            val shader = BitmapShader(texture, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-            shader.setLocalMatrix(matrix)
-
-            val wallPaint = Paint().apply {
-                this.shader = shader
-            }
-            cache[key] = wallPaint
-            return wallPaint
-        }
-    }
-
-    @Deprecated("")
-    fun createRightWallPaint(
-        resources: Resources, textureId: Int,
-        wallPoints: DungeonSquare
-    ): Paint {
-        val key = "RIGHT_" + textureId.toString() + wallPoints.hashCode()
-
-
-        return cache[key] ?: run {
-            val texture = BitmapFactory.decodeResource(resources, textureId)
-
-            val matrix = Matrix()
-
-            // Points source (rect normal)
-            // Points source : Un rectangle standard (0,0 → width, height)
-            val src = floatArrayOf(
-                0f, 0f,                   // Haut gauche de la texture
-                texture.width.toFloat(), 0f,  // Haut droit de la texture
-                texture.width.toFloat(), texture.height.toFloat(),  // Bas droit
-                0f, texture.height.toFloat() // Bas gauche
-            )
-
-// Points de destination : Ceux du mur droit
-            val dst = floatArrayOf(
-                wallPoints.leftBack, wallPoints.topBack,  // Haut avant gauche
-                wallPoints.leftForward, wallPoints.topForward,        // Haut arrière gauche
-                wallPoints.leftForward, wallPoints.bottomForward,     // Bas arrière gauche
-                wallPoints.leftBack, wallPoints.bottomBack // Bas avant gauche
-            )
-
-            // Appliquer la transformation
-            //  matrix.setScale(scaleX, scaleY)
             val success = matrix.setPolyToPoly(src, 0, dst, 0, 4)
             if (!success) {
                 Log.e("ERROR", "Échec de la transformation de la texture")

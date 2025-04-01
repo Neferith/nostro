@@ -223,7 +223,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         leftDungeonSquare.topForward,
                         leftDungeonSquare.rightFoward,
                         leftDungeonSquare.bottomForward,
-                        cacheWallPaint.createFrontWallPaint(mapType,newSquareWidth.width.toInt(), newSquareWidth.height.toInt())//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
+                        cacheWallPaint.createFrontWallPaint(mapType,leftDungeonSquare)//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
                     )
 
 
@@ -326,7 +326,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         rightDungeonSquare.rightFoward,
                         rightDungeonSquare.bottomForward,
                         cacheWallPaint.createFrontWallPaint(
-                            mapType,newSquareWidth.width.toInt(), newSquareWidth.height.toInt())//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
+                            mapType,rightDungeonSquare)//getWallpaint(newSquareWidth.width.toInt(), newSquareWidth.height.toInt())
                     )
 
                 } else if (dungeonGrid[index][posX] == 0) {
@@ -396,8 +396,8 @@ class DungeonCanvasView2(context: Context) : View(context) {
                 dungeonSquare.rightFoward,
                 dungeonSquare.bottomForward,
                 cacheWallPaint.createFrontWallPaint(
-                    mapType,newSquareWidth.width.toInt(),
-                    newSquareWidth.height.toInt()
+                    mapType,
+                    dungeonSquare
                 )
             )
         } else if(dungeonGrid[index][playerX] == 0) {
