@@ -11,13 +11,17 @@ class DungeonPaintCache(
 ) {
     private val cache = mutableMapOf<String, Paint>()
 
-    fun createFrontWallPaint(mapType: String, wallPoints: DungeonSquare): Paint {
-        val key = "WALL_" + mapType + wallPoints.hashCode()
+    fun createFrontWallPaint(
+        mapType: String,
+        wallType: DungeonTextureProvider.TextureType = DungeonTextureProvider.TextureType.WALL,
+        wallPoints: DungeonSquare
+    ): Paint {
+        val key = wallType.toString() + "_" + mapType + wallPoints.hashCode()
 
         return cache[key] ?: run {
             val texture = provider.getTexture(
                 mapType,
-                DungeonTextureProvider.TextureType.WALL
+                wallType
             )
 
             val matrix = Matrix()
@@ -135,13 +139,14 @@ class DungeonPaintCache(
 
     fun createLeftWallPaint(
         mapType: String,
+        wallType: DungeonTextureProvider.TextureType = DungeonTextureProvider.TextureType.WALL,
         wallPoints: DungeonSquare
     ): Paint {
-        val key = "LEFT_" + mapType + wallPoints.hashCode()
+        val key = wallType.toString() + "_LEFT_" + mapType + wallPoints.hashCode()
         return cache[key] ?: run {
             val texture = provider.getTexture(
                 mapType,
-                DungeonTextureProvider.TextureType.WALL
+                wallType
             )
 
             val matrix = Matrix()
@@ -178,15 +183,17 @@ class DungeonPaintCache(
 
     fun createRightWallPaint(
         mapType: String,
+        wallType: DungeonTextureProvider.TextureType = DungeonTextureProvider.TextureType.WALL,
         wallPoints: DungeonSquare
     ): Paint {
-        val key = "RIGHT_" + mapType + wallPoints.hashCode()
+        val key = wallType.toString()+"_RIGHT_" + mapType + wallPoints.hashCode()
 
 
         return cache[key] ?: run {
             val texture = provider.getTexture(
                 mapType,
-                DungeonTextureProvider.TextureType.WALL)
+                wallType
+            )
 
             val matrix = Matrix()
 

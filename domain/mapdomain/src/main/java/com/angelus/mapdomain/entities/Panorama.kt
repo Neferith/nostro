@@ -12,10 +12,15 @@ class Panorama(
         }
         return tiles.map {
             it.map {
-                if (it.type.isWall) {
+                /*if (it.type.isWall) {
                     1
                 } else {
                     0
+                }*/
+                when(it.type) {
+                    TileType.STONE_FLOOR -> 0
+                    TileType.STONE_WALL -> 1
+                    TileType.STONE_DOOR -> 2
                 }
             }.toIntArray()
         }.toTypedArray()
