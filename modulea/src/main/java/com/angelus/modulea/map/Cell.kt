@@ -4,8 +4,9 @@ import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Position
 import com.angelus.modulea.MapIds
+import com.angelus.modulea.MapType
 
-class Cell:AbstractMapProvider() {
+object Cell:AbstractMapProvider() {
     override val dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
         intArrayOf(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -19,6 +20,8 @@ class Cell:AbstractMapProvider() {
         intArrayOf(1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1),
         intArrayOf(1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
     )
+    override val mapId: MapIds = MapIds.CELL
+    override val mapType: MapType = MapType.CELL
     override val doors: Map<Position, EntityPosition> = mapOf(
         Position(2,10) to EntityPosition(
             MapIds.LEVEL_3.toString(),

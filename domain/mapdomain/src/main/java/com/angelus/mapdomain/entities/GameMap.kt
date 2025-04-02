@@ -6,6 +6,7 @@ import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Size
 
 data class GameMap(val id: String,
+                   val mapType: String,
                    val size: Size,
                    val defaultTileType: TileType) {
     private val tiles: MutableMap<Position, Tile> = mutableMapOf()

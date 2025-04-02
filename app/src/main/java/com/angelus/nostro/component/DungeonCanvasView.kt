@@ -22,6 +22,7 @@ import com.angelus.gamedomain.entities.Position
 import com.angelus.nostro.R
 import com.angelus.nostro.utils.PerspectiveWallDrawer
 import com.angelus.nostro.utils.WallPoint
+import com.angelus.nostro.utils.WallPoints
 import com.angelus.nostro.utils.drawPerspectiveWallShape
 import kotlin.math.min
 
@@ -161,26 +162,7 @@ class DungeonCanvasView(context: Context) : View(context) {
                 }
 
             }
-
-
-
-           /* val rightPoint: Position = Position(position.x +1, position.y)
-            if (rightPoint.x in dungeonGrid[0].indices && dungeonGrid[position.x][position.y] == 1) {
-                PerspectiveWallDrawer(canvas, texture).drawWallRightPerspective(right, top,
-                    wallWidth/depth,
-                    wallHeight/depth, depth)
-
-            }*/
         }
-
-
-      //  if (wallY in dungeonGrid.indices && wallX in dungeonGrid[0].indices && dungeonGrid[wallY][wallX] == 1) {
-
-        //}
-
-        //for (depth in 1..4) {
-
-        //}
     }
 
     private  fun newDrawDungeonPerspective(canvas: Canvas,
@@ -313,6 +295,8 @@ class DungeonCanvasView(context: Context) : View(context) {
         }
         drawMunster(canvas)
     }
+
+
 
     private fun drawMunster(canvas: Canvas) {
         val texture = BitmapFactory.decodeResource(resources, R.drawable.goblin)

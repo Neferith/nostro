@@ -10,23 +10,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.angelus.gamedomain.entities.Position
+import com.angelus.nostro.component.dungeon.DungeonCanvasView2
 
 
 @Composable
-fun DungeonScreen(simpleGrid: Array<IntArray>, positionInSimpleGrid: Position) {
+fun DungeonScreen(mapType: String, simpleGrid: Array<IntArray>, positionInSimpleGrid: Position) {
     val context = LocalContext.current
-    val dungeonView = remember { DungeonCanvasView(context) }.apply {
-        updateGrid(simpleGrid,positionInSimpleGrid)
+    val dungeonView = remember { DungeonCanvasView2(context) }.apply {
+        updateGrid(mapType,simpleGrid,positionInSimpleGrid)
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black),
+            .background(Color.Black).clip(RoundedCornerShape(0.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

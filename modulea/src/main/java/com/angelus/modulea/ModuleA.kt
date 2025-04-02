@@ -64,16 +64,20 @@ class ModuleA() : Module {
 
     fun getAllMaps(): Map<String, GameMap> {
         return mapOf(
-            MapIds.LEVEL_1.toString() to Level1().gameMap,
-            MapIds.LEVEL_2.toString() to Level2().gameMap,
-            MapIds.LEVEL_3.toString() to Level3().gameMap,
-            MapIds.CELL.toString() to Cell().gameMap
+            Level1.mapId.toString() to Level1.gameMap,
+            Level2.mapId.toString() to Level2.gameMap,
+            Level3.mapId.toString() to Level3.gameMap,
+            Cell.mapId.toString() to Cell.gameMap
         )
     }
 }
 
 enum class MapIds {
     LEVEL_1, LEVEL_2, LEVEL_3, CELL
+}
+
+enum class MapType {
+    CELL, CAVERN
 }
 
 
