@@ -1,9 +1,5 @@
 package com.angelus.gamedata.data.dto
 
-import com.angelus.gamedomain.entities.Attribute
-import com.angelus.gamedomain.entities.AttributeRequirement
-import com.angelus.gamedomain.entities.Attributes
-import com.angelus.gamedomain.entities.AttributesModifier
 import kotlinx.serialization.Serializable
 
 @Serializable

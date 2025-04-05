@@ -4,8 +4,6 @@ import PlayerBandDTO
 import PlayerDTO
 import com.angelus.gamedata.data.dto.EntityPositionDTO
 import com.angelus.gamedata.data.dto.PositionDTO
-import com.angelus.gamedata.data.dto.convertCharacterFromDTO
-import com.angelus.gamedata.data.dto.convertCharacterToDTO
 import com.angelus.gamedata.data.mapper.convertCharacterFromDTO
 import com.angelus.gamedata.data.mapper.convertCharacterToDTO
 import com.angelus.gamedomain.entities.EntityPosition
@@ -21,13 +19,13 @@ fun PlayerBand.convertToDTO(): PlayerBandDTO {
     )
 }
 
-fun PlayerBandDTO.convertPlayerFromDTO(): PlayerBand {
+fun PlayerBandDTO.convertFromDTO(): PlayerBand {
     return PlayerBand(
         characters = this.characters.map { it.convertCharacterFromDTO() }
     )
 }
 
-fun Player.convertPlayerToDTO(): PlayerDTO {
+fun Player.convertToDTO(): PlayerDTO {
     val positionDTO = PositionDTO(this.entityPosition.x, this.entityPosition.y)
 
     val entityPositionDTO = EntityPositionDTO(
@@ -38,7 +36,7 @@ fun Player.convertPlayerToDTO(): PlayerDTO {
     return PlayerDTO(this.id, entityPositionDTO, this.band.convertToDTO())
 }
 
-fun PlayerDTO.convertPlayerFromDTO(): Player {
+fun PlayerDTO.convertFromDTO(): Player {
     val position = Position(this.entityPosition.position.x, this.entityPosition.position.y)
 
     val entityPosition = EntityPosition(
@@ -48,7 +46,7 @@ fun PlayerDTO.convertPlayerFromDTO(): Player {
     )
     return Player(this.id,
         entityPosition,
-        this.playerBand.convertPlayerFromDTO()
+        this.playerBand.convertFromDTO()
     )
 }
 

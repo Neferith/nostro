@@ -1,7 +1,5 @@
 package com.angelus.gamedata.data.dto
 
-import com.angelus.gamedomain.entities.CharacterSkill
-import com.angelus.gamedomain.entities.CharacterSkills
 import kotlinx.serialization.Serializable
 
 @Serializable

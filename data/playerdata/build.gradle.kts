@@ -41,9 +41,9 @@ dependencies {
     implementation(project(":domain:playerdomain"))
 
 
-    implementation("androidx.datastore:datastore-core:1.1.3")
-    implementation("androidx.datastore:datastore-preferences:1.1.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
