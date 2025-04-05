@@ -23,7 +23,7 @@ interface PlayerDataSource {
     suspend fun updatePlayer(player: Player)
 }
 
-class PlayerDataSourceImpl : PlayerDataSource {
+/*class PlayerDataSourceImpl : PlayerDataSource {
 
     var player: Player = Player(
         "",
@@ -47,7 +47,7 @@ class PlayerDataSourceImpl : PlayerDataSource {
         this.player = player
     }
 
-}
+}*/
 
 private val Context.dataStore: DataStore<androidx.datastore.preferences.core.Preferences> by preferencesDataStore("player_data_store")
 

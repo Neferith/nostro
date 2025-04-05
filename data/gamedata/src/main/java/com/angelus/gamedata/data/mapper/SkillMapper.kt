@@ -1,11 +1,10 @@
-package com.angelus.gamedata.data
+package com.angelus.gamedata.data.mapper
 
+import com.angelus.gamedata.data.dto.CharacterSkillDTO
+import com.angelus.gamedata.data.dto.CharacterSkillsDTO
 import com.angelus.gamedomain.entities.CharacterSkill
 import com.angelus.gamedomain.entities.CharacterSkills
 
-data class CharacterSkillDTO (
-    val skillId: String, val level: Int
-)
 
 fun CharacterSkill.convertToDTO(): CharacterSkillDTO {
     return CharacterSkillDTO(
@@ -21,7 +20,7 @@ fun CharacterSkillDTO.convertFromDTO(): CharacterSkill {
     )
 }
 
-data class CharacterSkillsDTO(val skills: Map<String, CharacterSkillDTO>)
+
 
 fun CharacterSkills.convertToDTO(): CharacterSkillsDTO {
     return CharacterSkillsDTO(

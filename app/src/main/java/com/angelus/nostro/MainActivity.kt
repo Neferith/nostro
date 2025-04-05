@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    val appCoordinator = remember { AppCoordinator(navController) }
+                    val appCoordinator = remember { AppCoordinator(this.application,navController) }
                     appCoordinator.Start()
                 }
             }

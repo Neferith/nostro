@@ -1,5 +1,6 @@
 package com.angelus.nostro.coordinator
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -49,14 +50,14 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
     }
 }
 
-class AppCoordinator(private val navController: NavHostController) : MainNavigator,
+class AppCoordinator(context: Context, private val navController: NavHostController) : MainNavigator,
     GameScreenNavigator,
     MenuNavigator,
    // NewGamePageFactory,
 NewGameNavigator{
     //val navController = rememberNavController()
 
-    val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory() }
+    val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory(context) }
 
     @Composable
     fun Start() {

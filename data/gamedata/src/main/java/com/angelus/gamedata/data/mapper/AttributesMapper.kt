@@ -1,39 +1,13 @@
-package com.angelus.gamedata.data
+package com.angelus.gamedata.data.mapper
 
+import com.angelus.gamedata.data.dto.AttributeDTO
+import com.angelus.gamedata.data.dto.AttributeRequirementDTO
+import com.angelus.gamedata.data.dto.AttributesDTO
+import com.angelus.gamedata.data.dto.AttributesModifierDTO
 import com.angelus.gamedomain.entities.Attribute
 import com.angelus.gamedomain.entities.AttributeRequirement
 import com.angelus.gamedomain.entities.Attributes
 import com.angelus.gamedomain.entities.AttributesModifier
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class AttributesModifierDTO(
-    val musculature: Int,
-    val flexibility: Int,
-    val brain: Int,
-    val vitality: Int
-)
-
-@Serializable
-data class AttributeRequirementDTO(
-    val musculature: Int? = null,
-    val flexibility: Int? = null,
-    val brain: Int? = null,
-    val vitality: Int? = null
-)
-
-@Serializable
-data class AttributesDTO(
-    val musculature: AttributeDTO,
-    val flexibility: AttributeDTO,
-    val brain: AttributeDTO,
-    val vitality: AttributeDTO,
-)
-
-@Serializable
-data class AttributeDTO(
-    val permanent: Int, val min: Int, val max: Int
-)
 
 
 fun AttributesModifier.convertToDTO(): AttributesModifierDTO {

@@ -1,24 +1,18 @@
-import com.angelus.gamedata.data.CharacterDTO
-import com.angelus.gamedata.data.EntityPositionDTO
-import com.angelus.gamedata.data.PositionDTO
-import com.angelus.gamedata.data.convertCharacterFromDTO
-import com.angelus.gamedata.data.convertCharacterToDTO
-import com.angelus.gamedomain.entities.Character
+package com.angelus.playerdata.data.mapper
+
+import PlayerBandDTO
+import PlayerDTO
+import com.angelus.gamedata.data.dto.EntityPositionDTO
+import com.angelus.gamedata.data.dto.PositionDTO
+import com.angelus.gamedata.data.dto.convertCharacterFromDTO
+import com.angelus.gamedata.data.dto.convertCharacterToDTO
+import com.angelus.gamedata.data.mapper.convertCharacterFromDTO
+import com.angelus.gamedata.data.mapper.convertCharacterToDTO
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Position
 import com.angelus.playerdomain.entities.Player
 import com.angelus.playerdomain.entities.PlayerBand
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class PlayerDTO(val id: String,
-                     val entityPosition: EntityPositionDTO,
-                     val  playerBand: PlayerBandDTO
-)
-
-@Serializable
-data class PlayerBandDTO(val characters:List<CharacterDTO>)
 
 fun PlayerBand.convertToDTO(): PlayerBandDTO {
 
@@ -40,7 +34,7 @@ fun Player.convertPlayerToDTO(): PlayerDTO {
         this.entityPosition.mapId,
         positionDTO,
         this.entityPosition.orientation.toString()
-        )
+    )
     return PlayerDTO(this.id, entityPositionDTO, this.band.convertToDTO())
 }
 
