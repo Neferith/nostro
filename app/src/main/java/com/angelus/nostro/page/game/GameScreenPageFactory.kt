@@ -9,11 +9,7 @@ import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.page.game.GameScreenViewModel.GameUseCases
 import com.angelus.nostro.page.game.GameScreenViewModel.MapUseCases
-import com.angelus.nostro.page.game.GameScreenViewModel.Params
 import com.angelus.nostro.page.game.GameScreenViewModel.PlayerUseCases
-import com.angelus.nostro.page.newgame.NewGamePageFactory.NewGameViewModelFactory
-import com.angelus.nostro.page.newgame.NewGameUseCases
-import com.angelus.nostro.page.newgame.NewGameViewModel
 import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
 interface GameScreenPageFactory {
@@ -23,7 +19,7 @@ interface GameScreenPageFactory {
     val gameUseCaseFactory: TurnUseCaseFactory
 
     private class GameScreenViewModelFactory(
-        val params: Params,
+       // val params: Params,
         private val gameUseCases: GameUseCases,
         private val playerUseCases: PlayerUseCases,
         private val mapUseCases: MapUseCases
@@ -31,14 +27,17 @@ interface GameScreenPageFactory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(GameScreenViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return GameScreenViewModel(params, gameUseCases, playerUseCases, mapUseCases) as T
+                return GameScreenViewModel(/*params, */gameUseCases, playerUseCases, mapUseCases) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
 
     @Composable
-    private fun MakeViewModel(params: GameScreenViewModel.Params, navBackStackEntry: NavBackStackEntry): GameScreenViewModel {
+    private fun MakeViewModel(
+        /*params: GameScreenViewModel.Params,*/
+                              navBackStackEntry: NavBackStackEntry
+    ): GameScreenViewModel {
         val gameUseCases = GameScreenViewModel.GameUseCases(
             gameUseCaseFactory.makeObserveTurnUseCase(),
             gameUseCaseFactory.makeNextTurnUseCase()
@@ -64,15 +63,15 @@ interface GameScreenPageFactory {
 
         return viewModel(
             navBackStackEntry,
-            factory = GameScreenViewModelFactory(params, gameUseCases, playerUseCases, mapUseCases)
+            factory = GameScreenViewModelFactory(/*params,*/ gameUseCases, playerUseCases, mapUseCases)
         )
     }
     @Composable
-    fun MakeGameScreenPage(params: GameScreenViewModel.Params,
+    fun MakeGameScreenPage(//params: GameScreenViewModel.Params,
                            navigator:GameScreenNavigator,
                            navBackStackEntry: NavBackStackEntry
     ) {
-        val viewModel = MakeViewModel(params, navBackStackEntry)
+        val viewModel = MakeViewModel(/*params,*/ navBackStackEntry)
         return GameScreen(navigator, viewModel)
     }
 }

@@ -24,33 +24,49 @@ sealed class Screen(val route: String) {
 @Composable
 fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = Screen.Main.route) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Main.route
+    ) {
         composable(route = Screen.Main.route) {
             //MainScreen(appCoordinator)
             appCoordinator.factory.MakeMenuPage(appCoordinator)
         }
-        composable(route = Screen.NewGame.route) { backStackEntry ->
-            //MainScreen(appCoordinator)
-            appCoordinator.factory.MakeNewGamePage(appCoordinator, backStackEntry)
-        }
         composable(
-            route = Screen.Game.route + "?name={defaultName}",
+            route = Screen.NewGame.route+ "?slotId={slotId}",
             arguments = listOf(
-                navArgument("defaultName") {
-                    type = NavType.StringType
-                    nullable = true
+                navArgument("slotId") {
+                    type = NavType.IntType
+                    nullable = false
                 }
             )
         ) { backStackEntry ->
-            val playerName = backStackEntry.arguments?.getString("defaultName") ?: "Joueur inconnu"
 
-            appCoordinator.factory.MakeGameScreenPage("", appCoordinator, backStackEntry)
-           // GameScreen(appCoordinator, GameScreenViewModel())
+            val slotId = backStackEntry.arguments?.getInt("slotId") ?: 1
+            //MainScreen(appCoordinator)
+            appCoordinator.factory.MakeNewGamePage(appCoordinator, backStackEntry, slotId)
+        }
+        composable(
+            route = Screen.Game.route + "?slotId={slotId}",
+            arguments = listOf(
+                navArgument("slotId") {
+                    type = NavType.IntType
+                    nullable = false
+                }
+            )
+        ) { backStackEntry ->
+            val slotId = backStackEntry.arguments?.getInt("slotId") ?: 1
+
+           appCoordinator.factory.MakeGameScreenPage(appCoordinator, backStackEntry, slotId)
+
         }
     }
 }
 
-class AppCoordinator(context: Context, private val navController: NavHostController) : MainNavigator,
+
+
+
+class AppCoordinator(context: Context, val navController: NavHostController) : MainNavigator,
     GameScreenNavigator,
     MenuNavigator,
    // NewGamePageFactory,
@@ -69,7 +85,7 @@ NewGameNavigator{
     }
 
     override fun startNewGame() {
-        navController.navigate(route = Screen.NewGame.route)
+        navController.navigate(route = Screen.NewGame.route + "?slotId=1")
     }
 
     override fun goToGame() {

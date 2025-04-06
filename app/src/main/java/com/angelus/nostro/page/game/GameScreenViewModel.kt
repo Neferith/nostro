@@ -21,7 +21,6 @@ import com.angelus.nostro.component.MoveAction
 import com.angelus.playerdomain.usecase.ChangePlayerZoneParams
 import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCase
 import com.angelus.playerdomain.usecase.MovePlayerParams
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -31,7 +30,6 @@ import kotlinx.coroutines.launch
 
 
 class GameScreenViewModel(
-    params: Params,
     private val gameUseCases: GameUseCases,
     private val playerUseCases: PlayerUseCases,
     private val mapUseCases: MapUseCases
@@ -64,7 +62,7 @@ class GameScreenViewModel(
         val nextTurnUseCase: NextTurnUseCase
     )
 
-    data class Params(val playerId: String)
+   // data class Params(val playerId: String)
 
     private var _panoramaState: MutableState<Panorama?> = mutableStateOf(null)
     val panoramaState: State<Panorama?> = _panoramaState
