@@ -19,7 +19,7 @@ interface GameScreenPageFactory {
     val gameUseCaseFactory: TurnUseCaseFactory
 
     private class GameScreenViewModelFactory(
-       // val params: Params,
+        // val params: Params,
         private val gameUseCases: GameUseCases,
         private val playerUseCases: PlayerUseCases,
         private val mapUseCases: MapUseCases
@@ -27,7 +27,10 @@ interface GameScreenPageFactory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(GameScreenViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return GameScreenViewModel(/*params, */gameUseCases, playerUseCases, mapUseCases) as T
+                return GameScreenViewModel(/*params, */gameUseCases,
+                    playerUseCases,
+                    mapUseCases
+                ) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
@@ -35,41 +38,38 @@ interface GameScreenPageFactory {
 
     @Composable
     private fun MakeViewModel(
-        /*params: GameScreenViewModel.Params,*/
-                              navBackStackEntry: NavBackStackEntry
+        navBackStackEntry: NavBackStackEntry
     ): GameScreenViewModel {
-        val gameUseCases = GameScreenViewModel.GameUseCases(
+        val gameUseCases = GameUseCases(
             gameUseCaseFactory.makeObserveTurnUseCase(),
             gameUseCaseFactory.makeNextTurnUseCase()
         )
-        val playerUseCases = GameScreenViewModel.PlayerUseCases(
+        val playerUseCases = PlayerUseCases(
             playerUseCaseFactory.makeMovePlayerUseCase(),
             playerUseCaseFactory.makeRotatePlayerUseCase(),
             playerUseCaseFactory.makeObservePlayerUseCase(),
             playerUseCaseFactory.makeChangePlayerZoneUseCase()
         )
-        val mapUseCases = GameScreenViewModel.MapUseCases(
+        val mapUseCases = MapUseCases(
             currentMapUseCaseFactory.makeObserveCurrentMapUseCase(),
             currentMapUseCaseFactory.makeFetchPanorameUseCase(),
             currentMapUseCaseFactory.makeCheckMoveInMapUseCase()
         )
-      /*  return GameScreenViewModel(
-            params = params,
-            gameUseCases = gameUseCases,
-            playerUseCases = playerUseCases,
-            mapUseCases = mapUseCases
-        )*/
-
 
         return viewModel(
             navBackStackEntry,
-            factory = GameScreenViewModelFactory(/*params,*/ gameUseCases, playerUseCases, mapUseCases)
+            factory = GameScreenViewModelFactory(
+                gameUseCases,
+                playerUseCases,
+                mapUseCases
+            )
         )
     }
+
     @Composable
-    fun MakeGameScreenPage(//params: GameScreenViewModel.Params,
-                           navigator:GameScreenNavigator,
-                           navBackStackEntry: NavBackStackEntry
+    fun MakeGameScreenPage(
+        navigator: GameScreenNavigator,
+        navBackStackEntry: NavBackStackEntry
     ) {
         val viewModel = MakeViewModel(/*params,*/ navBackStackEntry)
         return GameScreen(navigator, viewModel)
