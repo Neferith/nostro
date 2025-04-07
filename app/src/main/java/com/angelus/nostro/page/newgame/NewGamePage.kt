@@ -22,9 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.angelus.gamedomain.entities.genderToSizeMap
-import com.angelus.gamedomain.entities.sizeToWeigth
-import com.angelus.gamedomain.entities.weightToSensitivity
+import com.angelus.gamedomain.entities.character.genderToSizeMap
+import com.angelus.gamedomain.entities.character.sizeToWeigth
+import com.angelus.gamedomain.entities.character.weightToSensitivity
 import com.angelus.nostro.R
 import com.angelus.nostro.page.newgame.composables.BackgroundSelectionView
 import com.angelus.nostro.page.newgame.composables.CharacterStepContainer
@@ -34,7 +34,6 @@ import com.angelus.nostro.page.newgame.composables.SensitivitySelector
 import com.angelus.nostro.page.newgame.composables.SizeSelector
 import com.angelus.nostro.page.newgame.composables.WeightSelector
 import com.angelus.nostro.ui.component.AttributesPreview
-import com.angelus.nostro.ui.component.FantasyTextField
 import com.angelus.nostro.ui.theme.FantasyColors
 import com.angelus.nostro.ui.theme.FantasyTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController

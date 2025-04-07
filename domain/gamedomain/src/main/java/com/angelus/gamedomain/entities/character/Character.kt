@@ -1,4 +1,4 @@
-package com.angelus.gamedomain.entities
+package com.angelus.gamedomain.entities.character
 
 data class CharacterName(val firstname: String, val lastname: String)
 

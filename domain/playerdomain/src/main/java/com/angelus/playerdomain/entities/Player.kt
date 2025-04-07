@@ -1,6 +1,6 @@
 package com.angelus.playerdomain.entities
 
-import com.angelus.gamedomain.entities.Character
+import com.angelus.gamedomain.entities.character.Character
 import com.angelus.gamedomain.entities.EntityPosition
 
 data class Player(val id: String,

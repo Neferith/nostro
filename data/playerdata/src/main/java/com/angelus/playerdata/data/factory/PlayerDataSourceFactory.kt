@@ -29,4 +29,13 @@ interface PlayerDataSourceFactory {
     fun makeGame4(context: Context): PlayerDataSource {
         return PlayerDataStore(context.dataStore4)
     }
+
+    fun getDataStores(context: Context): List<DataStore<Preferences>> {
+        return listOf(
+            context.dataStore1,
+            context.dataStore2,
+            context.dataStore3,
+            context.dataStore4
+        )
+    }
 }

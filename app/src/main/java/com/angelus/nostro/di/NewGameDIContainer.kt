@@ -13,6 +13,7 @@ import com.angelus.mapdomain.repository.CurrentMapRepository
 import com.angelus.nostro.di.domain.ModuleAContainer
 import com.angelus.nostro.page.game.GameScreenPageFactory
 import com.angelus.nostro.page.newgame.NewGamePageFactory
+import com.angelus.playerdata.data.PlayerDataSource
 import com.angelus.playerdata.data.factory.PlayerDataSourceFactory
 import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 import com.angelus.playerdomain.repository.PlayerRepository
@@ -32,7 +33,7 @@ class NewGameDIContainer(
 
     override val currentModuleRepository: CurrentModuleRepository = CurrentModuleRepositoryImpl(ModuleAContainer().getModule())
 
-    private val playerDataSource: com.angelus.playerdata.data.PlayerDataSource by lazy {
+    private val playerDataSource: PlayerDataSource by lazy {
         when (gameSlot) {
             1 -> makeGame1(context)
             2 -> makeGame2(context)

@@ -1,10 +1,8 @@
 package com.angelus.modulea.background.primary
 
-import com.angelus.gamedomain.entities.AttributesModifier
-import com.angelus.gamedomain.entities.Background
-import com.angelus.gamedomain.entities.BackgroundRequirement
-import com.angelus.gamedomain.entities.CharacterSize
-import com.angelus.gamedomain.entities.Skill
+import com.angelus.gamedomain.entities.character.AttributesModifier
+import com.angelus.gamedomain.entities.character.Background
+import com.angelus.gamedomain.entities.character.Skill
 import com.angelus.modulea.skill.CommonLanguage
 import com.angelus.modulea.skill.ImprovisedWeapon
 import com.angelus.modulea.skill.Persuasion

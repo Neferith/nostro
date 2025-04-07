@@ -1,6 +1,6 @@
 package com.angelus.gamedomain.usecase
 
-import com.angelus.gamedomain.entities.BackgroundType
+import com.angelus.gamedomain.entities.character.BackgroundType
 import com.angelus.gamedomain.repository.CurrentModuleRepository
 
 interface GetAllBackgroundStoriesUseCase {

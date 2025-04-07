@@ -2,8 +2,8 @@ package com.angelus.gamedata.data.mapper
 
 import com.angelus.gamedata.data.dto.CharacterSkillDTO
 import com.angelus.gamedata.data.dto.CharacterSkillsDTO
-import com.angelus.gamedomain.entities.CharacterSkill
-import com.angelus.gamedomain.entities.CharacterSkills
+import com.angelus.gamedomain.entities.character.CharacterSkill
+import com.angelus.gamedomain.entities.character.CharacterSkills
 
 
 fun CharacterSkill.convertToDTO(): CharacterSkillDTO {

@@ -1,14 +1,5 @@
 package com.angelus.gamedata.data.dto
 
-import com.angelus.gamedomain.entities.Character
-import com.angelus.gamedomain.entities.CharacterAge
-import com.angelus.gamedomain.entities.CharacterDescription
-import com.angelus.gamedomain.entities.CharacterGender
-import com.angelus.gamedomain.entities.CharacterLevel
-import com.angelus.gamedomain.entities.CharacterName
-import com.angelus.gamedomain.entities.CharacterSensitivity
-import com.angelus.gamedomain.entities.CharacterSize
-import com.angelus.gamedomain.entities.CharacterWeight
 import kotlinx.serialization.Serializable
 
 @Serializable

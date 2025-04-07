@@ -4,10 +4,10 @@ import com.angelus.gamedata.data.dto.AttributeDTO
 import com.angelus.gamedata.data.dto.AttributeRequirementDTO
 import com.angelus.gamedata.data.dto.AttributesDTO
 import com.angelus.gamedata.data.dto.AttributesModifierDTO
-import com.angelus.gamedomain.entities.Attribute
-import com.angelus.gamedomain.entities.AttributeRequirement
-import com.angelus.gamedomain.entities.Attributes
-import com.angelus.gamedomain.entities.AttributesModifier
+import com.angelus.gamedomain.entities.character.Attribute
+import com.angelus.gamedomain.entities.character.AttributeRequirement
+import com.angelus.gamedomain.entities.character.Attributes
+import com.angelus.gamedomain.entities.character.AttributesModifier
 
 
 fun AttributesModifier.convertToDTO(): AttributesModifierDTO {

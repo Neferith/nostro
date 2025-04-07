@@ -1,15 +1,9 @@
 package com.angelus.modulea.background.secondary
 
-import com.angelus.gamedomain.entities.AttributesModifier
-import com.angelus.gamedomain.entities.Background
-import com.angelus.gamedomain.entities.BackgroundRequirement
-import com.angelus.gamedomain.entities.Skill
-import com.angelus.modulea.skill.CommonLanguage
+import com.angelus.gamedomain.entities.character.AttributesModifier
+import com.angelus.gamedomain.entities.character.Background
 import com.angelus.modulea.skill.EvilEnergy
-import com.angelus.modulea.skill.ImprovisedWeapon
 import com.angelus.modulea.skill.Intidimidation
-import com.angelus.modulea.skill.Persuasion
-import com.angelus.modulea.skill.Survival
 
 object DemonicHeritage : Background {
 

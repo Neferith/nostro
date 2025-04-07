@@ -1,9 +1,9 @@
 package com.angelus.modulea.skill
 
-import com.angelus.gamedomain.entities.AttributeRequirement
-import com.angelus.gamedomain.entities.AttributesModifier
-import com.angelus.gamedomain.entities.Skill
-import com.angelus.gamedomain.entities.SkillType
+import com.angelus.gamedomain.entities.character.AttributeRequirement
+import com.angelus.gamedomain.entities.character.AttributesModifier
+import com.angelus.gamedomain.entities.character.Skill
+import com.angelus.gamedomain.entities.character.SkillType
 
 object Persuasion : Skill {
     override val id = "persuasion"

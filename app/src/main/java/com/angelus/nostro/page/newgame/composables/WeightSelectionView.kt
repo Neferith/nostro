@@ -11,8 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.angelus.gamedomain.entities.CharacterSize
-import com.angelus.gamedomain.entities.CharacterWeight
+import com.angelus.gamedomain.entities.character.CharacterWeight
 import com.angelus.nostro.ui.component.SelectableCard
 import com.angelus.nostro.ui.theme.FantasyColors
 

@@ -1,6 +1,6 @@
 package com.angelus.modulea.background.primary
 
-import com.angelus.gamedomain.entities.BackgroundType
+import com.angelus.gamedomain.entities.character.BackgroundType
 
 object Origins: BackgroundType {
     override val id = "origins"

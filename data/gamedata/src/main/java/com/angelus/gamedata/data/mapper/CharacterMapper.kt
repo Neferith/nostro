@@ -5,15 +5,15 @@ import com.angelus.gamedata.data.dto.CharacterDTO
 import com.angelus.gamedata.data.dto.CharacterDescriptionDTO
 import com.angelus.gamedata.data.dto.CharacterLevelDTO
 import com.angelus.gamedata.data.dto.CharacterNameDTO
-import com.angelus.gamedomain.entities.Character
-import com.angelus.gamedomain.entities.CharacterAge
-import com.angelus.gamedomain.entities.CharacterDescription
-import com.angelus.gamedomain.entities.CharacterGender
-import com.angelus.gamedomain.entities.CharacterLevel
-import com.angelus.gamedomain.entities.CharacterName
-import com.angelus.gamedomain.entities.CharacterSensitivity
-import com.angelus.gamedomain.entities.CharacterSize
-import com.angelus.gamedomain.entities.CharacterWeight
+import com.angelus.gamedomain.entities.character.Character
+import com.angelus.gamedomain.entities.character.CharacterAge
+import com.angelus.gamedomain.entities.character.CharacterDescription
+import com.angelus.gamedomain.entities.character.CharacterGender
+import com.angelus.gamedomain.entities.character.CharacterLevel
+import com.angelus.gamedomain.entities.character.CharacterName
+import com.angelus.gamedomain.entities.character.CharacterSensitivity
+import com.angelus.gamedomain.entities.character.CharacterSize
+import com.angelus.gamedomain.entities.character.CharacterWeight
 
 
 fun CharacterDescription.convertToDTO(): CharacterDescriptionDTO {

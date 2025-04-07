@@ -3,7 +3,7 @@ package com.angelus.modulea
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Module
 import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.entities.Skill
+import com.angelus.gamedomain.entities.character.Skill
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.modulea.background.primary.Origins
 import com.angelus.modulea.background.secondary.Antecedent

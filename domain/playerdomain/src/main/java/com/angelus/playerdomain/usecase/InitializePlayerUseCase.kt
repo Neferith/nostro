@@ -1,6 +1,6 @@
 package com.angelus.playerdomain.usecase
 
-import com.angelus.gamedomain.entities.Character
+import com.angelus.gamedomain.entities.character.Character
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.playerdomain.entities.Player
 import com.angelus.playerdomain.entities.PlayerBand

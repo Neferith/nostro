@@ -1,6 +1,6 @@
 package com.angelus.modulea.background.secondary
 
-import com.angelus.gamedomain.entities.BackgroundType
+import com.angelus.gamedomain.entities.character.BackgroundType
 
 object Antecedent : BackgroundType {
     override val id = "Antecedent"

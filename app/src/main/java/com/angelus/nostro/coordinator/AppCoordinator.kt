@@ -28,9 +28,9 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
         navController = navController,
         startDestination = Screen.Main.route
     ) {
-        composable(route = Screen.Main.route) {
+        composable(route = Screen.Main.route) { backStackEntry ->
             //MainScreen(appCoordinator)
-            appCoordinator.factory.MakeMenuPage(appCoordinator)
+            appCoordinator.factory.MakeMenuPage(appCoordinator, backStackEntry)
         }
         composable(
             route = Screen.NewGame.route+ "?slotId={slotId}",

@@ -7,7 +7,17 @@ import com.angelus.nostro.coordinator.AppCoordinator
 import com.angelus.nostro.coordinator.GameCoordinator
 import com.angelus.nostro.page.menu.MenuPageFactory
 
-class AppCoordinatorFactory(val context: Context): MenuPageFactory {
+class AppCoordinatorFactory(val context: Context)/*: MenuPageFactory*/ {
+
+    @Composable
+    fun MakeMenuPage(appCoordinator: AppCoordinator,
+                        backStackEntry: NavBackStackEntry
+    ) {
+        val container = MenuDIContainer(context)
+      //  val gameCoordinator = GameCoordinator(appCoordinator.navController, slotId)
+        // @TODO: CHANGE CONTAINER HERE
+        container.MakeMenuPage(appCoordinator, backStackEntry)
+    }
 
     @Composable
     fun MakeNewGamePage(appCoordinator: AppCoordinator,

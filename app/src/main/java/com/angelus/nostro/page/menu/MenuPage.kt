@@ -79,7 +79,7 @@ fun MenuPage(viewModel: MenuViewModel,
 }
 
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewMenuScreen() {
@@ -90,4 +90,4 @@ fun PreviewMenuScreen() {
             // Implémentation factice pour la preview
         }
     })
-}
+}*/
