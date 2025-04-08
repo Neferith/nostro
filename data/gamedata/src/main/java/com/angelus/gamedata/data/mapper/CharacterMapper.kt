@@ -46,7 +46,8 @@ fun Character.convertCharacterToDTO(): CharacterDTO {
         mainAttributes = this.mainAttributes.convertAttributesToDTO(),
         characterLevel = this.characterLevel.convertCharacterLevelToDTO(),
         description = this.description.convertToDTO(),
-        skills = this.skills.convertToDTO()
+        skills = this.skills.convertToDTO(),
+        inventory = this.inventory.convertToDTO()
     )
 }
 
@@ -55,7 +56,8 @@ fun CharacterDTO.convertCharacterFromDTO(): Character {
         mainAttributes = this.mainAttributes.convertAttributesFromDTO(),
         characterLevel = this.characterLevel.convertCharacterLevelFromDTO(),
         description = this.description.convertFromDTO(),
-        skills = this.skills.convertFromDTO()
+        skills = this.skills.convertFromDTO(),
+        inventory = this.inventory.convertFromDTO()
     )
 }
 

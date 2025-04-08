@@ -7,7 +7,8 @@ data class CharacterDTO(
     val mainAttributes: AttributesDTO,
     val characterLevel: CharacterLevelDTO,
     val description: CharacterDescriptionDTO,
-    val skills: CharacterSkillsDTO
+    val skills: CharacterSkillsDTO,
+    val inventory: InventoryDTO
 )
 
 @Serializable

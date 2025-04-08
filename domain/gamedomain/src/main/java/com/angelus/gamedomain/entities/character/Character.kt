@@ -1,5 +1,7 @@
 package com.angelus.gamedomain.entities.character
 
+import com.angelus.gamedomain.entities.item.Inventory
+
 data class CharacterName(val firstname: String, val lastname: String)
 
 
@@ -18,5 +20,7 @@ data class Character(
     val mainAttributes: Attributes,
     val characterLevel: CharacterLevel,
     val description: CharacterDescription,
-    val skills: CharacterSkills
+    val skills: CharacterSkills,
+
+    val inventory: Inventory
 )
