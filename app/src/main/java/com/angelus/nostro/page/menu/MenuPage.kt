@@ -7,17 +7,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.angelus.gamedomain.entities.GameSlot
 import com.angelus.nostro.R
 import com.angelus.nostro.ui.component.FantasyButton
 import com.angelus.nostro.ui.theme.FantasyColors
@@ -25,7 +25,8 @@ import com.angelus.nostro.ui.theme.FantasyTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 interface MenuNavigator {
-    fun startNewGame()
+    fun startNewGame(slotId: Int)
+    fun continueGame(slotId: Int)
 }
 
 @Composable
@@ -36,6 +37,7 @@ fun MenuPage(viewModel: MenuViewModel,
     val statusBarColor = FantasyColors.Primary
 
     systemUiController.setSystemBarsColor(color = statusBarColor)
+    val slots by viewModel.gameSlots.collectAsState()
 
 
     FantasyTheme {
@@ -62,24 +64,29 @@ fun MenuPage(viewModel: MenuViewModel,
                     color = FantasyColors.Accent
                 )
 
-                // Bouton Nouvelle Partie
-                FantasyButton(
-                    text = "Nouvelle Partie",
-                    onClick = { navigator.startNewGame() }
-                )
 
-                // Bouton Continuer
-                FantasyButton(
-                    text = "Continuer",
-                    onClick = {  }
-                )
+                for (slot in slots) {
+                    when(slot) {
+                        is GameSlot.loadGame ->   FantasyButton(
+                            text = "Continuer Partie " + slot.slot,
+                            onClick = { navigator.continueGame(slot.slot) }
+                        )
+
+                        is GameSlot.newGame ->
+                        FantasyButton(
+                            text = "Nouvelle Partie " + slot.slot,
+                            onClick = { navigator.startNewGame(slot.slot) }
+                        )
+                    }
+                }
+
             }
         }
     }
 }
 
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewMenuScreen() {
@@ -90,4 +97,4 @@ fun PreviewMenuScreen() {
             // Implémentation factice pour la preview
         }
     })
-}
+}*/

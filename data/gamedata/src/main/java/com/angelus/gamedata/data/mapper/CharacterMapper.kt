@@ -1,41 +1,20 @@
-package com.angelus.gamedata.data
+package com.angelus.gamedata.data.mapper
 
-import com.angelus.gamedomain.entities.Character
-import com.angelus.gamedomain.entities.CharacterAge
-import com.angelus.gamedomain.entities.CharacterDescription
-import com.angelus.gamedomain.entities.CharacterGender
-import com.angelus.gamedomain.entities.CharacterLevel
-import com.angelus.gamedomain.entities.CharacterName
-import com.angelus.gamedomain.entities.CharacterSensitivity
-import com.angelus.gamedomain.entities.CharacterSize
-import com.angelus.gamedomain.entities.CharacterWeight
-import kotlinx.serialization.Serializable
+import com.angelus.gamedata.data.dto.CharacterAgeDTO
+import com.angelus.gamedata.data.dto.CharacterDTO
+import com.angelus.gamedata.data.dto.CharacterDescriptionDTO
+import com.angelus.gamedata.data.dto.CharacterLevelDTO
+import com.angelus.gamedata.data.dto.CharacterNameDTO
+import com.angelus.gamedomain.entities.character.Character
+import com.angelus.gamedomain.entities.character.CharacterAge
+import com.angelus.gamedomain.entities.character.CharacterDescription
+import com.angelus.gamedomain.entities.character.CharacterGender
+import com.angelus.gamedomain.entities.character.CharacterLevel
+import com.angelus.gamedomain.entities.character.CharacterName
+import com.angelus.gamedomain.entities.character.CharacterSensitivity
+import com.angelus.gamedomain.entities.character.CharacterSize
+import com.angelus.gamedomain.entities.character.CharacterWeight
 
-@Serializable
-data class CharacterDTO(
-    val mainAttributes: AttributesDTO,
-    val characterLevel: CharacterLevelDTO,
-    val description: CharacterDescriptionDTO,
-    val skills: CharacterSkillsDTO
-)
-
-@Serializable
-data class CharacterLevelDTO(val level: Int, val experience: Int)
-
-@Serializable
-data class CharacterDescriptionDTO(
-    val name: CharacterNameDTO,
-    val age: CharacterAgeDTO,
-    val gender: String,
-    val size: String,
-    val weight: String,
-    val sensitivity: String,
-    val background: List<String>,
-)
-
-data class CharacterNameDTO(val firstname: String, val lastname: String)
-
-data class CharacterAgeDTO(val age: Int)
 
 fun CharacterDescription.convertToDTO(): CharacterDescriptionDTO {
     return CharacterDescriptionDTO(
@@ -48,6 +27,7 @@ fun CharacterDescription.convertToDTO(): CharacterDescriptionDTO {
         background = this.background
     )
 }
+
 
 fun CharacterDescriptionDTO.convertFromDTO(): CharacterDescription {
     return CharacterDescription(

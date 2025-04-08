@@ -1,4 +1,4 @@
-package com.angelus.gamedata.data
+package com.angelus.gamedata.data.dto
 
 import kotlinx.serialization.Serializable
 

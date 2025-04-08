@@ -1,5 +1,6 @@
 package com.angelus.nostro.coordinator
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -23,40 +24,56 @@ sealed class Screen(val route: String) {
 @Composable
 fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = Screen.Main.route) {
-        composable(route = Screen.Main.route) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Main.route
+    ) {
+        composable(route = Screen.Main.route) { backStackEntry ->
             //MainScreen(appCoordinator)
-            appCoordinator.factory.MakeMenuPage(appCoordinator)
-        }
-        composable(route = Screen.NewGame.route) { backStackEntry ->
-            //MainScreen(appCoordinator)
-            appCoordinator.factory.MakeNewGamePage(appCoordinator, backStackEntry)
+            appCoordinator.factory.MakeMenuPage(appCoordinator, backStackEntry)
         }
         composable(
-            route = Screen.Game.route + "?name={defaultName}",
+            route = Screen.NewGame.route+ "?slotId={slotId}",
             arguments = listOf(
-                navArgument("defaultName") {
-                    type = NavType.StringType
-                    nullable = true
+                navArgument("slotId") {
+                    type = NavType.IntType
+                    nullable = false
                 }
             )
         ) { backStackEntry ->
-            val playerName = backStackEntry.arguments?.getString("defaultName") ?: "Joueur inconnu"
 
-            appCoordinator.factory.MakeGameScreenPage("", appCoordinator, backStackEntry)
-           // GameScreen(appCoordinator, GameScreenViewModel())
+            val slotId = backStackEntry.arguments?.getInt("slotId") ?: 1
+            //MainScreen(appCoordinator)
+            appCoordinator.factory.MakeNewGamePage(appCoordinator, backStackEntry, slotId)
+        }
+        composable(
+            route = Screen.Game.route + "?slotId={slotId}",
+            arguments = listOf(
+                navArgument("slotId") {
+                    type = NavType.IntType
+                    nullable = false
+                }
+            )
+        ) { backStackEntry ->
+            val slotId = backStackEntry.arguments?.getInt("slotId") ?: 1
+
+           appCoordinator.factory.MakeGameScreenPage(appCoordinator, backStackEntry, slotId)
+
         }
     }
 }
 
-class AppCoordinator(private val navController: NavHostController) : MainNavigator,
+
+
+
+class AppCoordinator(context: Context, val navController: NavHostController) : MainNavigator,
     GameScreenNavigator,
     MenuNavigator,
    // NewGamePageFactory,
 NewGameNavigator{
     //val navController = rememberNavController()
 
-    val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory() }
+    val factory: AppCoordinatorFactory by lazy { AppCoordinatorFactory(context) }
 
     @Composable
     fun Start() {
@@ -67,8 +84,12 @@ NewGameNavigator{
         navController.navigate(route = Screen.Game.route )
     }
 
-    override fun startNewGame() {
-        navController.navigate(route = Screen.NewGame.route)
+    override fun startNewGame(slotId: Int) {
+        navController.navigate(route = Screen.NewGame.route + "?slotId="+slotId)
+    }
+
+    override fun continueGame(slotId: Int) {
+        navController.navigate(route = Screen.Game.route + "?slotId="+slotId)
     }
 
     override fun goToGame() {

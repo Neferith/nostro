@@ -1,9 +1,9 @@
 package com.angelus.modulea.skill
 
-import com.angelus.gamedomain.entities.AttributeRequirement
-import com.angelus.gamedomain.entities.AttributesModifier
-import com.angelus.gamedomain.entities.Skill
-import com.angelus.gamedomain.entities.SkillType
+import com.angelus.gamedomain.entities.character.AttributeRequirement
+import com.angelus.gamedomain.entities.character.AttributesModifier
+import com.angelus.gamedomain.entities.character.Skill
+import com.angelus.gamedomain.entities.character.SkillType
 
 object Acrobaty : Skill {
     override val id = "climbing"
@@ -16,7 +16,7 @@ object Acrobaty : Skill {
         flexibility = 1,
     )
 
-    override var modifier: AttributesModifier= AttributesModifier(
+    override var modifier: AttributesModifier = AttributesModifier(
         musculature = 1,
         flexibility = 1,
         brain = 0,

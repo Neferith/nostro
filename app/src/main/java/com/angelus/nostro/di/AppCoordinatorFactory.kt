@@ -1,31 +1,45 @@
 package com.angelus.nostro.di
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
-import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
-import com.angelus.gamedomain.factory.TurnUseCaseFactory
-import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
-import com.angelus.nostro.page.game.GameScreenNavigator
-import com.angelus.nostro.page.game.GameScreenPageFactory
-import com.angelus.nostro.page.game.GameScreenViewModel
+import com.angelus.nostro.coordinator.AppCoordinator
+import com.angelus.nostro.coordinator.GameCoordinator
 import com.angelus.nostro.page.menu.MenuPageFactory
-import com.angelus.nostro.page.newgame.NewGamePageFactory
-import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
-class AppCoordinatorFactory: MenuPageFactory, NewGamePageFactory {
+class AppCoordinatorFactory(val context: Context)/*: MenuPageFactory*/ {
 
     @Composable
-    fun MakeGameScreenPage(defaultName: String,
-                           navigator: GameScreenNavigator,
-                           navBackStackEntry: NavBackStackEntry
+    fun MakeMenuPage(appCoordinator: AppCoordinator,
+                        backStackEntry: NavBackStackEntry
     ) {
-        val container = GameDIContainer(
-            GameParams(defaultName),
-            playerUseCaseFactory = playerUseCaseFactory
-        )
-        container.MakeGameScreenPage(GameScreenViewModel.Params(""), navigator, navBackStackEntry)
+        val container = MenuDIContainer(context)
+      //  val gameCoordinator = GameCoordinator(appCoordinator.navController, slotId)
+        // @TODO: CHANGE CONTAINER HERE
+        container.MakeMenuPage(appCoordinator, backStackEntry)
     }
 
-    override val currentGameUseCaseFactory: CurrentGameUseCaseFactory = NewGameDIContainer()
-    override val playerUseCaseFactory: PlayerUseCaseFactory = NewGameDIContainer()
+    @Composable
+    fun MakeNewGamePage(appCoordinator: AppCoordinator,
+                        backStackEntry: NavBackStackEntry,
+                        slotId: Int
+    ) {
+        val container = NewGameDIContainer(context, slotId)
+        val gameCoordinator = GameCoordinator(appCoordinator.navController, slotId)
+        // @TODO: CHANGE CONTAINER HERE
+        container.MakeNewGamePage(gameCoordinator, backStackEntry)
+    }
+
+
+    @Composable
+    fun MakeGameScreenPage(
+        appCoordinator: AppCoordinator,
+        backStackEntry: NavBackStackEntry,
+        slotId: Int
+    ) {
+        val container = NewGameDIContainer(context, slotId)
+        val gameCoordinator = GameCoordinator(appCoordinator.navController, slotId)
+        // @TODO: CHANGE CONTAINER HERE
+        container.MakeGameScreenPage(gameCoordinator, backStackEntry)
+    }
 }

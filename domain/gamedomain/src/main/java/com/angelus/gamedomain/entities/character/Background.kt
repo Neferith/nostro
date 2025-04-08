@@ -1,4 +1,4 @@
-package com.angelus.gamedomain.entities
+package com.angelus.gamedomain.entities.character
 
 interface Background {
     val id: String

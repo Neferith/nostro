@@ -1,4 +1,4 @@
-package com.angelus.gamedomain.entities
+package com.angelus.gamedomain.entities.character
 
 enum class CharacterSize(
     val minHeightCm: Int,

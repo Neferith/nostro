@@ -1,10 +1,9 @@
 package com.angelus.modulea.background.secondary
 
-import com.angelus.gamedomain.entities.AttributesModifier
-import com.angelus.gamedomain.entities.Background
-import com.angelus.gamedomain.entities.BackgroundRequirement
-import com.angelus.gamedomain.entities.CharacterSize
-import com.angelus.modulea.skill.EvilEnergy
+import com.angelus.gamedomain.entities.character.AttributesModifier
+import com.angelus.gamedomain.entities.character.Background
+import com.angelus.gamedomain.entities.character.BackgroundRequirement
+import com.angelus.gamedomain.entities.character.CharacterSize
 import com.angelus.modulea.skill.HolyEnergy
 import com.angelus.modulea.skill.Persuasion
 

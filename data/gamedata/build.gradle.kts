@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -35,11 +36,13 @@ android {
 dependencies {
 
     implementation("androidx.datastore:datastore-preferences:1.1.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation(libs.kotlinx.serialization.json)
+    // Autres dépendances...
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
     implementation(project(":domain:gamedomain"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

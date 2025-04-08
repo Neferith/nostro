@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.angelus.gamedomain.entities.CharacterGender
+import com.angelus.gamedomain.entities.character.CharacterGender
 import com.angelus.nostro.ui.component.SelectableCard
 import com.angelus.nostro.ui.theme.FantasyColors
 
