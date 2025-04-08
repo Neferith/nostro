@@ -84,8 +84,12 @@ NewGameNavigator{
         navController.navigate(route = Screen.Game.route )
     }
 
-    override fun startNewGame() {
-        navController.navigate(route = Screen.NewGame.route + "?slotId=1")
+    override fun startNewGame(slotId: Int) {
+        navController.navigate(route = Screen.NewGame.route + "?slotId="+slotId)
+    }
+
+    override fun continueGame(slotId: Int) {
+        navController.navigate(route = Screen.Game.route + "?slotId="+slotId)
     }
 
     override fun goToGame() {
