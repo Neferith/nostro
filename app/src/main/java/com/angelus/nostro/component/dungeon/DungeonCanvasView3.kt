@@ -355,10 +355,31 @@ class DungeonCanvasView3 (context: Context) : View(context) {
             }
             canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(mapType, dungeonSquare))
 
+            if((frontTile.inventory?.items?.isNotEmpty() == true)) {
+
+                drawBag(canvas,dungeonSquare.bottomForward, dungeonSquare.leftBack)
+                ///
+            }
+
 
         }
         //  drawMunster(canvas)
 
+    }
+
+    private fun drawBag(canvas: Canvas, mobsLeft: Float , mobsTop: Float) {
+        val texture = BitmapFactory.decodeResource(resources, R.drawable.bag_low)
+        val myShader = BitmapShader(texture, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR)
+
+        //  if(mobsLeft == 0.0f) {
+     //   val mobsLeft = ((width - texture.width) / 2).toFloat() + offsetX
+       // val mobsTop = ((height - texture.height) / 2).toFloat() + offsetY
+        // }
+
+        // Dessiner l'image sur le Canvas au centre
+        canvas.drawBitmap(texture, ((width - texture.width) / 2).toFloat() + offsetX, ((height - texture.height) / 2).toFloat() + offsetY, null)
+
+       // startShakingAnimation()
     }
 
 
