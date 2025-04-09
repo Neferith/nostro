@@ -4,9 +4,11 @@ import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Module
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.character.Skill
+import com.angelus.gamedomain.entities.item.ItemRegistry
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.modulea.background.primary.Origins
 import com.angelus.modulea.background.secondary.Antecedent
+import com.angelus.modulea.item.NostroCross
 import com.angelus.modulea.map.Cell
 import com.angelus.modulea.map.Level1
 import com.angelus.modulea.map.Level2
@@ -26,7 +28,11 @@ import com.angelus.modulea.skill.Reading
 import com.angelus.modulea.skill.Survival
 import com.angelus.modulea.skill.Unlocking
 
-class ModuleA() : Module {
+object ModuleA : Module {
+
+    init {
+        ItemRegistry.register(NostroCross)
+    }
 
     override val skillsList: List<Skill> = listOf(
         Acrobaty,

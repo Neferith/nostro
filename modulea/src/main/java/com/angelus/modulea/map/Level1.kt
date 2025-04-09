@@ -2,6 +2,7 @@ package com.angelus.modulea.map
 
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Position
+import com.angelus.gamedomain.entities.item.Inventory
 import com.angelus.modulea.MapIds
 import com.angelus.modulea.MapType
 
@@ -23,4 +24,5 @@ object Level1:AbstractMapProvider()  {
     override val mapId: MapIds = MapIds.LEVEL_1
     override val mapType: MapType = MapType.CAVERN
     override val doors: Map<Position, EntityPosition> = mapOf()
+    override val inventories: Map<Position, Inventory> = mapOf()
 }

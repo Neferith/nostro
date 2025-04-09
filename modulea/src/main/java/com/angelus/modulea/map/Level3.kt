@@ -3,6 +3,7 @@ package com.angelus.modulea.map
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Position
+import com.angelus.gamedomain.entities.item.Inventory
 import com.angelus.modulea.MapIds
 import com.angelus.modulea.MapType
 
@@ -42,4 +43,5 @@ object Level3: AbstractMapProvider() {
         )
 
     )
+    override val inventories: Map<Position, Inventory> = mapOf()
 }

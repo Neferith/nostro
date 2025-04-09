@@ -6,10 +6,10 @@ import com.angelus.modulea.ModuleA
 
 class ModuleAContainer {
 
-    private val moduleA = ModuleA()
+    private val moduleA = ModuleA
 
     fun getModule(): Module {
-        return ModuleA()
+        return ModuleA
     }
 
     fun getMaps(): Map<String,GameMap> {

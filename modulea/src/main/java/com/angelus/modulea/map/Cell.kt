@@ -3,10 +3,12 @@ package com.angelus.modulea.map
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Position
+import com.angelus.gamedomain.entities.item.Inventory
 import com.angelus.modulea.MapIds
 import com.angelus.modulea.MapType
+import com.angelus.modulea.item.NostroCross
 
-object Cell:AbstractMapProvider() {
+object Cell : AbstractMapProvider() {
     override val dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
         intArrayOf(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -23,13 +25,21 @@ object Cell:AbstractMapProvider() {
     override val mapId: MapIds = MapIds.CELL
     override val mapType: MapType = MapType.CELL
     override val doors: Map<Position, EntityPosition> = mapOf(
-        Position(2,10) to EntityPosition(
+        Position(2, 10) to EntityPosition(
             MapIds.LEVEL_3.toString(),
-            Position(5,3),
+            Position(5, 3),
             Orientation.SOUTH
         )
 
     )
+    override val inventories: Map<Position, Inventory> = mapOf(
+        Position(3, 3) to Inventory(
+            mapOf(
+                NostroCross.id to 1
+            )
+        )
+    )
+
 
     /*val gameMap: GameMap by lazy {
        val gameMap = GameMap("", Size(dungeonGrid.get(0).size, dungeonGrid.size), TileType.STONE_WALL)

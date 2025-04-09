@@ -15,16 +15,16 @@ sealed class ItemType {
     object Quest : ItemType()
    // data class Material(val rarity: Int) : ItemType()
 }
-data class StackRules(val stackable: Boolean, val max: Int) {
+data class StackRules(val stackable: Boolean = false, val max: Int = 1) {
     init {
         require(stackable || max == 1) { "Un objet non stackable doit avoir max = 1" }
     }
 }
 
-data class Item(
-    val id:  String,
-    val title: String,
-    val description: String,
-    val type: ItemType,
+interface Item {
+    val id:  String
+    val title: String
+    val description: String
+    val type: ItemType
     val stackRule: StackRules
-)
+}
