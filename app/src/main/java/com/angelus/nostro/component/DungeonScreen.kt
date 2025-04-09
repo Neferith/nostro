@@ -17,13 +17,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.angelus.gamedomain.entities.Position
+import com.angelus.mapdomain.entities.Tile
 import com.angelus.nostro.component.dungeon.DungeonCanvasView2
+import com.angelus.nostro.component.dungeon.DungeonCanvasView3
 
 
 @Composable
-fun DungeonScreen(mapType: String, simpleGrid: Array<IntArray>, positionInSimpleGrid: Position) {
+fun DungeonScreen(mapType: String, simpleGrid: List<List<Tile>>, positionInSimpleGrid: Position) {
     val context = LocalContext.current
-    val dungeonView = remember { DungeonCanvasView2(context) }.apply {
+    val dungeonView = remember { DungeonCanvasView3(context) }.apply {
         updateGrid(mapType,simpleGrid,positionInSimpleGrid)
     }
 

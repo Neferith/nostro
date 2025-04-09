@@ -10,14 +10,16 @@ import android.graphics.Shader
 import android.view.View
 import androidx.compose.ui.geometry.Size
 import com.angelus.gamedomain.entities.Position
+import com.angelus.mapdomain.entities.Tile
+import com.angelus.mapdomain.entities.TileType
 import com.angelus.nostro.R
 
-class DungeonCanvasView2(context: Context) : View(context) {
+class DungeonCanvasView3 (context: Context) : View(context) {
 
     // Use dependency injection
     private val cacheWallPaint: DungeonPaintCache = DungeonPaintCache(DungeonTextureProviderImpl(context))
 
-    private var dungeonGrid: Array<IntArray> = emptyArray()
+    private var dungeonGrid: List<List<Tile>> = emptyList()
     private var mapType: String = ""
 
     private var playerX = 1
@@ -36,9 +38,9 @@ class DungeonCanvasView2(context: Context) : View(context) {
 
     private fun incrementSquare(
         canvas: Canvas,
-                        oldSquareWidth: Size,
-                        ratio: Float,
-                        deep: Int
+        oldSquareWidth: Size,
+        ratio: Float,
+        deep: Int
     ) {
 
         val newSquareWidth = Size(oldSquareWidth.width*ratio, oldSquareWidth.height*ratio)
@@ -82,7 +84,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
 
             if (leftDungeonSquare.rightBack > 0) {
                 val leftTile = dungeonGrid[index][posX]
-                if (leftTile >= 1) {
+                if (leftTile.type == TileType.STONE_WALL  || leftTile.type == TileType.STONE_DOOR) {
 
                     val path = Path().apply {
                         moveTo(
@@ -103,11 +105,11 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         ) // Autre ligne
                         close() // Ferme la forme (revient au point initial)
                     }
-                 //   canvas.drawPath(path, paintWallLeft)
+                    //   canvas.drawPath(path, paintWallLeft)
 
                     val wallPaint = cacheWallPaint.createLeftWallPaint(
                         mapType,
-                        getTextureWallTypeByInt(leftTile),
+                        getTextureWallTypeByTile(leftTile),
                         leftDungeonSquare
                     )
                     // Dessiner le mur avec la texture
@@ -120,14 +122,14 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         leftDungeonSquare.bottomForward,
                         cacheWallPaint.createFrontWallPaint(
                             mapType,
-                            getTextureWallTypeByInt(leftTile),
+                            getTextureWallTypeByTile(leftTile),
                             leftDungeonSquare
                         )
                     )
 
 
 
-                } else if (leftTile == 0) {
+                } else if (leftTile.type == TileType.STONE_FLOOR) {
                     val floorPath = Path().apply {
                         moveTo(
                             leftDungeonSquare.leftBack,
@@ -147,7 +149,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         ) // Autre ligne
                         close() // Ferme la forme (revient au point initial)
                     }
-                  //  canvas.drawPath(floorPath, paintWallLeft)
+                    //  canvas.drawPath(floorPath, paintWallLeft)
 
                     //val wallPaint =
                     canvas.drawPath(floorPath, cacheWallPaint.createFloorWallPaint(mapType,leftDungeonSquare))
@@ -171,9 +173,9 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         ) // Autre ligne
                         close() // Ferme la forme (revient au point initial)
                     }
-                //    canvas.drawPath(path, paintWallLeft)
+                    //    canvas.drawPath(path, paintWallLeft)
 
-               //     val wallPaint = cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,leftDungeonSquare)
+                    //     val wallPaint = cacheWallPaint.createFloorWallPaint(resources,R.drawable.cell_floor,leftDungeonSquare)
                     canvas.drawPath(path, cacheWallPaint.createCeilingWallPaint(mapType,leftDungeonSquare))
                 }
 
@@ -195,7 +197,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
             )
             if (leftDungeonSquare.leftBack < width) {
                 val rightTile = dungeonGrid[index][posX]
-                if (rightTile >= 1) {
+                if (rightTile.type == TileType.STONE_WALL || rightTile.type == TileType.STONE_DOOR) {
 
                     val path = Path().apply {
                         moveTo(
@@ -219,7 +221,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
 
                     val wallPaint = cacheWallPaint.createRightWallPaint(
                         mapType,
-                        getTextureWallTypeByInt(rightTile),
+                        getTextureWallTypeByTile(rightTile),
                         rightDungeonSquare
                     )
                     canvas.drawPath(path, wallPaint)
@@ -231,12 +233,12 @@ class DungeonCanvasView2(context: Context) : View(context) {
                         rightDungeonSquare.bottomForward,
                         cacheWallPaint.createFrontWallPaint(
                             mapType,
-                            getTextureWallTypeByInt(rightTile),
+                            getTextureWallTypeByTile(rightTile),
                             rightDungeonSquare
                         )
                     )
 
-                } else if (rightTile == 0) {
+                } else if (rightTile.type == TileType.STONE_FLOOR) {
                     val floorPath = Path().apply {
                         moveTo(
                             rightDungeonSquare.leftBack,
@@ -297,7 +299,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
 
         // Dessin du sol
         val frontTile = dungeonGrid[index][playerX]
-        if(frontTile >= 1) {
+        if(frontTile.type == TileType.STONE_WALL || frontTile.type == TileType.STONE_DOOR) {
             canvas.drawRect(
                 dungeonSquare.leftForward,
                 dungeonSquare.topForward,
@@ -305,11 +307,11 @@ class DungeonCanvasView2(context: Context) : View(context) {
                 dungeonSquare.bottomForward,
                 cacheWallPaint.createFrontWallPaint(
                     mapType,
-                    getTextureWallTypeByInt(frontTile),
+                    getTextureWallTypeByTile(frontTile),
                     dungeonSquare
                 )
             )
-        } else if(frontTile == 0) {
+        } else if(frontTile.type == TileType.STONE_FLOOR) {
 
             val pathFloor = Path().apply {
                 moveTo(
@@ -355,7 +357,7 @@ class DungeonCanvasView2(context: Context) : View(context) {
 
 
         }
-      //  drawMunster(canvas)
+        //  drawMunster(canvas)
 
     }
 
@@ -378,8 +380,9 @@ class DungeonCanvasView2(context: Context) : View(context) {
     }
 
     fun updateGrid(mapType: String,
-                   simpleGrid: Array<IntArray>,
-                   positionInSimpleGrid: Position) {
+                   simpleGrid: List<List<Tile>>,
+                   positionInSimpleGrid: Position
+    ) {
         this.mapType = mapType
         dungeonGrid = simpleGrid
         playerX = positionInSimpleGrid.x
