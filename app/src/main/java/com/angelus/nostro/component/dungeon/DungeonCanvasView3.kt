@@ -2,6 +2,7 @@ package com.angelus.nostro.component.dungeon
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
 import android.graphics.Canvas
@@ -13,6 +14,7 @@ import com.angelus.gamedomain.entities.Position
 import com.angelus.mapdomain.entities.Tile
 import com.angelus.mapdomain.entities.TileType
 import com.angelus.nostro.R
+
 
 class DungeonCanvasView3 (context: Context) : View(context) {
 
@@ -357,7 +359,7 @@ class DungeonCanvasView3 (context: Context) : View(context) {
 
             if((frontTile.inventory?.items?.isNotEmpty() == true)) {
 
-                drawBag(canvas,dungeonSquare.bottomForward, dungeonSquare.leftBack)
+                drawBag(canvas,dungeonSquare.topBack, dungeonSquare.leftBack, squareWidth = newSquareWidth.width)
                 ///
             }
 
@@ -367,19 +369,12 @@ class DungeonCanvasView3 (context: Context) : View(context) {
 
     }
 
-    private fun drawBag(canvas: Canvas, mobsLeft: Float , mobsTop: Float) {
+    private fun drawBag(canvas: Canvas, mobsLeft: Float , mobsTop: Float, squareWidth: Float) {
         val texture = BitmapFactory.decodeResource(resources, R.drawable.bag_low)
-        val myShader = BitmapShader(texture, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR)
+        val scaledBitmap = Bitmap.createScaledBitmap(texture, (squareWidth*0.3).toInt(), (squareWidth*
+                0.3).toInt(), true)
 
-        //  if(mobsLeft == 0.0f) {
-     //   val mobsLeft = ((width - texture.width) / 2).toFloat() + offsetX
-       // val mobsTop = ((height - texture.height) / 2).toFloat() + offsetY
-        // }
-
-        // Dessiner l'image sur le Canvas au centre
-        canvas.drawBitmap(texture, ((width - texture.width) / 2).toFloat() + offsetX, ((height - texture.height) / 2).toFloat() + offsetY, null)
-
-       // startShakingAnimation()
+        canvas.drawBitmap(scaledBitmap, mobsLeft, ((mobsTop + squareWidth) - (squareWidth * 0.15)).toFloat(), null)
     }
 
 
