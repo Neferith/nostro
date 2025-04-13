@@ -2,6 +2,8 @@ package com.angelus.mapdomain.entities
 
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.item.Inventory
+import com.angelus.gamedomain.entities.item.isEmpty
+import com.angelus.gamedomain.entities.item.isNotEmpty
 
 enum class TileType(
     val defaultWalkable: Boolean,
@@ -19,4 +21,8 @@ data class Tile(
     val inventory: Inventory? = null
 ) {
 
+}
+
+fun Tile.hasInventory(): Boolean {
+    return inventory?.isNotEmpty()?:false
 }
