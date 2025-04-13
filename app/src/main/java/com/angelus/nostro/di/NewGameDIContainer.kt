@@ -12,6 +12,7 @@ import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.mapdomain.repository.CurrentMapRepository
 import com.angelus.nostro.di.domain.ModuleAContainer
 import com.angelus.nostro.page.game.GameScreenPageFactory
+import com.angelus.nostro.page.inventory.InventoryScreenFactory
 import com.angelus.nostro.page.newgame.NewGamePageFactory
 import com.angelus.playerdata.data.PlayerDataSource
 import com.angelus.playerdata.data.factory.PlayerDataSourceFactory
@@ -21,7 +22,8 @@ import com.angelus.playerdomain.repository.PlayerRepository
 
 class NewGameDIContainer(
     context: Context,
-    gameSlot: Int
+    gameSlot: Int,
+    moduleContainer: ModuleAContainer
 ):
     CurrentGameUseCaseFactory,
     PlayerUseCaseFactory,
@@ -29,9 +31,10 @@ class NewGameDIContainer(
     CurrentMapUseCaseFactory,
     NewGamePageFactory,
     TurnUseCaseFactory,
-    GameScreenPageFactory {
+    GameScreenPageFactory,
+    InventoryScreenFactory {
 
-    override val currentModuleRepository: CurrentModuleRepository = CurrentModuleRepositoryImpl(ModuleAContainer().getModule())
+    override val currentModuleRepository: CurrentModuleRepository = CurrentModuleRepositoryImpl(moduleContainer.getModule())
 
     private val playerDataSource: PlayerDataSource by lazy {
         when (gameSlot) {

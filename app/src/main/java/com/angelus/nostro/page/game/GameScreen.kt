@@ -30,7 +30,9 @@ import androidx.compose.ui.res.painterResource
 import com.angelus.mapdomain.entities.hasInventory
 import com.angelus.nostro.R
 
-interface GameScreenNavigator
+interface GameScreenNavigator {
+    fun goToFloorInventory()
+}
 
 
 @Suppress("unused")
@@ -64,7 +66,7 @@ fun GameScreen(
             // Bouton superposé
             if(panoramaState?.getCurrentTile()?.hasInventory()?:false) {
                 IconButton(
-                    onClick = { /* Action de ramassage */ },
+                    onClick = { navigator.goToFloorInventory()},
                     modifier = Modifier
                         .size(64.dp)
                         .align(Alignment.BottomEnd) // Position en bas au centre

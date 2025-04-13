@@ -13,12 +13,30 @@ import com.angelus.nostro.page.game.GameScreenNavigator
 import com.angelus.nostro.page.menu.MenuNavigator
 import com.angelus.nostro.page.newgame.NewGameNavigator
 
+enum class IntentoryPosition(val index: Int) {
+    CHEST(index = -1), FLOOR(index = 0), PLAYER_1(1), PLAYER_2(2), PLAYER_3(3), PLAYER_4(4);
+
+    companion object {
+        fun valueOfIndex(position: Int): IntentoryPosition {
+            IntentoryPosition.values().onEach {
+                if(it.index == position) {
+                    return it
+                }
+            }
+            return PLAYER_1
+        }
+    }
+}
 
 // Screen.kt
 sealed class Screen(val route: String) {
     object Main : Screen("main_screen")
     object NewGame : Screen("new_game")
     object Game : Screen("game_screen")
+    data object Inventory : Screen("game/{slotId}/inventory/{position}") {
+        fun createRoute(slotId: Int, position:IntentoryPosition) = "game/$slotId/inventory/${position.index}"
+    }
+
 }
 
 @Composable
@@ -60,6 +78,17 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
            appCoordinator.factory.MakeGameScreenPage(appCoordinator, backStackEntry, slotId)
 
         }
+        composable(
+            route = Screen.Inventory.route, // Utilise la version avec {material}
+            arguments = listOf(
+                navArgument("slotId") { type = NavType.IntType },
+                navArgument("position") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val slotId = backStackEntry.arguments?.getInt("slotId") ?: 1
+            val position = backStackEntry.arguments?.getInt("position") ?: 1
+            appCoordinator.factory.MakeInventoryPage(appCoordinator, backStackEntry,slotId, position)
+        }
     }
 }
 
@@ -67,7 +96,7 @@ fun AppNavigation(appCoordinator: AppCoordinator, navController: NavHostControll
 
 
 class AppCoordinator(context: Context, val navController: NavHostController) : MainNavigator,
-    GameScreenNavigator,
+   // GameScreenNavigator,
     MenuNavigator,
    // NewGamePageFactory,
 NewGameNavigator{
@@ -95,5 +124,9 @@ NewGameNavigator{
     override fun goToGame() {
         navController.navigate(route = Screen.Game.route)
     }
+
+   /* override fun goToFloorInventory() {
+        TODO("Not yet implemented")
+    }*/
 }
 

@@ -5,9 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import com.angelus.nostro.coordinator.AppCoordinator
 import com.angelus.nostro.coordinator.GameCoordinator
+import com.angelus.nostro.coordinator.IntentoryPosition
+import com.angelus.nostro.di.domain.ModuleAContainer
 import com.angelus.nostro.page.menu.MenuPageFactory
 
 class AppCoordinatorFactory(val context: Context)/*: MenuPageFactory*/ {
+    private val moduleAContainer = ModuleAContainer()
 
     @Composable
     fun MakeMenuPage(appCoordinator: AppCoordinator,
@@ -24,7 +27,7 @@ class AppCoordinatorFactory(val context: Context)/*: MenuPageFactory*/ {
                         backStackEntry: NavBackStackEntry,
                         slotId: Int
     ) {
-        val container = NewGameDIContainer(context, slotId)
+        val container = NewGameDIContainer(context, slotId, moduleAContainer)
         val gameCoordinator = GameCoordinator(appCoordinator.navController, slotId)
         // @TODO: CHANGE CONTAINER HERE
         container.MakeNewGamePage(gameCoordinator, backStackEntry)
@@ -37,9 +40,24 @@ class AppCoordinatorFactory(val context: Context)/*: MenuPageFactory*/ {
         backStackEntry: NavBackStackEntry,
         slotId: Int
     ) {
-        val container = NewGameDIContainer(context, slotId)
+        val container = NewGameDIContainer(context, slotId, moduleAContainer)
         val gameCoordinator = GameCoordinator(appCoordinator.navController, slotId)
         // @TODO: CHANGE CONTAINER HERE
         container.MakeGameScreenPage(gameCoordinator, backStackEntry)
+    }
+
+    @Composable
+    fun MakeInventoryPage(appCoordinator: AppCoordinator,
+                          backStackEntry: NavBackStackEntry, slotId: Int, position: Int) {
+
+        val container = NewGameDIContainer(context, slotId, moduleAContainer)
+        val gameCoordinator = GameCoordinator(appCoordinator.navController, slotId)
+        // @TODO: CHANGE CONTAINER HERE
+        container.MakeInventoryScreenPage(
+            IntentoryPosition.valueOfIndex(position),
+            gameCoordinator,
+            backStackEntry
+        )
+
     }
 }
