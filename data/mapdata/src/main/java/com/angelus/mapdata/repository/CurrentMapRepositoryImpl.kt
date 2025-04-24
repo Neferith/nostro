@@ -7,6 +7,7 @@ import com.angelus.gamedomain.entities.Size
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.mapdomain.entities.Tile
 import com.angelus.mapdomain.entities.TileType
+import com.angelus.mapdomain.exception.MapNotFoundException
 import com.angelus.mapdomain.repository.CurrentMapRepository
 import com.angelus.mapdomain.repository.MoveType
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapNotNull
 
-class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapRepository {
+class CurrentMapRepositoryImpl(
+    private val maps: Map<String, GameMap>
+): CurrentMapRepository {
 
    private val dungeonGrid = arrayOf(
         intArrayOf(1, 1, 1, 1, 1),
@@ -27,8 +30,8 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
 
     private val gameMap: GameMap by lazy {
         val gameMap = GameMap("","", Size(5, 6), TileType.STONE_WALL)
-        for (y in 0 .. dungeonGrid.size -1) {
-            for (x in 0 .. dungeonGrid[y].size -1) {
+        for (y in dungeonGrid.indices) {
+            for (x in 0..<dungeonGrid[y].size) {
                 if(dungeonGrid[y][x] == 0) {
                     gameMap.setTileAt(Position(x,y),
                         Tile(TileType.STONE_FLOOR)
@@ -40,7 +43,7 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
     }
 
     // Initialisation du StateFlow avec un player par défaut
-    private val _mapState = MutableStateFlow<GameMap>(
+    private val _mapState = MutableStateFlow(
         gameMap
     )
 
@@ -51,7 +54,7 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
 
     override fun getPanorama(entityPosition: EntityPosition): com.angelus.mapdomain.entities.Panorama? {
 
-        maps.get(entityPosition.mapId)?.let {
+        maps[entityPosition.mapId]?.let {
        return com.angelus.mapdomain.entities.Panorama(
            mapType = it.mapType,
            tiles = it.getPlayerGridVisibility(
@@ -72,7 +75,7 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
         moveDistance: Int,
         direction: Direction
     ): MoveType {
-        maps.get(entityPosition.mapId)?.let { map ->
+        maps[entityPosition.mapId]?.let { map ->
             // On s'assure de ne pas modifier un objet existant.
             val checkPosition =
                 EntityPosition(
@@ -92,7 +95,14 @@ class CurrentMapRepositoryImpl(val maps: Map<String, GameMap>): CurrentMapReposi
             }
             return MoveType.walkable
         }
-        return return MoveType.blocked
+        return MoveType.blocked
+    }
+
+    override fun getTileAtPosition(entityPosition: EntityPosition): Result<Tile> {
+        maps[entityPosition.mapId]?.let { map ->
+            return Result.success(map.getTileAt(entityPosition.position))
+        }
+        return Result.failure(MapNotFoundException())
     }
 
 }

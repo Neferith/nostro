@@ -4,6 +4,10 @@ import com.angelus.gamedomain.entities.item.Inventory
 
 data class CharacterName(val firstname: String, val lastname: String)
 
+fun CharacterName.fullName(): String {
+    return this.firstname + " " + this.lastname
+}
+
 
 
 data class CharacterDescription(

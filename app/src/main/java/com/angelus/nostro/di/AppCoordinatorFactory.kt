@@ -5,9 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import com.angelus.nostro.coordinator.AppCoordinator
 import com.angelus.nostro.coordinator.GameCoordinator
-import com.angelus.nostro.coordinator.IntentoryPosition
+import com.angelus.nostro.coordinator.InventoryPosition
 import com.angelus.nostro.di.domain.ModuleAContainer
-import com.angelus.nostro.page.menu.MenuPageFactory
 
 class AppCoordinatorFactory(val context: Context)/*: MenuPageFactory*/ {
     private val moduleAContainer = ModuleAContainer()
@@ -54,7 +53,7 @@ class AppCoordinatorFactory(val context: Context)/*: MenuPageFactory*/ {
         val gameCoordinator = GameCoordinator(appCoordinator.navController, slotId)
         // @TODO: CHANGE CONTAINER HERE
         container.MakeInventoryScreenPage(
-            IntentoryPosition.valueOfIndex(position),
+            InventoryPosition.valueOfIndex(position),
             gameCoordinator,
             backStackEntry
         )

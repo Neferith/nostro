@@ -9,16 +9,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.angelus.nostro.MainNavigator
 import com.angelus.nostro.di.AppCoordinatorFactory
-import com.angelus.nostro.page.game.GameScreenNavigator
 import com.angelus.nostro.page.menu.MenuNavigator
 import com.angelus.nostro.page.newgame.NewGameNavigator
 
-enum class IntentoryPosition(val index: Int) {
+enum class InventoryPosition(val index: Int) {
     CHEST(index = -1), FLOOR(index = 0), PLAYER_1(1), PLAYER_2(2), PLAYER_3(3), PLAYER_4(4);
 
     companion object {
-        fun valueOfIndex(position: Int): IntentoryPosition {
-            IntentoryPosition.values().onEach {
+        fun valueOfIndex(position: Int): InventoryPosition {
+            InventoryPosition.values().onEach {
                 if(it.index == position) {
                     return it
                 }
@@ -34,7 +33,7 @@ sealed class Screen(val route: String) {
     object NewGame : Screen("new_game")
     object Game : Screen("game_screen")
     data object Inventory : Screen("game/{slotId}/inventory/{position}") {
-        fun createRoute(slotId: Int, position:IntentoryPosition) = "game/$slotId/inventory/${position.index}"
+        fun createRoute(slotId: Int, position:InventoryPosition) = "game/$slotId/inventory/${position.index}"
     }
 
 }

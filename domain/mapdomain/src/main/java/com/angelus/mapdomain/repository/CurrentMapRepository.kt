@@ -4,6 +4,7 @@ import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.mapdomain.entities.Panorama
+import com.angelus.mapdomain.entities.Tile
 import kotlinx.coroutines.flow.Flow
 
 sealed class MoveType {
@@ -21,4 +22,6 @@ interface CurrentMapRepository {
         moveDistance: Int,
         direction: Direction
     ): MoveType
+
+    fun getTileAtPosition(entityPosition: EntityPosition): Result<Tile>
 }

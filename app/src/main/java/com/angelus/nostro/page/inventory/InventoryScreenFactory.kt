@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
-import com.angelus.nostro.coordinator.IntentoryPosition
+import com.angelus.nostro.coordinator.InventoryPosition
 import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
 interface InventoryScreenFactory  {
@@ -17,7 +17,7 @@ interface InventoryScreenFactory  {
     val gameUseCaseFactory: TurnUseCaseFactory
 
     private class InventoryViewModelFactory(
-        val position: IntentoryPosition,
+        val position: InventoryPosition,
         private val useCases: InventoryViewModel.UseCases,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -32,11 +32,12 @@ interface InventoryScreenFactory  {
 
     @Composable
     private fun MakeViewModel(
-        navBackStackEntry: NavBackStackEntry, position: IntentoryPosition
+        navBackStackEntry: NavBackStackEntry, position: InventoryPosition
     ): InventoryViewModel {
 
         val useCases = InventoryViewModel.UseCases(
-            playerUseCaseFactory.makeObservePlayerUseCase(),
+            observePlayerUseCase = playerUseCaseFactory.makeObservePlayerUseCase(),
+            getTileAtPositionUseCase = currentMapUseCaseFactory.makeGetTileAtPosisitionUseCase(),
         )
 
         return viewModel(
@@ -49,7 +50,7 @@ interface InventoryScreenFactory  {
 
     @Composable
     fun MakeInventoryScreenPage(
-        position: IntentoryPosition,
+        position: InventoryPosition,
         navigator: InventoryNavigator,
         navBackStackEntry: NavBackStackEntry
     ) {
