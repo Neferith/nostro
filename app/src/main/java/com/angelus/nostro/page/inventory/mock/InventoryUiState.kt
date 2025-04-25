@@ -10,7 +10,7 @@ data class InventoryUiState(
     val container: ContainerInventory
 )
 
-data class CharacterSummary(val id: Int, val name: String)
+data class CharacterSummary(val id: Int, val name: String, val fake: Boolean = false)
 data class CharacterDetails(val id: Int, val name: String, val inventory: List<ItemStack>)
 data class ContainerInventory(val name: String, val inventory: List<ItemStack>)
 
