@@ -14,7 +14,7 @@ data class CharacterSummary(val id: Int, val name: String, val fake: Boolean = f
 data class CharacterDetails(val id: Int, val name: String, val inventory: List<ItemStack>)
 data class ContainerInventory(val name: String, val inventory: List<ItemStack>)
 
-data class ItemStack(val item: Item, val quantity: Int, val originSlot: InventorySlot?)
+data class ItemStack(val item: Item, val quantity: Int, val originSlot: InventorySlot? = null)
 
 sealed interface InventorySlot {
     data class Character(val characterId: Int) : InventorySlot

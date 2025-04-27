@@ -11,4 +11,8 @@ object ItemRegistry {
     fun getItem(id: String): Item? = items[id]
 
     fun getAllItems(): Collection<Item> = items.values
+
+    fun getItemsByIds(ids: List<String>): List<Item> {
+        return ids.mapNotNull { items[it] }
+    }
 }

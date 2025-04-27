@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
 import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.coordinator.InventoryPosition
@@ -15,6 +16,7 @@ interface InventoryScreenFactory  {
     val playerUseCaseFactory: PlayerUseCaseFactory
     val currentMapUseCaseFactory: CurrentMapUseCaseFactory
     val gameUseCaseFactory: TurnUseCaseFactory
+    val currentGameUseCaseFactory: CurrentGameUseCaseFactory
 
     private class InventoryViewModelFactory(
         val position: InventoryPosition,
@@ -38,6 +40,7 @@ interface InventoryScreenFactory  {
         val useCases = InventoryViewModel.UseCases(
             observePlayerUseCase = playerUseCaseFactory.makeObservePlayerUseCase(),
             getTileAtPositionUseCase = currentMapUseCaseFactory.makeGetTileAtPosisitionUseCase(),
+            fetchItemsByIdUseCase = currentGameUseCaseFactory.makeFetchItemsByIdUseCase()
         )
 
         return viewModel(

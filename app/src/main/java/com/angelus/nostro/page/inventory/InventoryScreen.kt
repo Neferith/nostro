@@ -18,6 +18,7 @@ import com.angelus.nostro.ui.theme.FantasyTheme
 import kotlinx.coroutines.flow.collect
 import com.angelus.gamedomain.entities.character.Character
 import com.angelus.gamedomain.entities.character.fullName
+import com.angelus.nostro.page.inventory.mock.InventoryPanel
 
 fun Character.toSumary(index: Int): CharacterSummary {
     return CharacterSummary(
@@ -31,12 +32,23 @@ interface InventoryNavigator
 @Composable
 fun InventoryScreen(navigator: InventoryNavigator, viewModel: InventoryViewModel) {
     val player by viewModel.currentPlayer.collectAsState()
+    val tile by viewModel.currentTile.collectAsState()
+    val floorInventory by viewModel.inventoryFloor.collectAsState()
 
     FantasyTheme {
         Scaffold { paddingValues ->
             Box(modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)) {
+
+                tile?.inventory?.let { inventory ->
+                    InventoryPanel(
+                        "Sol", floorInventory,
+                       // onItemDrop =
+                    )
+                }
+
+
 
                 Box(
                     modifier = Modifier

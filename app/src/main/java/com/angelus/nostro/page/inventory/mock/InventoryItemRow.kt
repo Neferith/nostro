@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun InventoryItemRow(
     itemStack: ItemStack,
-    onItemDrop: (InventorySlot, Int) -> Unit
+  //  onItemDrop: (InventorySlot, Int) -> Unit
 ) {
     Row(
         modifier = Modifier
