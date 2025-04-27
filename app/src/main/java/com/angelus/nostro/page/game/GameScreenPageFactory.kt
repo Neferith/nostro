@@ -51,7 +51,6 @@ interface GameScreenPageFactory {
             playerUseCaseFactory.makeChangePlayerZoneUseCase()
         )
         val mapUseCases = MapUseCases(
-            currentMapUseCaseFactory.makeObserveCurrentMapUseCase(),
             currentMapUseCaseFactory.makeFetchPanorameUseCase(),
             currentMapUseCaseFactory.makeCheckMoveInMapUseCase()
         )
