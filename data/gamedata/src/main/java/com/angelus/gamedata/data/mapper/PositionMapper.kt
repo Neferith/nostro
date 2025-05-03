@@ -20,7 +20,7 @@ fun PositionDTO.convertFromDTO(): Position {
     )
 }
 
-fun EntityPosition.convertCharacterToDTO(): EntityPositionDTO {
+fun EntityPosition.convertToDTO(): EntityPositionDTO {
     return EntityPositionDTO(
         mapId = this.mapId,
         position = this.position.convertToDTO(),
@@ -28,7 +28,7 @@ fun EntityPosition.convertCharacterToDTO(): EntityPositionDTO {
     )
 }
 
-fun EntityPositionDTO.convertCharacterFromDTO(): EntityPosition {
+fun EntityPositionDTO.convertFromDTO(): EntityPosition {
     return EntityPosition(
         mapId = this.mapId,
         position = this.position.convertFromDTO(),

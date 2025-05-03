@@ -5,12 +5,13 @@ import com.angelus.mapdomain.entities.Panorama
 import com.angelus.mapdomain.entities.Tile
 import com.angelus.mapdomain.repository.CurrentMapRepository
 
+// @TODO : Rename
 interface GetTileAtPosisitionUseCase {
-    operator fun invoke(entityPosition: EntityPosition): Result<Tile>
+    operator suspend fun invoke(entityPosition: EntityPosition): Result<Tile>
 }
 
 class GetTileAtPosisitionUseCaseImpl(val mapRepository: CurrentMapRepository): GetTileAtPosisitionUseCase {
-    override fun invoke(entityPosition: EntityPosition): Result<Tile> {
+    override suspend fun invoke(entityPosition: EntityPosition): Result<Tile> {
         return mapRepository.getTileAtPosition(entityPosition)
     }
 

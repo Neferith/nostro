@@ -12,12 +12,12 @@ sealed class MoveType {
 }
 
 interface CurrentMapRepository {
-    fun getPanorama(entityPosition: EntityPosition): Panorama?
-    fun checkMoveInMap(
+   suspend fun getPanorama(entityPosition: EntityPosition): Panorama?
+    suspend fun checkMoveInMap(
         entityPosition: EntityPosition,
         moveDistance: Int,
         direction: Direction
     ): MoveType
 
-    fun getTileAtPosition(entityPosition: EntityPosition): Result<Tile>
+    suspend fun getTileAtPosition(entityPosition: EntityPosition): Result<Tile>
 }

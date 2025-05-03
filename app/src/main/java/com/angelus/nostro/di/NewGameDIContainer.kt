@@ -7,7 +7,7 @@ import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
 import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.gamedomain.repository.CurrentModuleRepository
 import com.angelus.gamedomain.repository.TurnRepository
-import com.angelus.mapdata.repository.CurrentMapRepositoryImpl
+import com.angelus.mapdata.base.repository.BaseMapRepository
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.mapdomain.repository.CurrentMapRepository
 import com.angelus.nostro.di.domain.ModuleAContainer
@@ -51,7 +51,7 @@ class NewGameDIContainer(
     }
 
     override val currentMapRepository: CurrentMapRepository by lazy {
-        CurrentMapRepositoryImpl(ModuleAContainer().getMaps())
+        BaseMapRepository(ModuleAContainer().getMaps())
     }
     override val turnRepository: TurnRepository by lazy {
         TurnRepositoryImpl()

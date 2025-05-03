@@ -4,8 +4,8 @@ import PlayerBandDTO
 import PlayerDTO
 import com.angelus.gamedata.data.dto.EntityPositionDTO
 import com.angelus.gamedata.data.dto.PositionDTO
-import com.angelus.gamedata.data.mapper.convertCharacterFromDTO
-import com.angelus.gamedata.data.mapper.convertCharacterToDTO
+import com.angelus.gamedata.data.mapper.convertFromDTO
+import com.angelus.gamedata.data.mapper.convertToDTO
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Orientation
 import com.angelus.gamedomain.entities.Position
@@ -15,13 +15,13 @@ import com.angelus.playerdomain.entities.PlayerBand
 fun PlayerBand.convertToDTO(): PlayerBandDTO {
 
     return PlayerBandDTO(
-        characters = this.characters.map { it.convertCharacterToDTO() }
+        characters = this.characters.map { it.convertToDTO() }
     )
 }
 
 fun PlayerBandDTO.convertFromDTO(): PlayerBand {
     return PlayerBand(
-        characters = this.characters.map { it.convertCharacterFromDTO() }
+        characters = this.characters.map { it.convertFromDTO() }
     )
 }
 
