@@ -62,4 +62,20 @@ class BaseMapRepository(
         return Result.failure(MapNotFoundException())
     }
 
+    override suspend fun addObjectToTileUseCase(
+        entityPosition: EntityPosition,
+        objectId: String,
+        quantity: Int
+    ): Result<Tile> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeObjectToTileUseCase(
+        entityPosition: EntityPosition,
+        objectId: String,
+        quantity: Int
+    ): Result<Tile> {
+        TODO("Not yet implemented")
+    }
+
 }

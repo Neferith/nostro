@@ -197,6 +197,7 @@ class NewGameViewModel(
             viewModelScope.launch {
                 // TODO: Move here
                 val character = Character(
+                    id = Character.MAIN_CHARACTER,
                     mainAttributes = currentAttributes.value,
                     characterLevel = CharacterLevel(0, 0),
                     description = CharacterDescription(

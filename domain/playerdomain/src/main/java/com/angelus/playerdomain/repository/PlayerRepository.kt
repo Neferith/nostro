@@ -20,5 +20,15 @@ interface PlayerRepository {
     ): Result<Player>
 
     suspend fun changePlayerZone(transition: EntityPosition): Result<Player>
+    suspend fun removeObjectToPlayer(
+        characterId: String,
+        objectId: String,
+        quantity: Int
+    ): Result<Player>
+    suspend fun addObjectToPlayer(
+        characterId: String,
+        objectId: String,
+        quantity: Int
+    ): Result<Player>
 
 }

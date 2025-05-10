@@ -2,8 +2,10 @@ package com.angelus.mapdomain.entities
 
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.item.Inventory
+import com.angelus.gamedomain.entities.item.addItem
 import com.angelus.gamedomain.entities.item.isEmpty
 import com.angelus.gamedomain.entities.item.isNotEmpty
+import com.angelus.gamedomain.entities.item.removeItem
 
 enum class TileType(
     val defaultWalkable: Boolean,
@@ -25,4 +27,14 @@ data class Tile(
 
 fun Tile.hasInventory(): Boolean {
     return inventory?.isNotEmpty()?:false
+}
+
+fun Tile.withItemAdded(itemId: String, quantity: Int = 1): Tile {
+    val newInventory = (inventory ?: Inventory()).addItem(itemId, quantity)
+    return copy(inventory = newInventory)
+}
+
+fun Tile.withItemRemoved(itemId: String, quantity: Int = 1): Tile {
+    val updatedInventory = inventory?.removeItem(itemId, quantity) ?: return this
+    return copy(inventory = updatedInventory)
 }

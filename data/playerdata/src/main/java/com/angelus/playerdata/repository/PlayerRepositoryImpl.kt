@@ -6,6 +6,8 @@ import com.angelus.gamedomain.entities.Rotation
 import com.angelus.playerdata.data.PlayerDataSource
 import com.angelus.playerdata.data.exception.PlayerNotFoundException
 import com.angelus.playerdomain.entities.Player
+import com.angelus.playerdomain.entities.withItemAddedToCharacter
+import com.angelus.playerdomain.entities.withItemRemovedFromCharacter
 import com.angelus.playerdomain.repository.PlayerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
@@ -67,6 +69,36 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
                 entityPosition = transition
             )
             updatePlayer(updatedPlayer)
+            return Result.success(updatedPlayer)
+        }
+        return Result.failure(PlayerNotFoundException())
+    }
+
+    override suspend fun removeObjectToPlayer(
+        characterId: String,
+        objectId: String,
+        quantity: Int
+    ): Result<Player> {
+
+
+        val player = dataSource.fetchPlayer().getOrNull()
+        if (player != null) {
+
+            val updatedPlayer = player.withItemRemovedFromCharacter(characterId,objectId, quantity)
+            return Result.success(updatedPlayer)
+        }
+        return Result.failure(PlayerNotFoundException())
+    }
+
+    override suspend fun addObjectToPlayer(
+        characterId: String,
+        objectId: String,
+        quantity: Int
+    ): Result<Player> {
+        val player = dataSource.fetchPlayer().getOrNull()
+        if (player != null) {
+
+            val updatedPlayer = player.withItemAddedToCharacter(characterId,objectId, quantity)
             return Result.success(updatedPlayer)
         }
         return Result.failure(PlayerNotFoundException())

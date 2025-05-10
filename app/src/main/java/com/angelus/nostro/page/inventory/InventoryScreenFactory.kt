@@ -20,12 +20,16 @@ interface InventoryScreenFactory  {
 
     private class InventoryViewModelFactory(
         val position: InventoryPosition,
-        private val useCases: InventoryViewModel.UseCases,
+        private val dataUseCases: InventoryViewModel.DataUseCases,
+        private val inventoryUseCases: InventoryViewModel.InventoryUseCases,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(InventoryViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return InventoryViewModel(position,useCases
+                return InventoryViewModel(
+                    position,
+                    dataUseCases,
+                    inventoryUseCases
                 ) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
@@ -37,16 +41,25 @@ interface InventoryScreenFactory  {
         navBackStackEntry: NavBackStackEntry, position: InventoryPosition
     ): InventoryViewModel {
 
-        val useCases = InventoryViewModel.UseCases(
+        val dataUseCases = InventoryViewModel.DataUseCases(
             observePlayerUseCase = playerUseCaseFactory.makeObservePlayerUseCase(),
             getTileAtPositionUseCase = currentMapUseCaseFactory.makeGetTileAtPosisitionUseCase(),
             fetchItemsByIdUseCase = currentGameUseCaseFactory.makeFetchItemsByIdUseCase()
         )
 
+        val inventoryUseCases = InventoryViewModel.InventoryUseCases(
+            addObjectToTileUseCase = currentMapUseCaseFactory.makeAddObjectToTileUseCase(),
+            removeObjectToTileUseCase = currentMapUseCaseFactory.makeRemoveObjectToTileUseCase(),
+            addObjectToPlayerUseCase = playerUseCaseFactory.makeAddObjectToPlayerUseCase(),
+            removeObjectToPlayerUseCase = playerUseCaseFactory.makeRemoveObjectToPlayerUseCase()
+        )
+
         return viewModel(
             navBackStackEntry,
-            factory = InventoryViewModelFactory( position,
-                useCases
+            factory = InventoryViewModelFactory(
+                position,
+                dataUseCases,
+                inventoryUseCases
             )
         )
     }
