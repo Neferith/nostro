@@ -1,5 +1,6 @@
 package com.angelus.nostro.page.inventory
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.usecase.FetchItemsByIdUseCase
@@ -17,11 +18,12 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class InventoryViewModel(
     startPosition: InventoryPosition,
-    dataUseCases: DataUseCases,
-    inventoryUseCases: InventoryUseCases
+    val dataUseCases: DataUseCases,
+    val inventoryUseCases: InventoryUseCases
 ) : ViewModel() {
 
     data class DataUseCases(
@@ -61,4 +63,45 @@ class InventoryViewModel(
             } ?: emptyList()
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+
+    fun pickUpFromTheFloor(characterId: String, objectId: String, quantity: Int) {
+        val player = currentPlayer.value ?: return
+
+        viewModelScope.launch {
+            val addResult = inventoryUseCases.addObjectToPlayerUseCase(characterId, objectId, quantity)
+            if (addResult.isFailure) {
+                addResult.exceptionOrNull()?.printStackTrace()
+                return@launch
+            }
+
+            val removeResult = inventoryUseCases.removeObjectToTileUseCase(player.entityPosition, objectId, quantity)
+            if (removeResult.isFailure) {
+                removeResult.exceptionOrNull()?.printStackTrace()
+                return@launch
+            }
+
+            Log.d("TAG", "OPÉRATION RÉUSSIE")
+        }
+    }
+
+    fun dropToTheFloor(characterId: String, objectId: String, quantity: Int) {
+        val player = currentPlayer.value ?: return
+
+        viewModelScope.launch {
+            val addResult = inventoryUseCases.addObjectToTileUseCase(player.entityPosition, objectId, quantity)
+            if (addResult.isFailure) {
+                addResult.exceptionOrNull()?.printStackTrace()
+                return@launch
+            }
+
+            val removeResult = inventoryUseCases.removeObjectToPlayerUseCase(characterId, objectId, quantity)
+            if (removeResult.isFailure) {
+                removeResult.exceptionOrNull()?.printStackTrace()
+                // À ce stade, l'objet est déjà sur le sol, donc potentiellement dupliqué
+            }
+
+            Log.d("TAG", "OBJET DÉPOSÉ SUR LE SOL")
+        }
+    }
 }
