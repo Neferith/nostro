@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun InventoryItemRow(
     itemStack: ItemStack,
-  //  onItemDrop: (InventorySlot, Int) -> Unit
+    onItemDrop: (String, Int) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -23,7 +23,7 @@ fun InventoryItemRow(
     ) {
         Text("${itemStack.item.title} x${itemStack.quantity}")
         Button(onClick = {
-           // onItemDrop(itemStack.originSlot, 1) // exemple : transfert de 1 item
+            onItemDrop(itemStack.item.id, 1) // exemple : transfert de 1 item
         }) {
             Text("→")
         }

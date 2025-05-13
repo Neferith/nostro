@@ -1,6 +1,5 @@
 package com.angelus.mapdata.save.datasource.dto
 
-import com.angelus.gamedata.data.dto.PositionDTO
 import com.angelus.gamedata.data.dto.SizeDTO
 import kotlinx.serialization.Serializable
 
@@ -10,5 +9,5 @@ data class GameMapDTO (
     val mapType: String,
     val size: SizeDTO,
     val defaultTileType: String,
-    val tiles: Map<PositionDTO, TileDTO> = mutableMapOf()
+    val tiles: Map<String, TileDTO> = mutableMapOf()
 )

@@ -2,6 +2,7 @@ package com.angelus.mapdata.save.datasource.mapper
 
 import com.angelus.gamedata.data.mapper.convertFromDTO
 import com.angelus.gamedata.data.mapper.convertToDTO
+import com.angelus.gamedomain.entities.toPosition
 import com.angelus.mapdata.save.datasource.dto.GameMapDTO
 import com.angelus.mapdata.save.datasource.dto.TileDTO
 import com.angelus.mapdomain.entities.GameMap
@@ -14,7 +15,7 @@ fun GameMap.convertToDTO(): GameMapDTO {
         mapType = this.mapType,
         size = this.size.convertToDTO(),
         defaultTileType = this.defaultTileType.toSerializedString(),
-        tiles = this.getCustomTiles().map { (key, values) -> key.convertToDTO() to values.convertToDTO() }.toMap()
+        tiles = this.getCustomTiles().map { (key, values) -> key.toString() to values.convertToDTO() }.toMap()
     )
 }
 
@@ -25,7 +26,7 @@ fun GameMapDTO.convertFromDTO(): GameMap {
         size = this.size.convertFromDTO(),
         defaultTileType = this.defaultTileType.toTileTypeOrDefault(TileType.STONE_WALL),
         tiles = this.tiles.map {
-            (key, values) -> key.convertFromDTO() to values.convertFromDTO()
+            (key, values) -> key.toPosition() to values.convertFromDTO()
         }.toMap().toMutableMap()
     )
 }

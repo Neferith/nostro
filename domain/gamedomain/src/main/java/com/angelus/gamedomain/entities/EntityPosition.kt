@@ -40,7 +40,17 @@ enum class Rotation {
 data class Position(
     val x: Int,
     val y: Int
-)
+) {
+    override fun toString(): String = "$x|$y"
+}
+
+fun String.toPosition(): Position {
+    val parts = this.split("|")
+    require(parts.size == 2) { "Invalid position format. Expected format: x|y" }
+    val x = parts[0].toIntOrNull() ?: error("Invalid x coordinate: ${parts[0]}")
+    val y = parts[1].toIntOrNull() ?: error("Invalid y coordinate: ${parts[1]}")
+    return Position(x, y)
+}
 
 data class EntityPosition(
     val mapId: String,

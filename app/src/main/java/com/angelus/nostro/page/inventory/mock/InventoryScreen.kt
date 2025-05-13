@@ -31,9 +31,9 @@ fun InventoryScreen(
             InventoryPanel(
                 title = "Inventaire : ${state.selectedCharacter?.name}",
                 items = state.selectedCharacter?.inventory ?: emptyList(),
-                /*onItemDrop = { item, quantity ->
-                    onItemTransfer(item, InventorySlot.Container, quantity)
-                }*/
+                onItemDrop = { itemId, quantity ->
+                   // onItemTransfer(item, InventorySlot.Container, quantity)
+                }
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -41,9 +41,9 @@ fun InventoryScreen(
             InventoryPanel(
                 title = "Contenant : ${state.container.name}",
                 items = state.container.inventory,
-               /* onItemDrop = { item, quantity ->
-                    onItemTransfer(item, InventorySlot.Character(state.selectedCharacterId), quantity)
-                }*/
+                onItemDrop = { itemId, quantity ->
+                  //  onItemTransfer(itemId, InventorySlot.Character(state.selectedCharacterId), quantity)
+                }
             )
         }
     }

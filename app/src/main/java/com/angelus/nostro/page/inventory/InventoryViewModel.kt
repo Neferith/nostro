@@ -65,11 +65,12 @@ class InventoryViewModel(
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
 
-    fun pickUpFromTheFloor(characterId: String, objectId: String, quantity: Int) {
+    fun pickUpFromTheFloor(/*characterId: String,*/ objectId: String, quantity: Int) {
         val player = currentPlayer.value ?: return
+        val character = player.band.characters.getOrNull(0) ?: return
 
         viewModelScope.launch {
-            val addResult = inventoryUseCases.addObjectToPlayerUseCase(characterId, objectId, quantity)
+            val addResult = inventoryUseCases.addObjectToPlayerUseCase(character.id, objectId, quantity)
             if (addResult.isFailure) {
                 addResult.exceptionOrNull()?.printStackTrace()
                 return@launch

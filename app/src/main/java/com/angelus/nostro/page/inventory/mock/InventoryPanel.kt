@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 fun InventoryPanel(
     title: String,
     items: List<ItemStack>,
-    //onItemDrop: (item: InventorySlot, quantity: Int) -> Unit
+    onItemDrop: (itemId: String, quantity: Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -28,7 +28,7 @@ fun InventoryPanel(
 
         LazyColumn {
             items(items) { itemStack ->
-                InventoryItemRow(itemStack/*, onItemDrop*/)
+                InventoryItemRow(itemStack, onItemDrop)
             }
         }
     }

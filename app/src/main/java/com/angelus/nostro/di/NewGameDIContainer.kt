@@ -1,13 +1,18 @@
 package com.angelus.nostro.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.angelus.gamedata.repository.CurrentModuleRepositoryImpl
 import com.angelus.gamedata.repository.TurnRepositoryImpl
 import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
 import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.gamedomain.repository.CurrentModuleRepository
 import com.angelus.gamedomain.repository.TurnRepository
-import com.angelus.mapdata.base.repository.BaseMapRepository
+import com.angelus.mapdata.save.datasource.GameMapDataSource
+import com.angelus.mapdata.save.datasource.GameMapDataStore
+import com.angelus.mapdata.save.repository.SaveMapRepository
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.mapdomain.repository.CurrentMapRepository
 import com.angelus.nostro.di.domain.ModuleAContainer
@@ -20,8 +25,15 @@ import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 import com.angelus.playerdomain.repository.PlayerRepository
 
 
+val Context.dataStore1: DataStore<Preferences> by preferencesDataStore("player_data_store_1")
+ val Context.dataStore2: DataStore<Preferences> by preferencesDataStore("player_data_store_2")
+ val Context.dataStore3: DataStore<Preferences> by preferencesDataStore("player_data_store_3")
+ val Context.dataStore4: DataStore<Preferences> by preferencesDataStore("player_data_store_4")
+
+
+
 class NewGameDIContainer(
-    context: Context,
+    val context: Context,
     gameSlot: Int,
     moduleContainer: ModuleAContainer
 ):
@@ -50,8 +62,20 @@ class NewGameDIContainer(
         com.angelus.playerdata.repository.PlayerRepositoryImpl(playerDataSource)
     }
 
+    val gameMapDataSource: GameMapDataSource by lazy {
+        val datastore = when (gameSlot) {
+            1 -> makeDataStore1()
+            2 -> makeDataStore2()
+            3 -> makeDataStore3()
+            4 -> makeDataStore4()
+            else -> throw IllegalArgumentException("Invalid game slot: $gameSlot")
+        }
+        GameMapDataStore(ModuleAContainer().getMaps(), datastore)
+    }
+
     override val currentMapRepository: CurrentMapRepository by lazy {
-        BaseMapRepository(ModuleAContainer().getMaps())
+        //BaseMapRepository(ModuleAContainer().getMaps())
+        SaveMapRepository(gameMapDataSource)
     }
     override val turnRepository: TurnRepository by lazy {
         TurnRepositoryImpl()
@@ -66,4 +90,20 @@ class NewGameDIContainer(
         get() = this
     override val gameUseCaseFactory: TurnUseCaseFactory
         get() = this
+
+    override fun makeDataStore1(): DataStore<Preferences> {
+        return context.dataStore1
+    }
+
+    override fun makeDataStore2(): DataStore<Preferences> {
+        return context.dataStore2
+    }
+
+    override fun makeDataStore3(): DataStore<Preferences> {
+        return context.dataStore3
+    }
+
+    override fun makeDataStore4(): DataStore<Preferences> {
+        return context.dataStore4
+    }
 }

@@ -55,8 +55,9 @@ class GameMapDataStore(
             dataStore.edit { preferences ->
                 preferences[mapKey(map.id)] = json
             }
-          //  Result.success(Unit)
+           // Result.success(Unit)
         } catch (e: Exception) {
+            e.printStackTrace()
             throw UnableToUpdateMapException(map.id)
         }
     }
