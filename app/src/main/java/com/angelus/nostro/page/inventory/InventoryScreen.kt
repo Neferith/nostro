@@ -30,6 +30,7 @@ fun InventoryScreen(navigator: InventoryNavigator, viewModel: InventoryViewModel
     val player by viewModel.currentPlayer.collectAsState()
     val tile by viewModel.currentTile.collectAsState()
     val floorInventory by viewModel.inventoryFloor.collectAsState()
+    val characterInventory by viewModel.inventoryCharacter.collectAsState()
 
     FantasyTheme {
         Scaffold { paddingValues ->
@@ -46,6 +47,14 @@ fun InventoryScreen(navigator: InventoryNavigator, viewModel: InventoryViewModel
                     )
                 }
 
+                player?.band?.characters?.getOrNull(0)?.inventory.let { inventory ->
+                    InventoryPanel(
+                        "Joueur", characterInventory,
+                        onItemDrop = { itemId, quantity ->
+                          //  viewModel.pickUpFromTheFloor(itemId, quantity)
+                        }
+                    )
+                }
 
 
                 Box(

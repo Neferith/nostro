@@ -85,6 +85,7 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
         if (player != null) {
 
             val updatedPlayer = player.withItemRemovedFromCharacter(characterId,objectId, quantity)
+            updatePlayer(updatedPlayer)
             return Result.success(updatedPlayer)
         }
         return Result.failure(PlayerNotFoundException())
@@ -99,6 +100,7 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
         if (player != null) {
 
             val updatedPlayer = player.withItemAddedToCharacter(characterId,objectId, quantity)
+            updatePlayer(updatedPlayer)
             return Result.success(updatedPlayer)
         }
         return Result.failure(PlayerNotFoundException())

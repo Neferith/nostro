@@ -64,6 +64,20 @@ class InventoryViewModel(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
+    val inventoryCharacter: StateFlow<List<ItemStack>> = currentPlayer
+        .mapLatest { player ->
+            player?.band?.characters?.getOrNull(0)?.inventory?.let { inventory ->
+                dataUseCases.fetchItemsByIdUseCase(inventory.items.keys.toTypedArray())
+                    .fold(
+                        onSuccess = { items ->
+                            items.map { item -> ItemStack(item, inventory.items[item.id] ?: 1) }
+                        },
+                        onFailure = { emptyList() }
+                    )
+            } ?: emptyList()
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
 
     fun pickUpFromTheFloor(/*characterId: String,*/ objectId: String, quantity: Int) {
         val player = currentPlayer.value ?: return
