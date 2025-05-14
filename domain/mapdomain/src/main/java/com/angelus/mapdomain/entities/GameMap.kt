@@ -8,8 +8,14 @@ import com.angelus.gamedomain.entities.Size
 data class GameMap(val id: String,
                    val mapType: String,
                    val size: Size,
-                   val defaultTileType: TileType) {
-    private val tiles: MutableMap<Position, Tile> = mutableMapOf()
+                   val defaultTileType: TileType,
+    val tiles: MutableMap<Position, Tile> = mutableMapOf()
+) {
+   // private val tiles: MutableMap<Position, Tile> = mutableMapOf()
+
+    fun getCustomTiles(): Map<Position, Tile> {
+        return tiles
+    }
 
     fun getTileAt(position: Position): Tile {
         return if (isWithinBounds(position)) {

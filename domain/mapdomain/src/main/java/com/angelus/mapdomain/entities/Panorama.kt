@@ -33,4 +33,9 @@ class Panorama(
             grid.size - 1
         )
     }
+
+    fun getCurrentTile(): Tile {
+        val playerPosition = getPositionInSimpleGrid()
+        return tiles[playerPosition.y][playerPosition.x]
+    }
 }

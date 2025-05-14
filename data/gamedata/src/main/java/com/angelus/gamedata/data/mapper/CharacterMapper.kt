@@ -18,8 +18,8 @@ import com.angelus.gamedomain.entities.character.CharacterWeight
 
 fun CharacterDescription.convertToDTO(): CharacterDescriptionDTO {
     return CharacterDescriptionDTO(
-        name = this.name.convertCharacterToDTO(),
-        age = this.age.convertCharacterToDTO(),
+        name = this.name.convertToDTO(),
+        age = this.age.convertToDTO(),
         gender = this.gender.toString(),
         size = this.size.toString(),
         weight = this.weight.toString(),
@@ -31,8 +31,8 @@ fun CharacterDescription.convertToDTO(): CharacterDescriptionDTO {
 
 fun CharacterDescriptionDTO.convertFromDTO(): CharacterDescription {
     return CharacterDescription(
-        name = this.name.convertCharacterFromDTO(),
-        age = this.age.convertCharacterFromDTO(),
+        name = this.name.convertFromDTO(),
+        age = this.age.convertFromDTO(),
         gender = CharacterGender.valueOf(this.gender),
         size = CharacterSize.valueOf(this.size),
         weight = CharacterWeight.valueOf(this.weight),
@@ -41,21 +41,25 @@ fun CharacterDescriptionDTO.convertFromDTO(): CharacterDescription {
     )
 }
 
-fun Character.convertCharacterToDTO(): CharacterDTO {
+fun Character.convertToDTO(): CharacterDTO {
     return CharacterDTO(
+        id = this.id,
         mainAttributes = this.mainAttributes.convertAttributesToDTO(),
         characterLevel = this.characterLevel.convertCharacterLevelToDTO(),
         description = this.description.convertToDTO(),
-        skills = this.skills.convertToDTO()
+        skills = this.skills.convertToDTO(),
+        inventory = this.inventory.convertToDTO()
     )
 }
 
-fun CharacterDTO.convertCharacterFromDTO(): Character {
+fun CharacterDTO.convertFromDTO(): Character {
     return Character(
+        id = this.id,
         mainAttributes = this.mainAttributes.convertAttributesFromDTO(),
         characterLevel = this.characterLevel.convertCharacterLevelFromDTO(),
         description = this.description.convertFromDTO(),
-        skills = this.skills.convertFromDTO()
+        skills = this.skills.convertFromDTO(),
+        inventory = this.inventory.convertFromDTO()
     )
 }
 
@@ -74,27 +78,27 @@ fun CharacterLevelDTO.convertCharacterLevelFromDTO(): CharacterLevel {
     )
 }
 
-fun CharacterAge.convertCharacterToDTO(): CharacterAgeDTO {
+fun CharacterAge.convertToDTO(): CharacterAgeDTO {
     return CharacterAgeDTO(
         age = this.age
     )
 }
 
-fun CharacterAgeDTO.convertCharacterFromDTO(): CharacterAge {
+fun CharacterAgeDTO.convertFromDTO(): CharacterAge {
     return CharacterAge(
         age = this.age
     )
 }
 
 
-fun CharacterName.convertCharacterToDTO(): CharacterNameDTO {
+fun CharacterName.convertToDTO(): CharacterNameDTO {
     return CharacterNameDTO(
         firstname = this.firstname,
         lastname = this.lastname
     )
 }
 
-fun CharacterNameDTO.convertCharacterFromDTO(): CharacterName {
+fun CharacterNameDTO.convertFromDTO(): CharacterName {
     return CharacterName(
         firstname = this.firstname,
         lastname = this.lastname

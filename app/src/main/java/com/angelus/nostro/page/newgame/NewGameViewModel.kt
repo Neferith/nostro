@@ -18,6 +18,7 @@ import com.angelus.gamedomain.entities.character.CharacterSensitivity
 import com.angelus.gamedomain.entities.character.CharacterSize
 import com.angelus.gamedomain.entities.character.CharacterSkills
 import com.angelus.gamedomain.entities.character.CharacterWeight
+import com.angelus.gamedomain.entities.item.Inventory
 import com.angelus.gamedomain.usecase.GetAllBackgroundStoriesUseCase
 import com.angelus.gamedomain.usecase.GetStartPositionUseCase
 import com.angelus.playerdomain.entities.Player
@@ -194,7 +195,9 @@ class NewGameViewModel(
 
 
             viewModelScope.launch {
+                // TODO: Move here
                 val character = Character(
+                    id = Character.MAIN_CHARACTER,
                     mainAttributes = currentAttributes.value,
                     characterLevel = CharacterLevel(0, 0),
                     description = CharacterDescription(
@@ -208,6 +211,7 @@ class NewGameViewModel(
                     skills = CharacterSkills(
                         skills = emptyMap()
                     ),
+                    inventory = Inventory()
                 )
                 val startPosition = useCases.getStartPositionUseCase()
                  val result = useCases.inialPlayerUseCase(InitializePlayerParams(

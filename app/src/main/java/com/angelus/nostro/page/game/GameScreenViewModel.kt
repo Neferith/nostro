@@ -16,7 +16,6 @@ import com.angelus.mapdomain.repository.MoveType
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
 import com.angelus.mapdomain.usecase.CheckMoveParams
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
-import com.angelus.mapdomain.usecase.ObserveCurrentMapUseCase
 import com.angelus.nostro.component.MoveAction
 import com.angelus.playerdomain.usecase.ChangePlayerZoneParams
 import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCase
@@ -38,7 +37,6 @@ class GameScreenViewModel(
     val movePlayerUseCase get() = playerUseCases.movePlayerUseCase
     val rotatePlayerUseCase get() = playerUseCases.rotatePlayerUseCase
     val observePlayerUseCase get() = playerUseCases.observePlayerUseCase
-    val observeCurrentMapUseCase get() = mapUseCases.observeCurrentMapUseCase
     val getPanoramaUseCase get() = mapUseCases.getPanoramaUseCase
     val checkMoveInMapUseCase get() = mapUseCases.checkMoveInMapUseCase
     val observeTurnUseCase get() = gameUseCases.observeTurnUseCase
@@ -52,7 +50,6 @@ class GameScreenViewModel(
     )
 
     data class MapUseCases(
-        val observeCurrentMapUseCase: ObserveCurrentMapUseCase,
         val getPanoramaUseCase: GetPanoramaUseCase,
         val checkMoveInMapUseCase: CheckMoveInMapUseCase
     )
@@ -69,8 +66,6 @@ class GameScreenViewModel(
 
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
-        .stateIn(viewModelScope, SharingStarted.Lazily, null)
-    val currentMap: StateFlow<com.angelus.mapdomain.entities.GameMap?> = observeCurrentMapUseCase("")
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
     val currentTurn: StateFlow<Turn?> = observeTurnUseCase().stateIn(viewModelScope, SharingStarted.Lazily, null )
 

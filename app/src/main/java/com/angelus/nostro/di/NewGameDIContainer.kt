@@ -1,17 +1,27 @@
 package com.angelus.nostro.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.angelus.gamedata.repository.CurrentModuleRepositoryImpl
 import com.angelus.gamedata.repository.TurnRepositoryImpl
 import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
 import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.gamedomain.repository.CurrentModuleRepository
 import com.angelus.gamedomain.repository.TurnRepository
-import com.angelus.mapdata.repository.CurrentMapRepositoryImpl
+import com.angelus.mapdata.save.datasource.GameMapDataSource
+import com.angelus.mapdata.save.datasource.GameMapDataStore
+import com.angelus.mapdata.save.repository.SaveMapRepository
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.mapdomain.repository.CurrentMapRepository
 import com.angelus.nostro.di.domain.ModuleAContainer
+import com.angelus.nostro.di.domain.dataStore1
+import com.angelus.nostro.di.domain.dataStore2
+import com.angelus.nostro.di.domain.dataStore3
+import com.angelus.nostro.di.domain.dataStore4
 import com.angelus.nostro.page.game.GameScreenPageFactory
+import com.angelus.nostro.page.inventory.InventoryScreenFactory
 import com.angelus.nostro.page.newgame.NewGamePageFactory
 import com.angelus.playerdata.data.PlayerDataSource
 import com.angelus.playerdata.data.factory.PlayerDataSourceFactory
@@ -19,9 +29,13 @@ import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 import com.angelus.playerdomain.repository.PlayerRepository
 
 
+
+
+
 class NewGameDIContainer(
-    context: Context,
-    gameSlot: Int
+    val context: Context,
+    gameSlot: Int,
+    moduleContainer: ModuleAContainer
 ):
     CurrentGameUseCaseFactory,
     PlayerUseCaseFactory,
@@ -29,16 +43,17 @@ class NewGameDIContainer(
     CurrentMapUseCaseFactory,
     NewGamePageFactory,
     TurnUseCaseFactory,
-    GameScreenPageFactory {
+    GameScreenPageFactory,
+    InventoryScreenFactory {
 
-    override val currentModuleRepository: CurrentModuleRepository = CurrentModuleRepositoryImpl(ModuleAContainer().getModule())
+    override val currentModuleRepository: CurrentModuleRepository = CurrentModuleRepositoryImpl(moduleContainer.getModule())
 
     private val playerDataSource: PlayerDataSource by lazy {
         when (gameSlot) {
-            1 -> makeGame1(context)
-            2 -> makeGame2(context)
-            3 -> makeGame3(context)
-            4 -> makeGame4(context)
+            1 -> makePlayerDatasource(context.dataStore1)
+            2 -> makePlayerDatasource(context.dataStore2)
+            3 -> makePlayerDatasource(context.dataStore3)
+            4 -> makePlayerDatasource(context.dataStore4)
             else -> throw IllegalArgumentException("Invalid game slot: $gameSlot")
         }
     }
@@ -47,8 +62,19 @@ class NewGameDIContainer(
         com.angelus.playerdata.repository.PlayerRepositoryImpl(playerDataSource)
     }
 
+    val gameMapDataSource: GameMapDataSource by lazy {
+        val datastore = when (gameSlot) {
+            1 -> context.dataStore1
+            2 -> context.dataStore2
+            3 -> context.dataStore3
+            4 -> context.dataStore4
+            else -> throw IllegalArgumentException("Invalid game slot: $gameSlot")
+        }
+        GameMapDataStore(ModuleAContainer().getMaps(), datastore)
+    }
+
     override val currentMapRepository: CurrentMapRepository by lazy {
-        CurrentMapRepositoryImpl(ModuleAContainer().getMaps())
+        SaveMapRepository(gameMapDataSource)
     }
     override val turnRepository: TurnRepository by lazy {
         TurnRepositoryImpl()
@@ -63,4 +89,5 @@ class NewGameDIContainer(
         get() = this
     override val gameUseCaseFactory: TurnUseCaseFactory
         get() = this
+
 }

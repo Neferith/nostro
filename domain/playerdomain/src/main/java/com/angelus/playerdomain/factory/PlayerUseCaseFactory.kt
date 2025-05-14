@@ -8,10 +8,14 @@ import com.angelus.playerdomain.usecase.ObservePlayerUseCaseImpl
 import com.angelus.playerdomain.usecase.RotatePlayerUseCase
 import com.angelus.playerdomain.usecase.RotatePlayerUseCaseImpl
 import com.angelus.playerdomain.repository.PlayerRepository
+import com.angelus.playerdomain.usecase.AddObjectToPlayerUseCase
+import com.angelus.playerdomain.usecase.AddObjectToPlayerUseCaseImpl
 import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCase
 import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCaseImpl
 import com.angelus.playerdomain.usecase.InitializePlayerUseCase
 import com.angelus.playerdomain.usecase.InitializePlayerUseCaseImpl
+import com.angelus.playerdomain.usecase.RemoveObjectToPlayerUseCase
+import com.angelus.playerdomain.usecase.RemoveObjectToPlayerUseCaseImpl
 
 interface PlayerUseCaseFactory {
 
@@ -35,6 +39,14 @@ interface PlayerUseCaseFactory {
 
     fun makeChangePlayerZoneUseCase(): ChangePlayerZoneUseCase {
         return ChangePlayerZoneUseCaseImpl(playerRepository)
+    }
+
+    fun makeAddObjectToPlayerUseCase(): AddObjectToPlayerUseCase {
+        return AddObjectToPlayerUseCaseImpl(playerRepository)
+    }
+
+    fun makeRemoveObjectToPlayerUseCase(): RemoveObjectToPlayerUseCase {
+        return RemoveObjectToPlayerUseCaseImpl(playerRepository)
     }
 }
 

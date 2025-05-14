@@ -11,7 +11,7 @@ data class CheckMoveParams(
 )
 
 interface CheckMoveInMapUseCase {
-    operator fun invoke(params: CheckMoveParams): MoveType
+    operator suspend fun invoke(params: CheckMoveParams): MoveType
 }
 
 class CheckMoveInMapUseCaseImpl(private val repository: CurrentMapRepository) :
@@ -20,7 +20,7 @@ class CheckMoveInMapUseCaseImpl(private val repository: CurrentMapRepository) :
         const val MOVE_DISTANCE = 1
     }
 
-    override operator fun invoke(params: CheckMoveParams): MoveType {
+    override operator suspend fun invoke(params: CheckMoveParams): MoveType {
         return repository.checkMoveInMap(
             params.position,
             MOVE_DISTANCE,

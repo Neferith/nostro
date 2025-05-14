@@ -3,6 +3,7 @@ package com.angelus.modulea.map
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Size
+import com.angelus.gamedomain.entities.item.Inventory
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.mapdomain.entities.Tile
 import com.angelus.mapdomain.entities.TileType
@@ -15,6 +16,7 @@ abstract class AbstractMapProvider {
     abstract val mapType: MapType
 
     abstract val doors: Map<Position, EntityPosition>
+    abstract val inventories: Map<Position, Inventory>
 
     val gameMap: GameMap by lazy {
         val gameMap = GameMap(
@@ -26,7 +28,8 @@ abstract class AbstractMapProvider {
                 if(dungeonGrid[y][x] == 0) {
                     gameMap.setTileAt(
                         Position(x,y),
-                        Tile(TileType.STONE_FLOOR)
+                        Tile(type = TileType.STONE_FLOOR, inventory =  inventories.get(Position(x,y))),
+
                     )
                 }
                 if(dungeonGrid[y][x] == 2) {

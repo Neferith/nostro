@@ -35,6 +35,8 @@ android {
 
 dependencies {
 
+    implementation(project(":data:gamedata"))
+
     implementation(project(":domain:gamedomain"))
     implementation(project(":domain:mapdomain"))
 
@@ -44,5 +46,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.serialization.json)
 }
