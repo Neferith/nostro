@@ -7,6 +7,10 @@ import com.angelus.gamedata.data.GameSlotDataStore
 import com.angelus.gamedata.repository.LocalGameSlotRepository
 import com.angelus.gamedomain.factory.GameSlotRepositoryUseCaseFactory
 import com.angelus.gamedomain.repository.GameSlotRepository
+import com.angelus.nostro.di.domain.dataStore1
+import com.angelus.nostro.di.domain.dataStore2
+import com.angelus.nostro.di.domain.dataStore3
+import com.angelus.nostro.di.domain.dataStore4
 import com.angelus.nostro.page.menu.MenuPageFactory
 import com.angelus.playerdata.data.factory.PlayerDataSourceFactory
 
@@ -33,19 +37,4 @@ class MenuDIContainer(val context: Context,):
         LocalGameSlotRepository(GameSlotDataStore(getDataStores(context)))
     }
 
-    override fun makeDataStore1(): DataStore<Preferences> {
-        return context.dataStore1
-    }
-
-    override fun makeDataStore2(): DataStore<Preferences> {
-        return context.dataStore2
-    }
-
-    override fun makeDataStore3(): DataStore<Preferences> {
-        return context.dataStore3
-    }
-
-    override fun makeDataStore4(): DataStore<Preferences> {
-        return context.dataStore4
-    }
 }

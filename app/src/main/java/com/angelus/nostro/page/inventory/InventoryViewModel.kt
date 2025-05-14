@@ -79,7 +79,7 @@ class InventoryViewModel(
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
 
-    fun pickUpFromTheFloor(/*characterId: String,*/ objectId: String, quantity: Int) {
+    fun pickUpFromTheFloor(objectId: String, quantity: Int) {
         val player = currentPlayer.value ?: return
         val character = player.band.characters.getOrNull(0) ?: return
 
@@ -100,8 +100,9 @@ class InventoryViewModel(
         }
     }
 
-    fun dropToTheFloor(characterId: String, objectId: String, quantity: Int) {
+    fun dropToTheFloor(objectId: String, quantity: Int) {
         val player = currentPlayer.value ?: return
+        val character = player.band.characters.getOrNull(0) ?: return
 
         viewModelScope.launch {
             val addResult = inventoryUseCases.addObjectToTileUseCase(player.entityPosition, objectId, quantity)
@@ -110,7 +111,7 @@ class InventoryViewModel(
                 return@launch
             }
 
-            val removeResult = inventoryUseCases.removeObjectToPlayerUseCase(characterId, objectId, quantity)
+            val removeResult = inventoryUseCases.removeObjectToPlayerUseCase(character.id, objectId, quantity)
             if (removeResult.isFailure) {
                 removeResult.exceptionOrNull()?.printStackTrace()
                 // À ce stade, l'objet est déjà sur le sol, donc potentiellement dupliqué

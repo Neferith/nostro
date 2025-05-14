@@ -51,7 +51,7 @@ fun InventoryScreen(navigator: InventoryNavigator, viewModel: InventoryViewModel
                     InventoryPanel(
                         "Joueur", characterInventory,
                         onItemDrop = { itemId, quantity ->
-                          //  viewModel.pickUpFromTheFloor(itemId, quantity)
+                            viewModel.dropToTheFloor(itemId, quantity)
                         }
                     )
                 }
