@@ -56,7 +56,12 @@ class InventoryViewModel(
                 dataUseCases.fetchItemsByIdUseCase(inventory.items.keys.toTypedArray())
                     .fold(
                         onSuccess = { items ->
-                            items.map { item -> ItemStack(item, inventory.items[item.id] ?: 1) }
+                            items.map { item ->
+                                ItemStack(
+                                    item,
+                                    inventory.items[item.id] ?: 1
+                                )
+                            }
                         },
                         onFailure = { emptyList() }
                     )
@@ -70,7 +75,12 @@ class InventoryViewModel(
                 dataUseCases.fetchItemsByIdUseCase(inventory.items.keys.toTypedArray())
                     .fold(
                         onSuccess = { items ->
-                            items.map { item -> ItemStack(item, inventory.items[item.id] ?: 1) }
+                            items.map { item ->
+                                ItemStack(
+                                    item,
+                                    inventory.items[item.id] ?: 1
+                                )
+                            }
                         },
                         onFailure = { emptyList() }
                     )
@@ -84,13 +94,18 @@ class InventoryViewModel(
         val character = player.band.characters.getOrNull(0) ?: return
 
         viewModelScope.launch {
-            val addResult = inventoryUseCases.addObjectToPlayerUseCase(character.id, objectId, quantity)
+            val addResult =
+                inventoryUseCases.addObjectToPlayerUseCase(character.id, objectId, quantity)
             if (addResult.isFailure) {
                 addResult.exceptionOrNull()?.printStackTrace()
                 return@launch
             }
 
-            val removeResult = inventoryUseCases.removeObjectToTileUseCase(player.entityPosition, objectId, quantity)
+            val removeResult = inventoryUseCases.removeObjectToTileUseCase(
+                player.entityPosition,
+                objectId,
+                quantity
+            )
             if (removeResult.isFailure) {
                 removeResult.exceptionOrNull()?.printStackTrace()
                 return@launch
@@ -105,13 +120,15 @@ class InventoryViewModel(
         val character = player.band.characters.getOrNull(0) ?: return
 
         viewModelScope.launch {
-            val addResult = inventoryUseCases.addObjectToTileUseCase(player.entityPosition, objectId, quantity)
+            val addResult =
+                inventoryUseCases.addObjectToTileUseCase(player.entityPosition, objectId, quantity)
             if (addResult.isFailure) {
                 addResult.exceptionOrNull()?.printStackTrace()
                 return@launch
             }
 
-            val removeResult = inventoryUseCases.removeObjectToPlayerUseCase(character.id, objectId, quantity)
+            val removeResult =
+                inventoryUseCases.removeObjectToPlayerUseCase(character.id, objectId, quantity)
             if (removeResult.isFailure) {
                 removeResult.exceptionOrNull()?.printStackTrace()
                 // À ce stade, l'objet est déjà sur le sol, donc potentiellement dupliqué

@@ -1,7 +1,7 @@
 package com.angelus.npcdomain.entities
 
-import android.icu.text.Transliterator.Position
 import com.angelus.gamedomain.entities.EntityPosition
+import com.angelus.gamedomain.entities.character.Faction
 
 // Enum pour représenter les relations entre factions
 enum class NPCType {
@@ -13,5 +13,5 @@ enum class NPCType {
 data class NPC(val id: String,
                var entityPosition: EntityPosition,
                val faction: Faction,
-                val type: NPCType) {
+               val type: NPCType) {
 }

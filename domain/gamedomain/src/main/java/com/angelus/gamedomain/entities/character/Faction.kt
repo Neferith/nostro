@@ -1,4 +1,4 @@
-package com.angelus.npcdomain.entities
+package com.angelus.gamedomain.entities.character
 
 // Enum pour représenter les relations entre factions
 enum class Relation {
@@ -11,6 +11,7 @@ enum class Relation {
 
 // Classe abstraite représentant une faction
 abstract class Faction(
+    val id: String,
     val name: String,
     val description: String
 ) {
@@ -46,4 +47,13 @@ abstract class Faction(
             else -> Relation.HOSTILE
         }
     }
+}
+
+class PlayerFaction() :
+    Faction(
+        Character.PLAYER_FACTION,
+        Character.PLAYER_FACTION,
+        "description"
+    ) {
+
 }

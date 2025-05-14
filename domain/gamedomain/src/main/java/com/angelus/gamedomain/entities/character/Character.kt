@@ -24,6 +24,7 @@ data class CharacterDescription(
 
 data class Character(
     val id: String,
+    val factionId: String,
     val mainAttributes: Attributes,
     val characterLevel: CharacterLevel,
     val description: CharacterDescription,
@@ -34,6 +35,7 @@ data class Character(
 ) {
     companion object {
         val MAIN_CHARACTER = "MAIN_CHARACTER"
+        val PLAYER_FACTION = "PLAYER_FACTION"
     }
 
 }
