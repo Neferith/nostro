@@ -10,34 +10,31 @@ enum class Relation {
 }
 
 // Classe abstraite représentant une faction
-abstract class Faction(
+data class Faction(
     val id: String,
     val name: String,
-    val description: String
+    val description: String,
+    val relations: Map<String, Int> = emptyMap()
 ) {
-    // Relations avec les autres factions, stockées sous forme d'un score entre 0 et 100
-    private val relations: MutableMap<Faction, Int> = mutableMapOf()
 
-    // Définition initiale d'une relation (valeur entre 0 et 100)
-    fun setRelation(faction: Faction, value: Int) {
-        relations[faction] = value.coerceIn(0, 100)
+    fun setRelation(faction: Faction, value: Int): Faction {
+        val updated = relations + (faction.id to value.coerceIn(0, 100))
+        return copy(relations = updated)
     }
 
-    // Ajuste progressivement une relation (ex : +10 ou -15)
-    fun adjustRelation(faction: Faction, delta: Int) {
-        val newValue = (relations[faction] ?: 50) + delta
-        relations[faction] = newValue.coerceIn(0, 100)
+    fun adjustRelation(faction: Faction, delta: Int): Faction {
+        val current = relations[faction.id] ?: 50
+        val updatedValue = (current + delta).coerceIn(0, 100)
+        return copy(relations = relations + (faction.id to updatedValue))
     }
 
-    // Affiche les relations de la faction sous forme de statut
     fun describeRelations() {
         println("$name Relations :")
-        relations.forEach { (faction, value) ->
-            println("  - ${faction.name}: ${getRelationType(value)} ($value)")
+        relations.forEach { (factionId, value) ->
+            println("  - $factionId: ${getRelationType(value)} ($value)")
         }
     }
 
-    // Convertit une valeur en un type de relation
     private fun getRelationType(value: Int): Relation {
         return when {
             value >= 80 -> Relation.ALLIED
@@ -49,11 +46,11 @@ abstract class Faction(
     }
 }
 
-class PlayerFaction() :
+/*class PlayerFaction() :
     Faction(
         Character.PLAYER_FACTION,
         Character.PLAYER_FACTION,
         "description"
     ) {
 
-}
+}*/
