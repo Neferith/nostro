@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.angelus.gamedomain.entities.Module
+import com.angelus.gamedomain.entities.Turn
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.modulea.ModuleA
 
@@ -24,5 +25,9 @@ class ModuleAContainer {
 
     fun getMaps(): Map<String,GameMap> {
         return moduleA.getAllMaps()
+    }
+
+    fun getAllTurns(): List<Turn> {
+        return moduleA.getAllTurns()
     }
 }

@@ -21,23 +21,23 @@ object LydiaDubrie: CharacterProvider{
     override val mainAttributes: Attributes = Attributes(
         musculature = Attribute(
             permanent = -3,
-            min = TODO(),
-            max = TODO()
+            min = -10,
+            max = 10
         ),
         flexibility = Attribute(
             permanent = +4,
-            min = TODO(),
-            max = TODO()
+            min = -10,
+            max = 10
         ),
         brain = Attribute(
             permanent = 0,
-            min = TODO(),
-            max = TODO()
+            min = -10,
+            max = 10
         ),
         vitality = Attribute(
             permanent = -1,
-            min = TODO(),
-            max = TODO()
+            min = -10,
+            max = 10
         )
     )
     override val characterLevel: CharacterLevel
@@ -54,9 +54,9 @@ object LydiaDubrie: CharacterProvider{
         sensitivity = CharacterSensitivity.HIGH_SENSITIVITY,
         background = emptyList()
     )
-    override val skills: CharacterSkills
-        get() = TODO("Not yet implemented")
-    override val inventory: Inventory
-        get() = TODO("Not yet implemented")
+    override val skills: CharacterSkills = CharacterSkills(
+        skills = emptyMap()
+    )
+    override val inventory: Inventory = Inventory()
 
 }

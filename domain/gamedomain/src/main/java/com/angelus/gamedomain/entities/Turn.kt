@@ -1,8 +1,13 @@
 package com.angelus.gamedomain.entities
 
+import com.angelus.gamedomain.entities.character.Character
+
 sealed class TurnType {
     data class PLAYER(val id: String) : TurnType()
-    data class NPC(val id: String) : TurnType()
+    data class NPC(
+        val character: Character,
+        val entityPosition: EntityPosition
+    ) : TurnType()
 }
 
 data class Turn(
