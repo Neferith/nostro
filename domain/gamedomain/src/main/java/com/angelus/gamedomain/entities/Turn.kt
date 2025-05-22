@@ -23,3 +23,12 @@ data class TurnList(val turns: List<Turn>, val currentTurn: Int) {
     val current: Turn
         get() = turns[currentTurn]
 }
+
+fun TurnList.npcTurnsAtPositions(positions: List<Position>): List<Turn> {
+    return turns.filter { turn ->
+        when (val type = turn.type) {
+            is TurnType.NPC -> type.entityPosition.position in positions
+            else -> false
+        }
+    }
+}

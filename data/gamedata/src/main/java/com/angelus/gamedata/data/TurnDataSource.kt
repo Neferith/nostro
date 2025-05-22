@@ -5,10 +5,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.angelus.gamedata.data.dto.TurnDTO
+import com.angelus.gamedata.data.dto.TurnListDTO
 import com.angelus.gamedata.data.mapper.convertFromDTO
 import com.angelus.gamedata.data.mapper.convertToDTO
 import com.angelus.gamedomain.entities.Turn
+import com.angelus.gamedomain.entities.TurnList
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -16,8 +17,8 @@ import kotlinx.serialization.json.Json
 class UnableToUpdateTurnListException: Exception()
 
 interface TurnDataSource {
-    suspend fun fetchTurn(): List<Turn>
-    suspend fun updateListTurn(turns: List<Turn>)
+    suspend fun fetchTurn(): TurnList?
+    suspend fun updateListTurn(turns: TurnList)
 }
 
 
@@ -31,23 +32,23 @@ class TurnDataStore(
     }
     private val tag: String = "GameMapDataStore"
 
-    override suspend fun fetchTurn(): List<Turn> {
+    override suspend fun fetchTurn(): TurnList? {
         return try {
             //  val myMapKey = mapKey +"["+ mapId+"]"
             val preferences = dataStore.data.first()
             val mapJson = preferences[turnKey()]
-                ?: return baseTurns
-            Json.decodeFromString<List<TurnDTO>>(mapJson).map { it.convertFromDTO() }
+                ?: return TurnList(baseTurns,0)
+            Json.decodeFromString<TurnListDTO>(mapJson).convertFromDTO()
         } catch (e: Exception) {
             Log.e(tag, "Erreur lors de la récupération du joueur", e)
             // return basemaps[mapId]
-            return emptyList()
+            return null
         }
     }
 
-    override suspend fun updateListTurn(turns: List<Turn>) {
+    override suspend fun updateListTurn(turns: TurnList) {
         try {
-            val json = Json.encodeToString(turns.map { it.convertToDTO() })
+            val json = Json.encodeToString(turns.convertToDTO())
             dataStore.edit { preferences ->
                 preferences[turnKey()] = json
             }
