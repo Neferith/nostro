@@ -42,7 +42,8 @@ interface GameScreenPageFactory {
     ): GameScreenViewModel {
         val gameUseCases = GameUseCases(
             gameUseCaseFactory.makeObserveTurnUseCase(),
-            gameUseCaseFactory.makeNextTurnUseCase()
+            gameUseCaseFactory.makeNextTurnUseCase(),
+            gameUseCaseFactory.makeFetchVisibleNCPUseCase()
         )
         val playerUseCases = PlayerUseCases(
             playerUseCaseFactory.makeMovePlayerUseCase(),

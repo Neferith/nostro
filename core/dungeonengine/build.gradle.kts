@@ -1,21 +1,18 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.angelus.nostro"
+    namespace = "com.angelus.dungeonengine"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.angelus.nostro"
-        minSdk = 31
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -40,17 +37,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":modulea"))
 
-    implementation(project(":core:dungeonengine"))
 
-    implementation(project(":domain:gamedomain"))
-    implementation(project(":domain:playerdomain"))
     implementation(project(":domain:mapdomain"))
-
-    implementation(project(":data:gamedata"))
-    implementation(project(":data:playerdata"))
-    implementation(project(":data:mapdata"))
+    implementation(project(":domain:gamedomain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -69,12 +59,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    implementation(libs.androidx.datastore.core)
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.androidx.core.ktx.v190) // pour WindowInsetsControllerCompat
-    implementation(libs.ui) // selon la version de Compose utilisée
-    implementation(libs.accompanist.systemuicontroller)
 }

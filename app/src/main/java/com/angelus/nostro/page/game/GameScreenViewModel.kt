@@ -9,6 +9,7 @@ import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.Rotation
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnType
+import com.angelus.gamedomain.usecase.FetchVisibleNCPUseCase
 import com.angelus.gamedomain.usecase.NextTurnUseCase
 import com.angelus.gamedomain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.entities.Panorama
@@ -56,7 +57,8 @@ class GameScreenViewModel(
 
     data class GameUseCases(
         val observeTurnUseCase: ObserveTurnUseCase,
-        val nextTurnUseCase: NextTurnUseCase
+        val nextTurnUseCase: NextTurnUseCase,
+        val fetchVisibleNCPUseCase: FetchVisibleNCPUseCase
     )
 
    // data class Params(val playerId: String)

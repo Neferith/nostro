@@ -1,6 +1,4 @@
-package com.angelus.nostro.component
-
-
+package com.angelus.dungeonengine.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,16 +14,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.angelus.dungeonengine.DungeonTextureProvider
+import com.angelus.dungeonengine.model.TileUiState
 import com.angelus.gamedomain.entities.Position
-import com.angelus.mapdomain.entities.Tile
-import com.angelus.nostro.component.dungeon.DungeonCanvasView2
-import com.angelus.nostro.component.dungeon.DungeonCanvasView3
+
 
 
 @Composable
-fun DungeonScreen(mapType: String, simpleGrid: List<List<Tile>>, positionInSimpleGrid: Position) {
+fun DungeonScreen(
+    mapType: String,
+    simpleGrid: List<List<TileUiState>>,
+    positionInSimpleGrid: Position,
+    textureProvider: DungeonTextureProvider
+) {
     val context = LocalContext.current
-    val dungeonView = remember { DungeonCanvasView3(context) }.apply {
+    val dungeonView = remember { DungeonCanvasView3(context, textureProvider) }.apply {
         updateGrid(mapType,simpleGrid,positionInSimpleGrid)
     }
 
@@ -60,5 +63,3 @@ fun DungeonScreen(mapType: String, simpleGrid: List<List<Tile>>, positionInSimpl
         }*/
     }
 }
-
-

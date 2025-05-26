@@ -41,7 +41,10 @@ object LydiaDubrie: CharacterProvider{
         )
     )
     override val characterLevel: CharacterLevel
-        get() = TODO("Not yet implemented")
+        get() = CharacterLevel(
+            level = 1,
+            experience = 250
+        )
     override val description: CharacterDescription = CharacterDescription(
         name = CharacterName(
             firstname = "Lydia",
