@@ -52,15 +52,15 @@ data class GameMap(val id: String,
         return grid
     }
 
-    fun getPlayerGridVisibility(
+    fun     getPlayerGridVisibility(
         playerPosition: EntityPosition,
         maxDepth: Int
-    ):List<List<Tile>>{
+    ):List<List<TilePosition>>{
 
         val width = 3 + 2 * (maxDepth - 1)
-        val visibleTiles = mutableListOf<List<Tile>>()
+        val visibleTiles = mutableListOf<List<TilePosition>>()
         for (depth in 0..maxDepth) {
-            val row = mutableListOf<Tile>()
+            val row = mutableListOf<TilePosition>()
             for (i in -width / 2..width / 2) {
                 val (x, y) = when (playerPosition.orientation) {
                     Orientation.NORTH -> Pair(
@@ -80,7 +80,11 @@ data class GameMap(val id: String,
                         playerPosition.y + i
                     )
                 }
-                row.add(getTileAt(Position(x,y)))
+                val tilePosition = TilePosition(
+                    tile = getTileAt(Position(x,y)),
+                    position = Position(x,y)
+                )
+                row.add(tilePosition)
             }
             // TODO: Améliorer ceci
             if(playerPosition.orientation == Orientation.WEST ||playerPosition.orientation == Orientation.SOUTH ) {
