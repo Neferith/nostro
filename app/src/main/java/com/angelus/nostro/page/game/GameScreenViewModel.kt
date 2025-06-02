@@ -66,6 +66,9 @@ class GameScreenViewModel(
     private var _panoramaState: MutableState<Panorama?> = mutableStateOf(null)
     val panoramaState: State<Panorama?> = _panoramaState
 
+    private var _visibleNPC: MutableState<List<TurnType.NPC>> = mutableStateOf(emptyList())
+    val visibleNPC = _visibleNPC
+
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
@@ -73,22 +76,26 @@ class GameScreenViewModel(
 
     init {
         observeTurnUseCase().onEach { newTurn ->
+            refreshCurrentPanorama()
             // Déclencher un événement à chaque fois que le tour change
             handleNewTurn(newTurn)
         }.launchIn(viewModelScope)
 
         currentPlayer.onEach { player ->
-
-            if(player == null) {
-                null
-            } else {
-                val panorama = getPanoramaUseCase(player.entityPosition)
-                if (panorama != null) {
-                    _panoramaState.value = panorama
-                   // _panoramaState.emit(panorama)
-                }
-            }
+            refreshCurrentPanorama()
         }.launchIn(viewModelScope)
+    }
+
+    private suspend fun refreshCurrentPanorama() {
+        currentPlayer.value?.let { player ->
+            val panorama = getPanoramaUseCase(player.entityPosition)
+            if (panorama != null) {
+                visibleNPC.value = gameUseCases.fetchVisibleNCPUseCase(panorama.tiles.flatMap { innerList -> innerList.map { it.position } })
+                _panoramaState.value = panorama
+                // _panoramaState.emit(panorama)
+            }
+        }
+
     }
 
     private fun handleNewTurn(newTurn: Turn?) {

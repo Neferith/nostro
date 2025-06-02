@@ -4,6 +4,7 @@ import com.angelus.gamedata.data.TurnDataSource
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnList
+import com.angelus.gamedomain.entities.TurnType
 import com.angelus.gamedomain.entities.npcTurnsAtPositions
 import com.angelus.gamedomain.repository.TurnRepository
 import kotlinx.coroutines.CoroutineScope
@@ -44,7 +45,7 @@ class TurnRepositoryImpl(val dataSource: TurnDataSource) : TurnRepository {
         _turnList.value = _turnList.value?.nextTurn()
     }
 
-    override suspend fun fetchVisibleNCP(positions: List<Position>): List<Turn> {
+    override suspend fun fetchVisibleNCP(positions: List<Position>): List<TurnType.NPC> {
         return _turnList.value?.npcTurnsAtPositions(positions)?: emptyList()
     }
 }

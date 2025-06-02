@@ -372,6 +372,10 @@ class DungeonCanvasView3 (
                 ///
             }
 
+            if(frontTile.npc.isNotEmpty()) {
+                drawNPC(canvas,dungeonSquare.topBack, dungeonSquare.leftBack, squareWidth = newSquareWidth.width)
+            }
+
 
         }
         //  drawMunster(canvas)
@@ -384,6 +388,14 @@ class DungeonCanvasView3 (
                 0.3).toInt(), true)
 
         canvas.drawBitmap(scaledBitmap, mobsLeft, ((mobsTop + squareWidth) - (squareWidth * 0.15)).toFloat(), null)
+    }
+
+    private fun drawNPC(canvas: Canvas, mobsLeft: Float , mobsTop: Float, squareWidth: Float) {
+        val texture = textureProvider.getNPCBitmap("lydia") //BitmapFactory.decodeResource(resources, R.drawable.bag_low)
+        val scaledBitmap = Bitmap.createScaledBitmap(texture, (squareWidth*1.5).toInt(), (squareWidth*
+                1.5).toInt(), true)
+
+        canvas.drawBitmap(scaledBitmap, mobsLeft, ((mobsTop + squareWidth) - (squareWidth * 1.25)).toFloat(), null)
     }
 
 

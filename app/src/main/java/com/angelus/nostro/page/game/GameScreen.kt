@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.angelus.dungeonengine.component.DungeonScreen
 import com.angelus.dungeonengine.model.toUiState
+import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.TurnType
 import com.angelus.mapdomain.entities.hasInventory
 import com.angelus.nostro.R
@@ -32,6 +33,10 @@ import com.angelus.nostro.component.MoveControls
 import com.angelus.nostro.utils.DungeonTextureProviderImpl
 
 //import com.angelus.nostro.component.dungeon.DungeonTextureProviderImpl
+
+fun List<TurnType.NPC>.filterByPosition(position: Position):List<TurnType.NPC> {
+    return this.filter { it.entityPosition.position == position }
+}
 
 interface GameScreenNavigator {
     fun goToFloorInventory()
@@ -47,6 +52,7 @@ fun GameScreen(
     val playerState = viewModel.currentPlayer.collectAsState()
     val turnState = viewModel.currentTurn.collectAsState()
     val panoramaState by viewModel.panoramaState
+    val visibleNPC by viewModel.visibleNPC
     val text = remember {
         mutableStateOf("")
     }
@@ -61,7 +67,7 @@ fun GameScreen(
             panoramaState?.let { panorama ->
                 DungeonScreen(
                     panorama.mapType,
-                    panorama.tiles.map { it.map { it.toUiState() } },
+                    panorama.tiles.map { it.map { it.toUiState(visibleNPC.filterByPosition(it.position)) } },
                     panorama.getPositionInSimpleGrid(),
                     DungeonTextureProviderImpl(LocalContext.current)
                 )
