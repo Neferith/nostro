@@ -115,7 +115,7 @@ class GameScreenViewModel(
 
     private fun executeNPCTurn(turn: Turn) {
 
-        nextTurnUseCase()  // Passe au tour suivant
+      //  nextTurnUseCase()  // Passe au tour suivant
 
     }
 

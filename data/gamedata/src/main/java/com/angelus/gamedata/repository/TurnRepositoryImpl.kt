@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 class TurnRepositoryImpl(val dataSource: TurnDataSource) : TurnRepository {
 
     private val _turnList = MutableStateFlow<TurnList?>(null)
-//    val turnList: StateFlow<List<Turn>> = _turnList
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -29,20 +28,15 @@ class TurnRepositoryImpl(val dataSource: TurnDataSource) : TurnRepository {
         }
     }
 
-  /*  suspend fun loadTurns() {
-        val turns = dataSource.fetchTurn()
-        _turnList.value = turns
-    }
-
-    suspend fun updateTurns(turns: List<Turn>) {
-        dataSource.updateListTurn(turns)
-        _turnList.value = turns
-    }*/
-
     override fun observeTurn(): Flow<Turn> = _turnList.mapNotNull { it?.current }
 
-    override fun nextTurn() {
-        _turnList.value = _turnList.value?.nextTurn()
+    override suspend fun nextTurn() {
+
+        val currentTurn = _turnList.value?.nextTurn()
+        currentTurn?.let {currentTurn ->
+            dataSource.updateListTurn(currentTurn)
+            _turnList.value = currentTurn
+        }
     }
 
     override suspend fun fetchVisibleNCP(positions: List<Position>): List<TurnType.NPC> {
