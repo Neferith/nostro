@@ -10,6 +10,7 @@ import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.page.game.GameScreenViewModel.GameUseCases
 import com.angelus.nostro.page.game.GameScreenViewModel.MapUseCases
 import com.angelus.nostro.page.game.GameScreenViewModel.PlayerUseCases
+import com.angelus.nostro.section.turn.TurnSectionFactory
 import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
 interface GameScreenPageFactory {
@@ -72,6 +73,10 @@ interface GameScreenPageFactory {
         navBackStackEntry: NavBackStackEntry
     ) {
         val viewModel = MakeViewModel(/*params,*/ navBackStackEntry)
-        return GameScreen(navigator, viewModel)
+        return GameScreen(navigator, viewModel, TurnSectionDIContainer(navBackStackEntry))
     }
+}
+
+class TurnSectionDIContainer(override val navBackStackEntry: NavBackStackEntry) : TurnSectionFactory {
+
 }

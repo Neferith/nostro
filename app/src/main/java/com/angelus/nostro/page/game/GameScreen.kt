@@ -30,6 +30,7 @@ import com.angelus.gamedomain.entities.TurnType
 import com.angelus.mapdomain.entities.hasInventory
 import com.angelus.nostro.R
 import com.angelus.nostro.component.MoveControls
+import com.angelus.nostro.section.turn.TurnSectionFactory
 import com.angelus.nostro.utils.DungeonTextureProviderImpl
 
 //import com.angelus.nostro.component.dungeon.DungeonTextureProviderImpl
@@ -47,7 +48,8 @@ interface GameScreenNavigator {
 @Composable
 fun GameScreen(
     navigator: GameScreenNavigator,
-    viewModel: GameScreenViewModel
+    viewModel: GameScreenViewModel,
+    turnSectionFactory: TurnSectionFactory
 ) {
     val playerState = viewModel.currentPlayer.collectAsState()
     val turnState = viewModel.currentTurn.collectAsState()
@@ -105,6 +107,8 @@ fun GameScreen(
                 }
             )
         }
+
+        turnSectionFactory.MakeTurnSection()
 
     }
 }
