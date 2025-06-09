@@ -31,4 +31,6 @@ interface PlayerRepository {
         quantity: Int
     ): Result<Player>
 
+    suspend fun getPlayer(): Result<Player>
+
 }

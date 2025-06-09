@@ -5,21 +5,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import com.angelus.gamedomain.factory.TurnUseCaseFactory
+import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
+import com.angelus.nostro.section.turn.TurnSectionViewModel.GameUseCases
+import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
 interface TurnSectionFactory {
 
     val navBackStackEntry: NavBackStackEntry
 
+    val playerUseCaseFactory: PlayerUseCaseFactory
+    val currentMapUseCaseFactory: CurrentMapUseCaseFactory
+    val gameUseCaseFactory: TurnUseCaseFactory
+
     private class TurnSectionViewModelFactory(
-        // val params: Params,
-       // private val gameUseCases: GameUseCases,
-       // private val playerUseCases: PlayerUseCases,
-        //private val mapUseCases: MapUseCases
+        val gameUseCases: GameUseCases
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(TurnSectionViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return TurnSectionViewModel() as T
+                return TurnSectionViewModel(gameUseCases) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
@@ -31,11 +36,15 @@ interface TurnSectionFactory {
         navBackStackEntry: NavBackStackEntry,
     ): TurnSectionViewModel {
 
-
-
+        val gameUseCases = GameUseCases(
+            getPlayerUseCase = playerUseCaseFactory.makeGetPlayerUseCase(),
+            observeTurnUseCase = gameUseCaseFactory.makeObserveTurnUseCase(),
+            nextTurnUseCase = gameUseCaseFactory.makeNextTurnUseCase(),
+            checkVisibilityUseCase = currentMapUseCaseFactory.makeCheckVisibilityUseCase()
+        )
         return viewModel(
             navBackStackEntry,
-            factory = TurnSectionViewModelFactory()
+            factory = TurnSectionViewModelFactory(gameUseCases)
         )
     }
 

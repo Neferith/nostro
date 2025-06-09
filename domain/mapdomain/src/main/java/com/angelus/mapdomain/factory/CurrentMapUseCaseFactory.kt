@@ -5,6 +5,8 @@ import com.angelus.mapdomain.usecase.AddObjectToTileUseCase
 import com.angelus.mapdomain.usecase.AddObjectToTileUseCaseImpl
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCaseImpl
+import com.angelus.mapdomain.usecase.CheckVisibilityUseCase
+import com.angelus.mapdomain.usecase.CheckVisibilityUseCaseImpl
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
 import com.angelus.mapdomain.usecase.GetPanoramaUseCaseImpl
 import com.angelus.mapdomain.usecase.GetTileAtPosisitionUseCase
@@ -33,5 +35,9 @@ interface CurrentMapUseCaseFactory {
 
     fun makeRemoveObjectToTileUseCase(): RemoveObjectToTileUseCase {
         return RemoveObjectToTileUseCaseImpl(currentMapRepository)
+    }
+
+    fun makeCheckVisibilityUseCase(): CheckVisibilityUseCase {
+        return CheckVisibilityUseCaseImpl(currentMapRepository)
     }
 }

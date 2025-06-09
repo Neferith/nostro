@@ -73,10 +73,21 @@ interface GameScreenPageFactory {
         navBackStackEntry: NavBackStackEntry
     ) {
         val viewModel = MakeViewModel(/*params,*/ navBackStackEntry)
-        return GameScreen(navigator, viewModel, TurnSectionDIContainer(navBackStackEntry))
+        // TODO : Move Di container outside
+        return GameScreen(navigator, viewModel, TurnSectionDIContainer(
+            navBackStackEntry,
+            playerUseCaseFactory,
+            currentMapUseCaseFactory,
+            gameUseCaseFactory
+        ))
     }
 }
 
-class TurnSectionDIContainer(override val navBackStackEntry: NavBackStackEntry) : TurnSectionFactory {
+class TurnSectionDIContainer(
+    override val navBackStackEntry: NavBackStackEntry,
+    override val playerUseCaseFactory: PlayerUseCaseFactory,
+    override val currentMapUseCaseFactory: CurrentMapUseCaseFactory,
+    override val gameUseCaseFactory: TurnUseCaseFactory
+) : TurnSectionFactory {
 
 }

@@ -12,6 +12,8 @@ import com.angelus.playerdomain.usecase.AddObjectToPlayerUseCase
 import com.angelus.playerdomain.usecase.AddObjectToPlayerUseCaseImpl
 import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCase
 import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCaseImpl
+import com.angelus.playerdomain.usecase.GetPlayerUseCase
+import com.angelus.playerdomain.usecase.GetPlayerUseCaseImpl
 import com.angelus.playerdomain.usecase.InitializePlayerUseCase
 import com.angelus.playerdomain.usecase.InitializePlayerUseCaseImpl
 import com.angelus.playerdomain.usecase.RemoveObjectToPlayerUseCase
@@ -47,6 +49,10 @@ interface PlayerUseCaseFactory {
 
     fun makeRemoveObjectToPlayerUseCase(): RemoveObjectToPlayerUseCase {
         return RemoveObjectToPlayerUseCaseImpl(playerRepository)
+    }
+
+    fun makeGetPlayerUseCase(): GetPlayerUseCase {
+        return GetPlayerUseCaseImpl(playerRepository)
     }
 }
 

@@ -106,6 +106,10 @@ class PlayerRepositoryImpl(private val dataSource: PlayerDataSource) :
         return Result.failure(PlayerNotFoundException())
     }
 
+    override suspend fun getPlayer(): Result<Player> {
+       return dataSource.fetchPlayer()
+    }
+
 
     private suspend fun updatePlayer(player: Player) {
         playerMutex.withLock {
