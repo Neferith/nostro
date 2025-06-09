@@ -1,40 +1,10 @@
-package com.angelus.nostro.component.dungeon
+package com.angelus.nostro.utils
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.angelus.mapdomain.entities.Tile
-import com.angelus.mapdomain.entities.TileType
+import com.angelus.dungeonengine.DungeonTextureProvider
 import com.angelus.nostro.R
-
-interface DungeonTextureProvider {
-    enum class TextureType {
-        WALL,
-        FLOOR,
-        CEILING,
-        DOOR
-    }
-    fun getTexture(mapType: String, textureType: TextureType): Bitmap
-
-    fun getWallType(wallType: String): TextureType
-
-
-    //  fun getWallTypeByInt(wallTypeId: Int): TextureType
-}
-
-fun getTextureWallTypeByTile(tile: Tile): DungeonTextureProvider.TextureType {
-    if(tile.type == TileType.STONE_DOOR) {
-        return DungeonTextureProvider.TextureType.DOOR
-    }
-    return DungeonTextureProvider.TextureType.WALL
-}
-
-fun getTextureWallTypeByInt(wallTypeId: Int): DungeonTextureProvider.TextureType {
-    if(wallTypeId == 2) {
-        return DungeonTextureProvider.TextureType.DOOR
-    }
-    return DungeonTextureProvider.TextureType.WALL
-}
 
 class DungeonTextureProviderImpl(val context: Context): DungeonTextureProvider {
 
@@ -45,7 +15,13 @@ class DungeonTextureProviderImpl(val context: Context): DungeonTextureProvider {
         return DungeonTextureProvider.TextureType.WALL
     }
 
+    override fun getItemBitmap(itemId: String): Bitmap {
+        return BitmapFactory.decodeResource(context.resources, R.drawable.bag_low)
+    }
 
+    override fun getNPCBitmap(itemId: String): Bitmap {
+        return BitmapFactory.decodeResource(context.resources, R.drawable.goblin)
+    }
 
 
     var caches: MutableMap<Pair<String, DungeonTextureProvider.TextureType>, Bitmap> = mutableMapOf()

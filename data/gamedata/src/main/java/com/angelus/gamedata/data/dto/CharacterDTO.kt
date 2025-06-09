@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CharacterDTO(
     val id: String,
+    val factionId: String,
     val mainAttributes: AttributesDTO,
     val characterLevel: CharacterLevelDTO,
     val description: CharacterDescriptionDTO,

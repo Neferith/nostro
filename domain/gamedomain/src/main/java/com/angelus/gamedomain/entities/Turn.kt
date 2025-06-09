@@ -1,8 +1,13 @@
 package com.angelus.gamedomain.entities
 
+import com.angelus.gamedomain.entities.character.Character
+
 sealed class TurnType {
     data class PLAYER(val id: String) : TurnType()
-    data class NPC(val id: String) : TurnType()
+    data class NPC(
+        val character: Character,
+        val entityPosition: EntityPosition
+    ) : TurnType()
 }
 
 data class Turn(
@@ -17,4 +22,25 @@ data class TurnList(val turns: List<Turn>, val currentTurn: Int) {
 
     val current: Turn
         get() = turns[currentTurn]
+}
+
+/*fun TurnList.npcTurnsAtPositions(positions: List<Position>): List<TurnType.NPC> {
+    return turns.filter { turn ->
+        when (val type = turn.type) {
+            is TurnType.NPC -> type.entityPosition.position in positions
+            else -> false
+        }
+    }.mapNotNull {
+        when (val type = it.type) {
+            is TurnType.NPC -> it.type
+            else -> null
+        }
+    }
+        .filterIsInstance<TurnType.NPC>()
+}*/
+fun TurnList.npcTurnsAtPositions(positions: List<Position>): List<TurnType.NPC> {
+    return turns
+        .map { it.type }
+        .filterIsInstance<TurnType.NPC>()
+        .filter { it.entityPosition.position in positions }
 }

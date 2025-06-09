@@ -4,7 +4,7 @@ import com.angelus.gamedomain.entities.Position
 
 class Panorama(
     val mapType: String,
-    val tiles: List<List<Tile>>
+    val tiles: List<List<TilePosition>>
 ) {
     fun getSimpleGrid(): Array<IntArray> {
         for (row in tiles) {
@@ -36,6 +36,6 @@ class Panorama(
 
     fun getCurrentTile(): Tile {
         val playerPosition = getPositionInSimpleGrid()
-        return tiles[playerPosition.y][playerPosition.x]
+        return tiles[playerPosition.y][playerPosition.x].tile
     }
 }

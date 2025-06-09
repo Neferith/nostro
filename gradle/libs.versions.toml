@@ -1,5 +1,7 @@
 [versions]
+accompanistSystemuicontroller = "0.28.0"
 agp = "8.8.2"
+coreKtxVersion = "1.9.0"
 datastoreCore = "1.1.4"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
@@ -13,9 +15,12 @@ appcompat = "1.7.0"
 material = "1.12.0"
 roomKtx = "2.6.1"
 kotlinx-serialization-json = "1.6.3"
+ui = "1.5.0"
 
 [libraries]
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-ktx-v190 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCore" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastoreCore" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -35,6 +40,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 
 
 [plugins]

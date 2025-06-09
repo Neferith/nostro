@@ -7,11 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,15 +19,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.angelus.dungeonengine.component.DungeonScreen
+import com.angelus.dungeonengine.model.toUiState
+import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.TurnType
-import com.angelus.nostro.component.DungeonScreen
-import com.angelus.nostro.component.MoveControls
-import kotlin.Suppress
-import androidx.compose.ui.res.painterResource
 import com.angelus.mapdomain.entities.hasInventory
 import com.angelus.nostro.R
+import com.angelus.nostro.component.MoveControls
+import com.angelus.nostro.section.turn.TurnSectionFactory
+import com.angelus.nostro.utils.DungeonTextureProviderImpl
+
+//import com.angelus.nostro.component.dungeon.DungeonTextureProviderImpl
+
+fun List<TurnType.NPC>.filterByPosition(position: Position):List<TurnType.NPC> {
+    return this.filter { it.entityPosition.position == position }
+}
 
 interface GameScreenNavigator {
     fun goToFloorInventory()
@@ -39,11 +48,13 @@ interface GameScreenNavigator {
 @Composable
 fun GameScreen(
     navigator: GameScreenNavigator,
-    viewModel: GameScreenViewModel
+    viewModel: GameScreenViewModel,
+    turnSectionFactory: TurnSectionFactory
 ) {
     val playerState = viewModel.currentPlayer.collectAsState()
     val turnState = viewModel.currentTurn.collectAsState()
     val panoramaState by viewModel.panoramaState
+    val visibleNPC by viewModel.visibleNPC
     val text = remember {
         mutableStateOf("")
     }
@@ -58,8 +69,9 @@ fun GameScreen(
             panoramaState?.let { panorama ->
                 DungeonScreen(
                     panorama.mapType,
-                    panorama.tiles,
-                    panorama.getPositionInSimpleGrid()
+                    panorama.tiles.map { it.map { it.toUiState(visibleNPC.filterByPosition(it.position)) } },
+                    panorama.getPositionInSimpleGrid(),
+                    DungeonTextureProviderImpl(LocalContext.current)
                 )
             }
 
@@ -95,6 +107,8 @@ fun GameScreen(
                 }
             )
         }
+
+        turnSectionFactory.MakeTurnSection()
 
     }
 }

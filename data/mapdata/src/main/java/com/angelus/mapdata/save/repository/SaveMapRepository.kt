@@ -103,4 +103,12 @@ class SaveMapRepository(
         }
         return Result.failure(TileNotFoundException())
     }
+
+    override suspend fun fetchMapById(mapId: String): Result<GameMap> {
+       val map = dataSource.fetchMap(mapId)
+        map?.let {
+            return Result.success(map)
+        }
+        return Result.failure(MapNotFoundException())
+    }
 }

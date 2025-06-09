@@ -1,4 +1,4 @@
-package com.angelus.nostro.component.dungeon
+package com.angelus.dungeonengine
 
 import android.graphics.BitmapShader
 import android.graphics.Matrix

@@ -1,6 +1,8 @@
 package com.angelus.gamedomain.factory
 
 import com.angelus.gamedomain.repository.TurnRepository
+import com.angelus.gamedomain.usecase.FetchVisibleNCPUseCase
+import com.angelus.gamedomain.usecase.FetchVisibleNCPUseCaseImpl
 import com.angelus.gamedomain.usecase.NextTurnUseCase
 import com.angelus.gamedomain.usecase.NextTurnUseCaseImpl
 import com.angelus.gamedomain.usecase.ObserveTurnUseCase
@@ -16,5 +18,9 @@ interface TurnUseCaseFactory {
 
     fun makeNextTurnUseCase(): NextTurnUseCase {
         return NextTurnUseCaseImpl(turnRepository)
+    }
+
+    fun makeFetchVisibleNCPUseCase(): FetchVisibleNCPUseCase {
+        return FetchVisibleNCPUseCaseImpl(turnRepository)
     }
 }

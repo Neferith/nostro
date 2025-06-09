@@ -9,6 +9,7 @@ import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.Rotation
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnType
+import com.angelus.gamedomain.usecase.FetchVisibleNCPUseCase
 import com.angelus.gamedomain.usecase.NextTurnUseCase
 import com.angelus.gamedomain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.entities.Panorama
@@ -56,13 +57,17 @@ class GameScreenViewModel(
 
     data class GameUseCases(
         val observeTurnUseCase: ObserveTurnUseCase,
-        val nextTurnUseCase: NextTurnUseCase
+        val nextTurnUseCase: NextTurnUseCase,
+        val fetchVisibleNCPUseCase: FetchVisibleNCPUseCase
     )
 
    // data class Params(val playerId: String)
 
     private var _panoramaState: MutableState<Panorama?> = mutableStateOf(null)
     val panoramaState: State<Panorama?> = _panoramaState
+
+    private var _visibleNPC: MutableState<List<TurnType.NPC>> = mutableStateOf(emptyList())
+    val visibleNPC = _visibleNPC
 
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
@@ -71,22 +76,26 @@ class GameScreenViewModel(
 
     init {
         observeTurnUseCase().onEach { newTurn ->
+            refreshCurrentPanorama()
             // Déclencher un événement à chaque fois que le tour change
             handleNewTurn(newTurn)
         }.launchIn(viewModelScope)
 
         currentPlayer.onEach { player ->
-
-            if(player == null) {
-                null
-            } else {
-                val panorama = getPanoramaUseCase(player.entityPosition)
-                if (panorama != null) {
-                    _panoramaState.value = panorama
-                   // _panoramaState.emit(panorama)
-                }
-            }
+            refreshCurrentPanorama()
         }.launchIn(viewModelScope)
+    }
+
+    private suspend fun refreshCurrentPanorama() {
+        currentPlayer.value?.let { player ->
+            val panorama = getPanoramaUseCase(player.entityPosition)
+            if (panorama != null) {
+                visibleNPC.value = gameUseCases.fetchVisibleNCPUseCase(panorama.tiles.flatMap { innerList -> innerList.map { it.position } })
+                _panoramaState.value = panorama
+                // _panoramaState.emit(panorama)
+            }
+        }
+
     }
 
     private fun handleNewTurn(newTurn: Turn?) {
@@ -106,7 +115,7 @@ class GameScreenViewModel(
 
     private fun executeNPCTurn(turn: Turn) {
 
-        nextTurnUseCase()  // Passe au tour suivant
+      //  nextTurnUseCase()  // Passe au tour suivant
 
     }
 

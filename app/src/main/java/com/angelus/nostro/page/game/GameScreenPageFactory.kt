@@ -10,6 +10,7 @@ import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.page.game.GameScreenViewModel.GameUseCases
 import com.angelus.nostro.page.game.GameScreenViewModel.MapUseCases
 import com.angelus.nostro.page.game.GameScreenViewModel.PlayerUseCases
+import com.angelus.nostro.section.turn.TurnSectionFactory
 import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 
 interface GameScreenPageFactory {
@@ -42,7 +43,8 @@ interface GameScreenPageFactory {
     ): GameScreenViewModel {
         val gameUseCases = GameUseCases(
             gameUseCaseFactory.makeObserveTurnUseCase(),
-            gameUseCaseFactory.makeNextTurnUseCase()
+            gameUseCaseFactory.makeNextTurnUseCase(),
+            gameUseCaseFactory.makeFetchVisibleNCPUseCase()
         )
         val playerUseCases = PlayerUseCases(
             playerUseCaseFactory.makeMovePlayerUseCase(),
@@ -71,6 +73,21 @@ interface GameScreenPageFactory {
         navBackStackEntry: NavBackStackEntry
     ) {
         val viewModel = MakeViewModel(/*params,*/ navBackStackEntry)
-        return GameScreen(navigator, viewModel)
+        // TODO : Move Di container outside
+        return GameScreen(navigator, viewModel, TurnSectionDIContainer(
+            navBackStackEntry,
+            playerUseCaseFactory,
+            currentMapUseCaseFactory,
+            gameUseCaseFactory
+        ))
     }
+}
+
+class TurnSectionDIContainer(
+    override val navBackStackEntry: NavBackStackEntry,
+    override val playerUseCaseFactory: PlayerUseCaseFactory,
+    override val currentMapUseCaseFactory: CurrentMapUseCaseFactory,
+    override val gameUseCaseFactory: TurnUseCaseFactory
+) : TurnSectionFactory {
+
 }

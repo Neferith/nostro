@@ -44,6 +44,7 @@ fun CharacterDescriptionDTO.convertFromDTO(): CharacterDescription {
 fun Character.convertToDTO(): CharacterDTO {
     return CharacterDTO(
         id = this.id,
+        factionId =this.factionId,
         mainAttributes = this.mainAttributes.convertAttributesToDTO(),
         characterLevel = this.characterLevel.convertCharacterLevelToDTO(),
         description = this.description.convertToDTO(),
@@ -55,6 +56,7 @@ fun Character.convertToDTO(): CharacterDTO {
 fun CharacterDTO.convertFromDTO(): Character {
     return Character(
         id = this.id,
+        factionId =this.factionId,
         mainAttributes = this.mainAttributes.convertAttributesFromDTO(),
         characterLevel = this.characterLevel.convertCharacterLevelFromDTO(),
         description = this.description.convertFromDTO(),

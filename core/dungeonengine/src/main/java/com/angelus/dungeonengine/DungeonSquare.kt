@@ -1,4 +1,4 @@
-package com.angelus.nostro.component.dungeon
+package com.angelus.dungeonengine
 
 data class DungeonSquare(
     val leftBack: Float,

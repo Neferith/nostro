@@ -1,9 +1,8 @@
 package com.angelus.nostro.di
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import com.angelus.gamedata.data.TurnDataSource
+import com.angelus.gamedata.data.TurnDataStore
 import com.angelus.gamedata.repository.CurrentModuleRepositoryImpl
 import com.angelus.gamedata.repository.TurnRepositoryImpl
 import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
@@ -27,9 +26,6 @@ import com.angelus.playerdata.data.PlayerDataSource
 import com.angelus.playerdata.data.factory.PlayerDataSourceFactory
 import com.angelus.playerdomain.factory.PlayerUseCaseFactory
 import com.angelus.playerdomain.repository.PlayerRepository
-
-
-
 
 
 class NewGameDIContainer(
@@ -73,11 +69,22 @@ class NewGameDIContainer(
         GameMapDataStore(ModuleAContainer().getMaps(), datastore)
     }
 
+    val turnDataSource: TurnDataSource by lazy {
+        val datastore = when (gameSlot) {
+            1 -> context.dataStore1
+            2 -> context.dataStore2
+            3 -> context.dataStore3
+            4 -> context.dataStore4
+            else -> throw IllegalArgumentException("Invalid game slot: $gameSlot")
+        }
+        TurnDataStore(ModuleAContainer().getAllTurns(), datastore)
+    }
+
     override val currentMapRepository: CurrentMapRepository by lazy {
         SaveMapRepository(gameMapDataSource)
     }
     override val turnRepository: TurnRepository by lazy {
-        TurnRepositoryImpl()
+        TurnRepositoryImpl(turnDataSource)
     }
 
 

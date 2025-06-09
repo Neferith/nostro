@@ -198,6 +198,7 @@ class NewGameViewModel(
                 // TODO: Move here
                 val character = Character(
                     id = Character.MAIN_CHARACTER,
+                    factionId = Character.PLAYER_FACTION,
                     mainAttributes = currentAttributes.value,
                     characterLevel = CharacterLevel(0, 0),
                     description = CharacterDescription(

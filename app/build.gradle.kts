@@ -42,6 +42,8 @@ android {
 dependencies {
     implementation(project(":modulea"))
 
+    implementation(project(":core:dungeonengine"))
+
     implementation(project(":domain:gamedomain"))
     implementation(project(":domain:playerdomain"))
     implementation(project(":domain:mapdomain"))
@@ -72,7 +74,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation("androidx.core:core-ktx:1.9.0") // pour WindowInsetsControllerCompat
-    implementation("androidx.compose.ui:ui:1.5.0") // selon la version de Compose utilisée
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+    implementation(libs.androidx.core.ktx.v190) // pour WindowInsetsControllerCompat
+    implementation(libs.ui) // selon la version de Compose utilisée
+    implementation(libs.accompanist.systemuicontroller)
 }

@@ -5,11 +5,11 @@ import com.angelus.gamedomain.repository.TurnRepository
 import kotlinx.coroutines.flow.Flow
 
 interface NextTurnUseCase {
-    operator fun invoke()
+    suspend operator fun invoke()
 }
 
 class NextTurnUseCaseImpl(val turnRepository: TurnRepository): NextTurnUseCase {
-    override fun invoke() {
+    override suspend operator fun  invoke() {
         turnRepository.nextTurn()
     }
 }
