@@ -52,11 +52,13 @@ dependencies {
     implementation(project(":data:playerdata"))
     implementation(project(":data:mapdata"))
 
+    implementation(project(":feature:faction"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation("androidx.navigation:navigation-compose:2.8.7")
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
