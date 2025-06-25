@@ -11,8 +11,7 @@ interface CheckFactionUseCase {
 class CheckFactionUseCaseImpl(val repository: FactionRepository): CheckFactionUseCase {
     override suspend operator fun invoke(faction1Id: String, faction2Id: String): Relation {
         val faction1 = repository.fetchFaction(faction1Id)
-       // val faction2 = repository.fetchFaction(faction2Id)
-        return faction1?.checkHostility(faction2Id)?: Relation.NEUTRAL
+        return faction1.getOrNull()?.checkHostility(faction2Id)?: Relation.NEUTRAL
     }
 
 }

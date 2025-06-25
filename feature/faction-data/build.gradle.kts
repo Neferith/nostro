@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.angelus.faction_data"
+    namespace = "com.angelus.faction.data"
     compileSdk = 35
 
     defaultConfig {
@@ -34,10 +34,17 @@ android {
 
 dependencies {
 
+    implementation(project(":feature:faction"))
+
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.kotlinx.serialization.json)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.espresso.core)
 }

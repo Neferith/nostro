@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnType
 import com.angelus.gamedomain.usecase.NextTurnUseCase
@@ -31,7 +32,8 @@ class TurnSectionViewModel(
         val getPlayerUseCase: GetPlayerUseCase,
         val observeTurnUseCase: ObserveTurnUseCase,
         val nextTurnUseCase: NextTurnUseCase,
-        val checkVisibilityUseCase: CheckVisibilityUseCase
+        val checkVisibilityUseCase: CheckVisibilityUseCase,
+      //  val checkFactionUseCase: CheckFactionUseCase
     )
 
     init {
@@ -65,9 +67,18 @@ class TurnSectionViewModel(
         viewModelScope.launch {
             val player  = gameUseCases.getPlayerUseCase().getOrNull()
 
+            var futurPosition: Position? = null
             player?.let {
 
-                _showPlayer.value = gameUseCases.checkVisibilityUseCase(turnType.entityPosition, player.entityPosition, 4) != null
+                futurPosition = gameUseCases.checkVisibilityUseCase(turnType.entityPosition, player.entityPosition, 4)
+                val showPlayer = futurPosition != null
+                _showPlayer.value = showPlayer
+                if(showPlayer) {
+                    //check
+                }
+               // _showPlayer.value   != null
+
+
             }
             gameUseCases.nextTurnUseCase()
         }
