@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.angelus.faction.domain.usecase.CheckFactionUseCase
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnType
@@ -33,7 +34,7 @@ class TurnSectionViewModel(
         val observeTurnUseCase: ObserveTurnUseCase,
         val nextTurnUseCase: NextTurnUseCase,
         val checkVisibilityUseCase: CheckVisibilityUseCase,
-      //  val checkFactionUseCase: CheckFactionUseCase
+        val checkFactionUseCase: CheckFactionUseCase
     )
 
     init {

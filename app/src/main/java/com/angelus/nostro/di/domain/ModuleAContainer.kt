@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.angelus.faction.domain.entities.Faction
 import com.angelus.gamedomain.entities.Module
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.mapdomain.entities.GameMap
@@ -29,5 +30,9 @@ class ModuleAContainer {
 
     fun getAllTurns(): List<Turn> {
         return moduleA.getAllTurns()
+    }
+
+    fun getFactions(): List<Faction> {
+        return  moduleA.getFactions()
     }
 }

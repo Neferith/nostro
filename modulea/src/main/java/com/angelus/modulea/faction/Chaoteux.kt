@@ -1,7 +1,6 @@
 package com.angelus.modulea.faction
 
 import com.angelus.gamedomain.entities.character.Character
-import com.angelus.gamedomain.entities.character.Faction
 
 object Chaoteux: FactionProvider {
     override val id: String = "chaoteux"

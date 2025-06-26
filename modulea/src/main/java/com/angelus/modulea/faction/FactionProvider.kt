@@ -1,7 +1,7 @@
 package com.angelus.modulea.faction
 
-import com.angelus.gamedomain.entities.character.Character
-import com.angelus.gamedomain.entities.character.Faction
+import com.angelus.faction.domain.entities.Faction
+
 
 interface FactionProvider {
 

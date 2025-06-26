@@ -1,6 +1,11 @@
 package com.angelus.nostro.di
 
 import android.content.Context
+import com.angelus.faction.data.FactionDataStore
+import com.angelus.faction.data.FactionDatasource
+import com.angelus.faction.data.repository.LocalFactionRepository
+import com.angelus.faction.domain.factory.FactionUseCasFactory
+import com.angelus.faction.domain.repository.FactionRepository
 import com.angelus.gamedata.data.TurnDataSource
 import com.angelus.gamedata.data.TurnDataStore
 import com.angelus.gamedata.repository.CurrentModuleRepositoryImpl
@@ -40,7 +45,8 @@ class NewGameDIContainer(
     NewGamePageFactory,
     TurnUseCaseFactory,
     GameScreenPageFactory,
-    InventoryScreenFactory {
+    InventoryScreenFactory,
+    FactionUseCasFactory {
 
     override val currentModuleRepository: CurrentModuleRepository = CurrentModuleRepositoryImpl(moduleContainer.getModule())
 
@@ -56,6 +62,17 @@ class NewGameDIContainer(
 
     override val playerRepository: PlayerRepository by lazy {
         com.angelus.playerdata.repository.PlayerRepositoryImpl(playerDataSource)
+    }
+
+    val factionMapDataSource: FactionDatasource by lazy {
+        val datastore = when (gameSlot) {
+            1 -> context.dataStore1
+            2 -> context.dataStore2
+            3 -> context.dataStore3
+            4 -> context.dataStore4
+            else -> throw IllegalArgumentException("Invalid game slot: $gameSlot")
+        }
+        FactionDataStore(ModuleAContainer().getFactions(), datastore)
     }
 
     val gameMapDataSource: GameMapDataSource by lazy {
@@ -87,6 +104,9 @@ class NewGameDIContainer(
         TurnRepositoryImpl(turnDataSource)
     }
 
+    override val repository: FactionRepository by lazy {
+        LocalFactionRepository(factionMapDataSource)
+    }
 
     override val currentGameUseCaseFactory: CurrentGameUseCaseFactory
         get() = this
@@ -96,5 +116,8 @@ class NewGameDIContainer(
         get() = this
     override val gameUseCaseFactory: TurnUseCaseFactory
         get() = this
+    override val factionUseCaseFactory: FactionUseCasFactory
+        get() = this
+
 
 }

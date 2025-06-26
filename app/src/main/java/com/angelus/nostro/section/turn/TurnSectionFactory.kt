@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import com.angelus.faction.domain.factory.FactionUseCasFactory
 import com.angelus.gamedomain.factory.TurnUseCaseFactory
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.section.turn.TurnSectionViewModel.GameUseCases
@@ -17,6 +18,7 @@ interface TurnSectionFactory {
     val playerUseCaseFactory: PlayerUseCaseFactory
     val currentMapUseCaseFactory: CurrentMapUseCaseFactory
     val gameUseCaseFactory: TurnUseCaseFactory
+    val factionUseCaseFactory: FactionUseCasFactory
 
     private class TurnSectionViewModelFactory(
         val gameUseCases: GameUseCases
@@ -40,7 +42,8 @@ interface TurnSectionFactory {
             getPlayerUseCase = playerUseCaseFactory.makeGetPlayerUseCase(),
             observeTurnUseCase = gameUseCaseFactory.makeObserveTurnUseCase(),
             nextTurnUseCase = gameUseCaseFactory.makeNextTurnUseCase(),
-            checkVisibilityUseCase = currentMapUseCaseFactory.makeCheckVisibilityUseCase()
+            checkVisibilityUseCase = currentMapUseCaseFactory.makeCheckVisibilityUseCase(),
+            checkFactionUseCase = factionUseCaseFactory.makeCheckFactionUseCase()
         )
         return viewModel(
             navBackStackEntry,

@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":data:mapdata"))
 
     implementation(project(":feature:faction"))
+    implementation(project(":feature:faction-data"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

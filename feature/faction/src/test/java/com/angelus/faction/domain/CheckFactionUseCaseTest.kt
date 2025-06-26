@@ -29,15 +29,15 @@ class CheckFactionUseCaseTest {
 
 
     class MockFactionRepository: FactionRepository {
-        override fun fetchFaction(factionId: String): Faction? {
+        override suspend fun fetchFaction(factionId: String): Result<Faction> {
             if(factionId == Faction.PLAYER_FACTION_ID) {
-                return mockPlayerFaction
+                return Result.success(mockPlayerFaction)
             }
 
             if(factionId == "MONSTER") {
-                return mockMonsterFaction
+                return Result.success(mockMonsterFaction)
             }
-            return null
+            return Result.failure(Exception())
         }
 
     }
