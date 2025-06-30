@@ -1,10 +1,12 @@
 package com.angelus.nostro.section.turn
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.angelus.faction.domain.entities.Faction
 import com.angelus.faction.domain.usecase.CheckFactionUseCase
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Turn
@@ -75,6 +77,8 @@ class TurnSectionViewModel(
                 val showPlayer = futurPosition != null
                 _showPlayer.value = showPlayer
                 if(showPlayer) {
+                    val hostility = gameUseCases.checkFactionUseCase(turnType.character.factionId, Faction.PLAYER_FACTION_ID)
+                    Log.d("TAG", hostility.toString())
                     //check
                 }
                // _showPlayer.value   != null
