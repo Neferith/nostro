@@ -25,6 +25,8 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/faction" />
             <option value="$PROJECT_DIR$/feature/faction-data" />
+            <option value="$PROJECT_DIR$/feature/npc" />
+            <option value="$PROJECT_DIR$/feature/npc-data" />
             <option value="$PROJECT_DIR$/modulea" />
           </set>
         </option>

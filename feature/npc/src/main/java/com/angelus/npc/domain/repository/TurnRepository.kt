@@ -1,4 +1,4 @@
-package com.angelus.gamedomain.repository
+package com.angelus.npc.domain.repository
 
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Turn

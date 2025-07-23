@@ -1,7 +1,9 @@
-package com.angelus.gamedata.data.dto
+package com.angelus.npc.data.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import com.angelus.gamedata.data.dto.CharacterDTO
+import com.angelus.gamedata.data.dto.EntityPositionDTO
 
 @Serializable
 data class TurnListDTO(val turns: List<TurnDTO>, val current : Int)

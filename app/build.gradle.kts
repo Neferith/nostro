@@ -55,6 +55,10 @@ dependencies {
     implementation(project(":feature:faction"))
     implementation(project(":feature:faction-data"))
 
+
+    implementation(project(":feature:npc"))
+    implementation(project(":feature:npc-data"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

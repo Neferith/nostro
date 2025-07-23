@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import com.angelus.faction.domain.factory.FactionUseCasFactory
-import com.angelus.gamedomain.factory.TurnUseCaseFactory
+import com.angelus.npc.domain.factory.TurnUseCaseFactory
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.page.game.GameScreenViewModel.GameUseCases
 import com.angelus.nostro.page.game.GameScreenViewModel.MapUseCases

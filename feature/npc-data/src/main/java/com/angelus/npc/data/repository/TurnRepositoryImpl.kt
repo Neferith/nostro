@@ -1,12 +1,10 @@
-package com.angelus.gamedata.repository
+package com.angelus.npc.data.repository
 
-import com.angelus.gamedata.data.TurnDataSource
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnList
 import com.angelus.gamedomain.entities.TurnType
 import com.angelus.gamedomain.entities.npcTurnsAtPositions
-import com.angelus.gamedomain.repository.TurnRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -15,7 +13,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
-class TurnRepositoryImpl(val dataSource: TurnDataSource) : TurnRepository {
+import com.angelus.npc.data.datasource.TurnDataSource
+import com.angelus.npc.domain.repository.TurnRepository
+
+class TurnRepositoryImpl(val dataSource: TurnDataSource) :
+    TurnRepository {
 
     private val _turnList = MutableStateFlow<TurnList?>(null)
 

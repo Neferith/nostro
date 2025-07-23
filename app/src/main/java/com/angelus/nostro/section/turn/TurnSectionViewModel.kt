@@ -7,14 +7,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.faction.domain.entities.Faction
+import com.angelus.faction.domain.entities.Relation
 import com.angelus.faction.domain.usecase.CheckFactionUseCase
 import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnType
-import com.angelus.gamedomain.usecase.NextTurnUseCase
-import com.angelus.gamedomain.usecase.ObserveTurnUseCase
+import com.angelus.npc.domain.usecase.NextTurnUseCase
+import com.angelus.npc.domain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.usecase.CheckVisibilityUseCase
-import com.angelus.nostro.page.game.GameScreenViewModel.GameUseCases
 import com.angelus.playerdomain.usecase.GetPlayerUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -79,6 +79,9 @@ class TurnSectionViewModel(
                 if(showPlayer) {
                     val hostility = gameUseCases.checkFactionUseCase(turnType.character.factionId, Faction.PLAYER_FACTION_ID)
                     Log.d("TAG", hostility.toString())
+                    if(hostility == Relation.HOSTILE) {
+
+                    }
                     //check
                 }
                // _showPlayer.value   != null

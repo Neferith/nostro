@@ -1,15 +1,15 @@
-package com.angelus.gamedata.data
+package com.angelus.npc.data.datasource
 
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.angelus.gamedata.data.dto.TurnListDTO
-import com.angelus.gamedata.data.mapper.convertFromDTO
-import com.angelus.gamedata.data.mapper.convertToDTO
+import com.angelus.npc.data.mapper.convertFromDTO
+import com.angelus.npc.data.mapper.convertToDTO
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnList
+import com.angelus.npc.data.dto.TurnListDTO
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

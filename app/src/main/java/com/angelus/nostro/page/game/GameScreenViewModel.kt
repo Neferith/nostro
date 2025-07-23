@@ -9,9 +9,9 @@ import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.Rotation
 import com.angelus.gamedomain.entities.Turn
 import com.angelus.gamedomain.entities.TurnType
-import com.angelus.gamedomain.usecase.FetchVisibleNCPUseCase
-import com.angelus.gamedomain.usecase.NextTurnUseCase
-import com.angelus.gamedomain.usecase.ObserveTurnUseCase
+import com.angelus.npc.domain.usecase.FetchVisibleNCPUseCase
+import com.angelus.npc.domain.usecase.NextTurnUseCase
+import com.angelus.npc.domain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.entities.Panorama
 import com.angelus.mapdomain.repository.MoveType
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
