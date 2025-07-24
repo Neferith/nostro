@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.Rotation
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnType
 import com.angelus.npc.domain.usecase.FetchVisibleNCPUseCase
 import com.angelus.npc.domain.usecase.NextTurnUseCase
 import com.angelus.npc.domain.usecase.ObserveTurnUseCase

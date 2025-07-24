@@ -2,9 +2,9 @@ package com.angelus.npc.data.mapper
 
 import com.angelus.gamedata.data.mapper.convertFromDTO
 import com.angelus.gamedata.data.mapper.convertToDTO
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnList
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnList
+import com.angelus.npc.domain.entities.TurnType
 
 fun TurnList.convertToDTO(): com.angelus.npc.data.dto.TurnListDTO {
     return com.angelus.npc.data.dto.TurnListDTO(

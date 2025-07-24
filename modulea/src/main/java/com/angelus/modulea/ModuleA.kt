@@ -4,8 +4,8 @@ import com.angelus.faction.domain.entities.Faction
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Module
 import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnType
 import com.angelus.gamedomain.entities.character.Skill
 import com.angelus.gamedomain.entities.item.ItemRegistry
 import com.angelus.mapdomain.entities.GameMap
@@ -86,16 +86,17 @@ object ModuleA : Module {
     fun getAllTurns(): List<Turn> {
         return listOf(
             Turn(TurnType.PLAYER("")),
-            Turn(TurnType.NPC(
-                character = Goblin.createCharacter(),
-                entityPosition = EntityPosition(
-                    mapId = MapIds.CELL.toString(),
-                    position = Position(
-                        x = 4,
-                        y = 9
-                    ),
-                    orientation = com.angelus.gamedomain.entities.Orientation.NORTH
-                )
+            Turn(
+                TurnType.NPC(
+                    character = Goblin.createCharacter(),
+                    entityPosition = EntityPosition(
+                        mapId = MapIds.CELL.toString(),
+                        position = Position(
+                            x = 4,
+                            y = 9
+                        ),
+                        orientation = com.angelus.gamedomain.entities.Orientation.NORTH
+                    )
                 )
             ),
             )

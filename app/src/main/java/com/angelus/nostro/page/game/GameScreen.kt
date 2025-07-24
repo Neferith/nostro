@@ -26,7 +26,7 @@ import androidx.compose.ui.zIndex
 import com.angelus.dungeonengine.component.DungeonScreen
 import com.angelus.dungeonengine.model.toUiState
 import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.TurnType
 import com.angelus.mapdomain.entities.hasInventory
 import com.angelus.nostro.R
 import com.angelus.nostro.component.MoveControls

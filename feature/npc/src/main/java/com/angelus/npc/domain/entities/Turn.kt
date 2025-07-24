@@ -1,5 +1,7 @@
-package com.angelus.gamedomain.entities
+package com.angelus.npc.domain.entities
 
+import com.angelus.gamedomain.entities.EntityPosition
+import com.angelus.gamedomain.entities.Position
 import com.angelus.gamedomain.entities.character.Character
 
 sealed class TurnType {

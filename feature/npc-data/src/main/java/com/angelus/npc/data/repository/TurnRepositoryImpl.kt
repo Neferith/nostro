@@ -1,10 +1,10 @@
 package com.angelus.npc.data.repository
 
 import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnList
-import com.angelus.gamedomain.entities.TurnType
-import com.angelus.gamedomain.entities.npcTurnsAtPositions
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnList
+import com.angelus.npc.domain.entities.TurnType
+import com.angelus.npc.domain.entities.npcTurnsAtPositions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

@@ -10,8 +10,8 @@ import com.angelus.faction.domain.entities.Faction
 import com.angelus.faction.domain.entities.Relation
 import com.angelus.faction.domain.usecase.CheckFactionUseCase
 import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnType
 import com.angelus.npc.domain.usecase.NextTurnUseCase
 import com.angelus.npc.domain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.usecase.CheckVisibilityUseCase

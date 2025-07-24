@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.angelus.faction.domain.entities.Faction
 import com.angelus.gamedomain.entities.Module
-import com.angelus.gamedomain.entities.Turn
+import com.angelus.npc.domain.entities.Turn
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.modulea.ModuleA
 

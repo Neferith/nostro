@@ -1,8 +1,8 @@
 package com.angelus.npc.domain.repository
 
 import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnType
 import kotlinx.coroutines.flow.Flow
 
 interface TurnRepository {

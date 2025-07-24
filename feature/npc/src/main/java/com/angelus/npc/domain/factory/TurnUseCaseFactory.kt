@@ -23,4 +23,5 @@ interface TurnUseCaseFactory {
     fun makeFetchVisibleNCPUseCase(): FetchVisibleNCPUseCase {
         return FetchVisibleNCPUseCaseImpl(turnRepository)
     }
+
 }

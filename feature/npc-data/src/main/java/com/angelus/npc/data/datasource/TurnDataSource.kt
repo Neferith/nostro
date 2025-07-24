@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.angelus.npc.data.mapper.convertFromDTO
 import com.angelus.npc.data.mapper.convertToDTO
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnList
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnList
 import com.angelus.npc.data.dto.TurnListDTO
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
