@@ -60,7 +60,7 @@ fun GameScreen(
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top, // <-- changement ici
         modifier = Modifier.fillMaxSize()
     ) {
         Box(modifier = Modifier

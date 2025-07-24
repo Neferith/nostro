@@ -6,6 +6,6 @@ object Chaoteux: FactionProvider {
     override val id: String = "chaoteux"
     override val name: String = "Chaoteus"
     override val description: String = "DESCRIPTION"
-    override val relations: Map<String, Int> = mapOf( Character.MAIN_CHARACTER to 50)
+    override val relations: Map<String, Int> = mapOf( Character.PLAYER_FACTION to 50)
 
 }

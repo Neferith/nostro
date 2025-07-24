@@ -13,6 +13,7 @@ import com.angelus.modulea.background.primary.Origins
 import com.angelus.modulea.background.secondary.Antecedent
 import com.angelus.modulea.character.Goblin
 import com.angelus.modulea.faction.Chaoteux
+import com.angelus.modulea.faction.Monster
 import com.angelus.modulea.item.NostroCross
 import com.angelus.modulea.map.Cell
 import com.angelus.modulea.map.Level1
@@ -103,6 +104,7 @@ object ModuleA : Module {
     fun getFactions(): List<Faction> {
         return listOf(
             Chaoteux.createFaction(),
+            Monster.createFaction()
         )
     }
 }
