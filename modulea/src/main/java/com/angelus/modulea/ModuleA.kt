@@ -11,7 +11,7 @@ import com.angelus.gamedomain.entities.item.ItemRegistry
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.modulea.background.primary.Origins
 import com.angelus.modulea.background.secondary.Antecedent
-import com.angelus.modulea.character.LydiaDubrie
+import com.angelus.modulea.character.Goblin
 import com.angelus.modulea.faction.Chaoteux
 import com.angelus.modulea.item.NostroCross
 import com.angelus.modulea.map.Cell
@@ -86,7 +86,7 @@ object ModuleA : Module {
         return listOf(
             Turn(TurnType.PLAYER("")),
             Turn(TurnType.NPC(
-                character = LydiaDubrie.createCharacter(),
+                character = Goblin.createCharacter(),
                 entityPosition = EntityPosition(
                     mapId = MapIds.CELL.toString(),
                     position = Position(

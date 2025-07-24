@@ -104,7 +104,7 @@ class GameScreenViewModel(
             when (newTurn.type) {
                 is TurnType.NPC -> {
                     // TODO: LOCK UI
-                    executeNPCTurn(newTurn)
+                   // executeNPCTurn(newTurn)
                 }
                 is TurnType.PLAYER -> {
                         // TODO: UNLOCK UI AFTER DELAY
@@ -113,9 +113,9 @@ class GameScreenViewModel(
         }
     }
 
-    private fun executeNPCTurn(turn: Turn) {
+    private suspend fun executeNPCTurn(turn: Turn) {
 
-      //  nextTurnUseCase()  // Passe au tour suivant
+        nextTurnUseCase()  // Passe au tour suivant
 
     }
 
