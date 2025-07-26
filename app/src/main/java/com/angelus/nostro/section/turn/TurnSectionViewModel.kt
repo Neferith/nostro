@@ -1,16 +1,20 @@
 package com.angelus.nostro.section.turn
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnType
-import com.angelus.gamedomain.usecase.NextTurnUseCase
-import com.angelus.gamedomain.usecase.ObserveTurnUseCase
+import com.angelus.faction.domain.entities.Faction
+import com.angelus.faction.domain.entities.Relation
+import com.angelus.faction.domain.usecase.CheckFactionUseCase
+import com.angelus.gamedomain.entities.Position
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnType
+import com.angelus.npc.domain.usecase.NextTurnUseCase
+import com.angelus.npc.domain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.usecase.CheckVisibilityUseCase
-import com.angelus.nostro.page.game.GameScreenViewModel.GameUseCases
 import com.angelus.playerdomain.usecase.GetPlayerUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,7 +35,8 @@ class TurnSectionViewModel(
         val getPlayerUseCase: GetPlayerUseCase,
         val observeTurnUseCase: ObserveTurnUseCase,
         val nextTurnUseCase: NextTurnUseCase,
-        val checkVisibilityUseCase: CheckVisibilityUseCase
+        val checkVisibilityUseCase: CheckVisibilityUseCase,
+        val checkFactionUseCase: CheckFactionUseCase
     )
 
     init {
@@ -65,9 +70,23 @@ class TurnSectionViewModel(
         viewModelScope.launch {
             val player  = gameUseCases.getPlayerUseCase().getOrNull()
 
+            var futurPosition: Position? = null
             player?.let {
 
-                _showPlayer.value = gameUseCases.checkVisibilityUseCase(turnType.entityPosition, player.entityPosition, 4) != null
+                futurPosition = gameUseCases.checkVisibilityUseCase(turnType.entityPosition, player.entityPosition, 4)
+                val showPlayer = futurPosition != null
+                _showPlayer.value = showPlayer
+                if(showPlayer) {
+                    val hostility = gameUseCases.checkFactionUseCase(turnType.character.factionId, Faction.PLAYER_FACTION_ID)
+                    Log.d("TAG", hostility.toString())
+                    if(hostility == Relation.HOSTILE) {
+
+                    }
+                    //check
+                }
+               // _showPlayer.value   != null
+
+
             }
             gameUseCases.nextTurnUseCase()
         }

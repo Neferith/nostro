@@ -1,14 +1,19 @@
 package com.angelus.nostro.di
 
 import android.content.Context
-import com.angelus.gamedata.data.TurnDataSource
-import com.angelus.gamedata.data.TurnDataStore
+import com.angelus.faction.data.FactionDataStore
+import com.angelus.faction.data.FactionDatasource
+import com.angelus.faction.data.repository.LocalFactionRepository
+import com.angelus.faction.domain.factory.FactionUseCasFactory
+import com.angelus.faction.domain.repository.FactionRepository
+import com.angelus.npc.data.datasource.TurnDataSource
+import com.angelus.npc.data.datasource.TurnDataStore
 import com.angelus.gamedata.repository.CurrentModuleRepositoryImpl
-import com.angelus.gamedata.repository.TurnRepositoryImpl
+import com.angelus.npc.data.repository.TurnRepositoryImpl
 import com.angelus.gamedomain.factory.CurrentGameUseCaseFactory
-import com.angelus.gamedomain.factory.TurnUseCaseFactory
+import com.angelus.npc.domain.factory.TurnUseCaseFactory
 import com.angelus.gamedomain.repository.CurrentModuleRepository
-import com.angelus.gamedomain.repository.TurnRepository
+import com.angelus.npc.domain.repository.TurnRepository
 import com.angelus.mapdata.save.datasource.GameMapDataSource
 import com.angelus.mapdata.save.datasource.GameMapDataStore
 import com.angelus.mapdata.save.repository.SaveMapRepository
@@ -38,9 +43,10 @@ class NewGameDIContainer(
     PlayerDataSourceFactory,
     CurrentMapUseCaseFactory,
     NewGamePageFactory,
-    TurnUseCaseFactory,
+    com.angelus.npc.domain.factory.TurnUseCaseFactory,
     GameScreenPageFactory,
-    InventoryScreenFactory {
+    InventoryScreenFactory,
+    FactionUseCasFactory {
 
     override val currentModuleRepository: CurrentModuleRepository = CurrentModuleRepositoryImpl(moduleContainer.getModule())
 
@@ -58,6 +64,17 @@ class NewGameDIContainer(
         com.angelus.playerdata.repository.PlayerRepositoryImpl(playerDataSource)
     }
 
+    val factionMapDataSource: FactionDatasource by lazy {
+        val datastore = when (gameSlot) {
+            1 -> context.dataStore1
+            2 -> context.dataStore2
+            3 -> context.dataStore3
+            4 -> context.dataStore4
+            else -> throw IllegalArgumentException("Invalid game slot: $gameSlot")
+        }
+        FactionDataStore(ModuleAContainer().getFactions(), datastore)
+    }
+
     val gameMapDataSource: GameMapDataSource by lazy {
         val datastore = when (gameSlot) {
             1 -> context.dataStore1
@@ -69,7 +86,7 @@ class NewGameDIContainer(
         GameMapDataStore(ModuleAContainer().getMaps(), datastore)
     }
 
-    val turnDataSource: TurnDataSource by lazy {
+    val turnDataSource: com.angelus.npc.data.datasource.TurnDataSource by lazy {
         val datastore = when (gameSlot) {
             1 -> context.dataStore1
             2 -> context.dataStore2
@@ -77,16 +94,19 @@ class NewGameDIContainer(
             4 -> context.dataStore4
             else -> throw IllegalArgumentException("Invalid game slot: $gameSlot")
         }
-        TurnDataStore(ModuleAContainer().getAllTurns(), datastore)
+        com.angelus.npc.data.datasource.TurnDataStore(ModuleAContainer().getAllTurns(), datastore)
     }
 
     override val currentMapRepository: CurrentMapRepository by lazy {
         SaveMapRepository(gameMapDataSource)
     }
-    override val turnRepository: TurnRepository by lazy {
-        TurnRepositoryImpl(turnDataSource)
+    override val turnRepository: com.angelus.npc.domain.repository.TurnRepository by lazy {
+        com.angelus.npc.data.repository.TurnRepositoryImpl(turnDataSource)
     }
 
+    override val repository: FactionRepository by lazy {
+        LocalFactionRepository(factionMapDataSource)
+    }
 
     override val currentGameUseCaseFactory: CurrentGameUseCaseFactory
         get() = this
@@ -94,7 +114,10 @@ class NewGameDIContainer(
         get() = this
     override val currentMapUseCaseFactory: CurrentMapUseCaseFactory
         get() = this
-    override val gameUseCaseFactory: TurnUseCaseFactory
+    override val gameUseCaseFactory: com.angelus.npc.domain.factory.TurnUseCaseFactory
         get() = this
+    override val factionUseCaseFactory: FactionUseCasFactory
+        get() = this
+
 
 }
