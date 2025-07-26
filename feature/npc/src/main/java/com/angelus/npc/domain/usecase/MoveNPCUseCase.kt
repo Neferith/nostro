@@ -3,6 +3,7 @@ package com.angelus.npc.domain.usecase
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.npc.domain.entities.NPC
 import com.angelus.npc.domain.repository.NPCRepository
+import com.angelus.npc.domain.repository.TurnRepository
 
 
 interface MoveNPCUseCase {
@@ -14,7 +15,7 @@ interface MoveNPCUseCase {
     suspend operator fun invoke(params: Params): Result<NPC>
 }
 
-class MoveNPCUseCaseImpl(val repository: NPCRepository) : MoveNPCUseCase {
+class MoveNPCUseCaseImpl(val repository: TurnRepository) : MoveNPCUseCase {
     override suspend fun invoke(params: MoveNPCUseCase.Params): Result<NPC> {
         return repository
             .fetchNPC(params.characterId)
