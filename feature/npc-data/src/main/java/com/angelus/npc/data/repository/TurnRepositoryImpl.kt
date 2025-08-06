@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
 import com.angelus.npc.data.datasource.TurnDataSource
+import com.angelus.npc.domain.entities.NPC
 import com.angelus.npc.domain.repository.TurnRepository
 
 class TurnRepositoryImpl(val dataSource: TurnDataSource) :
@@ -43,5 +44,13 @@ class TurnRepositoryImpl(val dataSource: TurnDataSource) :
 
     override suspend fun fetchVisibleNCP(positions: List<Position>): List<TurnType.NPC> {
         return _turnList.value?.npcTurnsAtPositions(positions)?: emptyList()
+    }
+
+    override suspend fun fetchNPC(characterId: String): Result<NPC> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateNPC(npc: NPC): Result<NPC> {
+        TODO("Not yet implemented")
     }
 }

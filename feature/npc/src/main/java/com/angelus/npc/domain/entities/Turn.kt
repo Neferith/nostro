@@ -33,3 +33,10 @@ fun TurnList.npcTurnsAtPositions(positions: List<Position>): List<TurnType.NPC> 
         .filterIsInstance<TurnType.NPC>()
         .filter { it.entityPosition.position in positions }
 }
+
+fun TurnList.npcTurnByCharacterId(characterId: String): TurnType.NPC? {
+    return turns
+        .map { it.type }
+        .filterIsInstance<TurnType.NPC>()
+        .firstOrNull { it.character.id == characterId }
+}
