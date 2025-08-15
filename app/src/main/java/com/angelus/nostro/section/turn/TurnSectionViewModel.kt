@@ -9,12 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.angelus.faction.domain.entities.Faction
 import com.angelus.faction.domain.entities.Relation
 import com.angelus.faction.domain.usecase.CheckFactionUseCase
-import com.angelus.gamedomain.entities.Position
+import com.angelus.gamedomain.entities.EntityPosition
+import com.angelus.mapdomain.usecase.CheckVisibilityUseCase
 import com.angelus.npc.domain.entities.Turn
 import com.angelus.npc.domain.entities.TurnType
+import com.angelus.npc.domain.usecase.MoveNPCUseCase
 import com.angelus.npc.domain.usecase.NextTurnUseCase
 import com.angelus.npc.domain.usecase.ObserveTurnUseCase
-import com.angelus.mapdomain.usecase.CheckVisibilityUseCase
 import com.angelus.playerdomain.usecase.GetPlayerUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -36,7 +37,8 @@ class TurnSectionViewModel(
         val observeTurnUseCase: ObserveTurnUseCase,
         val nextTurnUseCase: NextTurnUseCase,
         val checkVisibilityUseCase: CheckVisibilityUseCase,
-        val checkFactionUseCase: CheckFactionUseCase
+        val checkFactionUseCase: CheckFactionUseCase,
+        val moveNPCUseCase: MoveNPCUseCase
     )
 
     init {
@@ -70,7 +72,7 @@ class TurnSectionViewModel(
         viewModelScope.launch {
             val player  = gameUseCases.getPlayerUseCase().getOrNull()
 
-            var futurPosition: Position? = null
+            var futurPosition: EntityPosition? = null
             player?.let {
 
                 futurPosition = gameUseCases.checkVisibilityUseCase(turnType.entityPosition, player.entityPosition, 4)
@@ -80,7 +82,9 @@ class TurnSectionViewModel(
                     val hostility = gameUseCases.checkFactionUseCase(turnType.character.factionId, Faction.PLAYER_FACTION_ID)
                     Log.d("TAG", hostility.toString())
                     if(hostility == Relation.HOSTILE) {
-
+                        futurPosition?.let {
+                        gameUseCases.moveNPCUseCase(MoveNPCUseCase.Params(turnType.character.id, it))
+                        }
                     }
                     //check
                 }

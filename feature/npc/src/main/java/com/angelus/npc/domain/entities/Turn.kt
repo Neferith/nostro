@@ -16,7 +16,10 @@ data class Turn(
     val type: TurnType
 )
 
-data class TurnList(val turns: List<Turn>, val currentTurn: Int) {
+data class TurnList(
+    val turns: List<Turn>,
+    val currentTurn: Int
+) {
     fun nextTurn(): TurnList {
         val next = (currentTurn + 1) % turns.size
         return copy(currentTurn = next)
@@ -24,6 +27,20 @@ data class TurnList(val turns: List<Turn>, val currentTurn: Int) {
 
     val current: Turn
         get() = turns[currentTurn]
+}
+
+fun TurnList.updateTurn(characterId: String, newTurn: Turn): TurnList {
+    val index = turns.indexOfFirst {
+        when (val type = it.type) {
+            is TurnType.NPC -> type.character.id == characterId
+            is TurnType.PLAYER -> false
+        }
+    }
+
+    require(index != -1) { "Turn introuvable dans la liste" }
+
+    val updatedTurns = turns.toMutableList().also { it[index] = newTurn }
+    return copy(turns = updatedTurns)
 }
 
 

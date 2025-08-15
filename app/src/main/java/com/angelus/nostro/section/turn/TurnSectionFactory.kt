@@ -43,7 +43,8 @@ interface TurnSectionFactory {
             observeTurnUseCase = gameUseCaseFactory.makeObserveTurnUseCase(),
             nextTurnUseCase = gameUseCaseFactory.makeNextTurnUseCase(),
             checkVisibilityUseCase = currentMapUseCaseFactory.makeCheckVisibilityUseCase(),
-            checkFactionUseCase = factionUseCaseFactory.makeCheckFactionUseCase()
+            checkFactionUseCase = factionUseCaseFactory.makeCheckFactionUseCase(),
+            moveNPCUseCase = gameUseCaseFactory.makeMoveNPCUseCase()
         )
         return viewModel(
             navBackStackEntry,
