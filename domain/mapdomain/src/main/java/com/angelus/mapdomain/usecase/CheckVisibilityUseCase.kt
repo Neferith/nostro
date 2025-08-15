@@ -9,7 +9,7 @@ import com.angelus.mapdomain.entities.TileType
 import com.angelus.mapdomain.repository.CurrentMapRepository
 
 interface CheckVisibilityUseCase {
-    suspend operator fun invoke(source: EntityPosition, target: EntityPosition, distance: Int): Position?
+    suspend operator fun invoke(source: EntityPosition, target: EntityPosition, distance: Int): EntityPosition?
 }
 
 
@@ -21,7 +21,7 @@ class CheckVisibilityUseCaseImpl(
         source: EntityPosition,
         target: EntityPosition,
         distance: Int
-    ): Position? {
+    ): EntityPosition? {
         val map: GameMap? = repository.fetchMapById(source.mapId).getOrNull()
         if(map == null) {
             return null
@@ -46,7 +46,8 @@ class CheckVisibilityUseCaseImpl(
             if (blocksVision(tile)) break // Vision bloquée ici
 
             if (tile.walkable) {
-                return pos // ✅ Première case visible & walkable
+                // @TODO : Ici on devrait gérer l'orientation et la map ID si cela à changé
+                return EntityPosition(source.mapId, pos, source.orientation) // ✅ Première case visible & walkable
             }
         }
 

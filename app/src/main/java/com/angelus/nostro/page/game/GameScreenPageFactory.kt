@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import com.angelus.gamedomain.factory.TurnUseCaseFactory
+import com.angelus.faction.domain.factory.FactionUseCasFactory
+import com.angelus.npc.domain.factory.TurnUseCaseFactory
 import com.angelus.mapdomain.factory.CurrentMapUseCaseFactory
 import com.angelus.nostro.page.game.GameScreenViewModel.GameUseCases
 import com.angelus.nostro.page.game.GameScreenViewModel.MapUseCases
@@ -18,6 +19,7 @@ interface GameScreenPageFactory {
     val playerUseCaseFactory: PlayerUseCaseFactory
     val currentMapUseCaseFactory: CurrentMapUseCaseFactory
     val gameUseCaseFactory: TurnUseCaseFactory
+    val factionUseCaseFactory: FactionUseCasFactory
 
     private class GameScreenViewModelFactory(
         // val params: Params,
@@ -78,7 +80,8 @@ interface GameScreenPageFactory {
             navBackStackEntry,
             playerUseCaseFactory,
             currentMapUseCaseFactory,
-            gameUseCaseFactory
+            gameUseCaseFactory,
+            factionUseCaseFactory
         ))
     }
 }
@@ -87,7 +90,8 @@ class TurnSectionDIContainer(
     override val navBackStackEntry: NavBackStackEntry,
     override val playerUseCaseFactory: PlayerUseCaseFactory,
     override val currentMapUseCaseFactory: CurrentMapUseCaseFactory,
-    override val gameUseCaseFactory: TurnUseCaseFactory
+    override val gameUseCaseFactory: TurnUseCaseFactory,
+    override val factionUseCaseFactory: FactionUseCasFactory
 ) : TurnSectionFactory {
 
 }
