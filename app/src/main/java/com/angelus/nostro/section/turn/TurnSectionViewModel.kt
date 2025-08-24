@@ -31,6 +31,8 @@ class TurnSectionViewModel(
     private var _showPlayer: MutableState<Boolean> = mutableStateOf(false)
     val showPlayer: State<Boolean> = _showPlayer
 
+    private var  lastOberveTurnIndex = -1
+
 
     data class GameUseCases(
         val getPlayerUseCase: GetPlayerUseCase,
@@ -40,12 +42,14 @@ class TurnSectionViewModel(
         val checkFactionUseCase: CheckFactionUseCase,
         val moveNPCUseCase: MoveNPCUseCase
     )
-
     init {
         observeTurnUseCase().onEach { newTurn ->
           //  refreshCurrentPanorama()
             // Déclencher un événement à chaque fois que le tour change
-            handleNewTurn(newTurn)
+            if(lastOberveTurnIndex != newTurn.currentTurn) {
+                lastOberveTurnIndex = newTurn.currentTurn
+                handleNewTurn(newTurn.current)
+            }
         }.launchIn(viewModelScope)
 
     }

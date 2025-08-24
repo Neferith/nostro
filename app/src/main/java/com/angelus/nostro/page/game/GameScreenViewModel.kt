@@ -18,6 +18,7 @@ import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
 import com.angelus.mapdomain.usecase.CheckMoveParams
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
 import com.angelus.nostro.component.MoveAction
+import com.angelus.npc.domain.entities.TurnList
 import com.angelus.playerdomain.usecase.ChangePlayerZoneParams
 import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCase
 import com.angelus.playerdomain.usecase.MovePlayerParams
@@ -72,13 +73,13 @@ class GameScreenViewModel(
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
-    val currentTurn: StateFlow<Turn?> = observeTurnUseCase().stateIn(viewModelScope, SharingStarted.Lazily, null )
+    val currentTurn: StateFlow<TurnList?> = observeTurnUseCase().stateIn(viewModelScope, SharingStarted.Lazily, null )
 
     init {
         observeTurnUseCase().onEach { newTurn ->
             refreshCurrentPanorama()
             // Déclencher un événement à chaque fois que le tour change
-            handleNewTurn(newTurn)
+            handleNewTurn(newTurn.current)
         }.launchIn(viewModelScope)
 
         currentPlayer.onEach { player ->

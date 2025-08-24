@@ -34,7 +34,7 @@ class TurnRepositoryImpl(val dataSource: TurnDataSource) :
         }
     }
 
-    override fun observeTurn(): Flow<Turn> = _turnList.mapNotNull { it?.current }
+    override fun observeTurn(): Flow<TurnList> = _turnList.mapNotNull { it }
 
     override suspend fun nextTurn() {
 

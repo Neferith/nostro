@@ -100,7 +100,7 @@ fun GameScreen(
             text.value = it
         })
 
-        if (turnState.value?.type == TurnType.PLAYER("")) {
+        if (turnState.value?.current?.type == TurnType.PLAYER("")) {
             MoveControls(
                 onMove = {
                     viewModel.processMoveAction(it)

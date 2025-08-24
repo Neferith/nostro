@@ -43,7 +43,8 @@ interface InventoryScreenFactory  {
 
         val dataUseCases = InventoryViewModel.DataUseCases(
             observePlayerUseCase = playerUseCaseFactory.makeObservePlayerUseCase(),
-            getTileAtPositionUseCase = currentMapUseCaseFactory.makeGetTileAtPosisitionUseCase(),
+            observeTileAtPositionUseCase = currentMapUseCaseFactory.makeGetTileAtPosisitionUseCase(),
+          //  getTileAtPosisitionUseCase = currentMapUseCaseFactory.makeGetTileAtPosisitionUseCase(),
             fetchItemsByIdUseCase = currentGameUseCaseFactory.makeFetchItemsByIdUseCase()
         )
 
