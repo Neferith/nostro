@@ -1,6 +1,7 @@
 package com.angelus.nostro.page.inventory
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -38,6 +39,8 @@ fun InventoryScreen(navigator: InventoryNavigator, viewModel: InventoryViewModel
                 .fillMaxSize()
                 .padding(paddingValues)) {
 
+                Column {
+
                 tile?.inventory?.let { inventory ->
                     InventoryPanel(
                         "Sol", floorInventory,
@@ -56,6 +59,7 @@ fun InventoryScreen(navigator: InventoryNavigator, viewModel: InventoryViewModel
                     )
                 }
 
+                }
 
                 Box(
                     modifier = Modifier

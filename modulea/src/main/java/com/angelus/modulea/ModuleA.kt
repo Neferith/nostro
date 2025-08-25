@@ -1,16 +1,19 @@
 package com.angelus.modulea
 
+import com.angelus.faction.domain.entities.Faction
 import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.gamedomain.entities.Module
 import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnType
 import com.angelus.gamedomain.entities.character.Skill
 import com.angelus.gamedomain.entities.item.ItemRegistry
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.modulea.background.primary.Origins
 import com.angelus.modulea.background.secondary.Antecedent
-import com.angelus.modulea.character.LydiaDubrie
+import com.angelus.modulea.character.Goblin
+import com.angelus.modulea.faction.Chaoteux
+import com.angelus.modulea.faction.Monster
 import com.angelus.modulea.item.NostroCross
 import com.angelus.modulea.map.Cell
 import com.angelus.modulea.map.Level1
@@ -83,19 +86,27 @@ object ModuleA : Module {
     fun getAllTurns(): List<Turn> {
         return listOf(
             Turn(TurnType.PLAYER("")),
-            Turn(TurnType.NPC(
-                character = LydiaDubrie.createCharacter(),
-                entityPosition = EntityPosition(
-                    mapId = MapIds.CELL.toString(),
-                    position = Position(
-                        x = 4,
-                        y = 9
-                    ),
-                    orientation = com.angelus.gamedomain.entities.Orientation.NORTH
-                )
+            Turn(
+                TurnType.NPC(
+                    character = Goblin.createCharacter(),
+                    entityPosition = EntityPosition(
+                        mapId = MapIds.CELL.toString(),
+                        position = Position(
+                            x = 4,
+                            y = 9
+                        ),
+                        orientation = com.angelus.gamedomain.entities.Orientation.NORTH
+                    )
                 )
             ),
             )
+    }
+
+    fun getFactions(): List<Faction> {
+        return listOf(
+            Chaoteux.createFaction(),
+            Monster.createFaction()
+        )
     }
 }
 

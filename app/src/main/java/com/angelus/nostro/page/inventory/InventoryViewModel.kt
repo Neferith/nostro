@@ -7,6 +7,7 @@ import com.angelus.gamedomain.usecase.FetchItemsByIdUseCase
 import com.angelus.mapdomain.entities.Tile
 import com.angelus.mapdomain.usecase.AddObjectToTileUseCase
 import com.angelus.mapdomain.usecase.GetTileAtPosisitionUseCase
+import com.angelus.mapdomain.usecase.ObserveTileAtPositionUseCase
 import com.angelus.mapdomain.usecase.RemoveObjectToTileUseCase
 import com.angelus.nostro.coordinator.InventoryPosition
 import com.angelus.nostro.page.inventory.mock.ItemStack
@@ -16,6 +17,8 @@ import com.angelus.playerdomain.usecase.ObservePlayerUseCase
 import com.angelus.playerdomain.usecase.RemoveObjectToPlayerUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,7 +31,8 @@ class InventoryViewModel(
 
     data class DataUseCases(
         val observePlayerUseCase: ObservePlayerUseCase,
-        val getTileAtPositionUseCase: GetTileAtPosisitionUseCase,
+        val observeTileAtPositionUseCase: ObserveTileAtPositionUseCase,
+       // val getTileAtPosisitionUseCase: GetTileAtPosisitionUseCase,
         val fetchItemsByIdUseCase: FetchItemsByIdUseCase
     )
 
@@ -42,13 +46,19 @@ class InventoryViewModel(
     val currentPlayer: StateFlow<Player?> = dataUseCases.observePlayerUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    val currentTile: StateFlow<Tile?> = currentPlayer
+  /*  val currentTile: StateFlow<Tile?> = currentPlayer
         .mapLatest { player ->
             player?.let {
-                dataUseCases.getTileAtPositionUseCase(it.entityPosition).getOrNull()
+                dataUseCases.getTileAtPosisitionUseCase(it.entityPosition).getOrNull()
             }
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)*/
+   val currentTile: StateFlow<Tile?> = currentPlayer
+       .flatMapLatest { player ->
+           player?.let { dataUseCases.observeTileAtPositionUseCase(it.entityPosition) }
+               ?: flowOf(null)
+       }
+       .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     val inventoryFloor: StateFlow<List<ItemStack>> = currentTile
         .mapLatest { tile ->

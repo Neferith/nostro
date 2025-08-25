@@ -12,6 +12,7 @@ import com.angelus.mapdomain.exception.MapNotFoundException
 import com.angelus.mapdomain.exception.TileNotFoundException
 import com.angelus.mapdomain.repository.CurrentMapRepository
 import com.angelus.mapdomain.repository.MoveType
+import kotlinx.coroutines.flow.Flow
 
 class SaveMapRepository(
     val dataSource: GameMapDataSource
@@ -110,5 +111,9 @@ class SaveMapRepository(
             return Result.success(map)
         }
         return Result.failure(MapNotFoundException())
+    }
+
+    override fun observeMap(mapId: String): Flow<GameMap?> {
+        return dataSource.observeMap(mapId)
     }
 }

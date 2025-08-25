@@ -1,7 +1,6 @@
 package com.angelus.dungeonengine.model
 
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.TurnType
 import com.angelus.gamedomain.entities.item.Inventory
 import com.angelus.mapdomain.entities.TilePosition
 import com.angelus.mapdomain.entities.TileType

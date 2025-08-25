@@ -7,17 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelus.gamedomain.entities.Direction
 import com.angelus.gamedomain.entities.Rotation
-import com.angelus.gamedomain.entities.Turn
-import com.angelus.gamedomain.entities.TurnType
-import com.angelus.gamedomain.usecase.FetchVisibleNCPUseCase
-import com.angelus.gamedomain.usecase.NextTurnUseCase
-import com.angelus.gamedomain.usecase.ObserveTurnUseCase
+import com.angelus.npc.domain.entities.Turn
+import com.angelus.npc.domain.entities.TurnType
+import com.angelus.npc.domain.usecase.FetchVisibleNCPUseCase
+import com.angelus.npc.domain.usecase.NextTurnUseCase
+import com.angelus.npc.domain.usecase.ObserveTurnUseCase
 import com.angelus.mapdomain.entities.Panorama
 import com.angelus.mapdomain.repository.MoveType
 import com.angelus.mapdomain.usecase.CheckMoveInMapUseCase
 import com.angelus.mapdomain.usecase.CheckMoveParams
 import com.angelus.mapdomain.usecase.GetPanoramaUseCase
 import com.angelus.nostro.component.MoveAction
+import com.angelus.npc.domain.entities.TurnList
 import com.angelus.playerdomain.usecase.ChangePlayerZoneParams
 import com.angelus.playerdomain.usecase.ChangePlayerZoneUseCase
 import com.angelus.playerdomain.usecase.MovePlayerParams
@@ -72,13 +73,13 @@ class GameScreenViewModel(
     // Observe le joueur courant via le UseCase
     val currentPlayer: StateFlow<com.angelus.playerdomain.entities.Player?> = observePlayerUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
-    val currentTurn: StateFlow<Turn?> = observeTurnUseCase().stateIn(viewModelScope, SharingStarted.Lazily, null )
+    val currentTurn: StateFlow<TurnList?> = observeTurnUseCase().stateIn(viewModelScope, SharingStarted.Lazily, null )
 
     init {
         observeTurnUseCase().onEach { newTurn ->
             refreshCurrentPanorama()
             // Déclencher un événement à chaque fois que le tour change
-            handleNewTurn(newTurn)
+            handleNewTurn(newTurn.current)
         }.launchIn(viewModelScope)
 
         currentPlayer.onEach { player ->
@@ -104,7 +105,7 @@ class GameScreenViewModel(
             when (newTurn.type) {
                 is TurnType.NPC -> {
                     // TODO: LOCK UI
-                    executeNPCTurn(newTurn)
+                   // executeNPCTurn(newTurn)
                 }
                 is TurnType.PLAYER -> {
                         // TODO: UNLOCK UI AFTER DELAY
@@ -113,9 +114,9 @@ class GameScreenViewModel(
         }
     }
 
-    private fun executeNPCTurn(turn: Turn) {
+    private suspend fun executeNPCTurn(turn: Turn) {
 
-      //  nextTurnUseCase()  // Passe au tour suivant
+        nextTurnUseCase()  // Passe au tour suivant
 
     }
 

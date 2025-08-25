@@ -26,7 +26,7 @@ import androidx.compose.ui.zIndex
 import com.angelus.dungeonengine.component.DungeonScreen
 import com.angelus.dungeonengine.model.toUiState
 import com.angelus.gamedomain.entities.Position
-import com.angelus.gamedomain.entities.TurnType
+import com.angelus.npc.domain.entities.TurnType
 import com.angelus.mapdomain.entities.hasInventory
 import com.angelus.nostro.R
 import com.angelus.nostro.component.MoveControls
@@ -60,7 +60,7 @@ fun GameScreen(
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top, // <-- changement ici
         modifier = Modifier.fillMaxSize()
     ) {
         Box(modifier = Modifier
@@ -100,7 +100,7 @@ fun GameScreen(
             text.value = it
         })
 
-        if (turnState.value?.type == TurnType.PLAYER("")) {
+        if (turnState.value?.current?.type == TurnType.PLAYER("")) {
             MoveControls(
                 onMove = {
                     viewModel.processMoveAction(it)

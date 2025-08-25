@@ -38,6 +38,7 @@ android {
 
 dependencies {
 
+    implementation(project(":feature:npc"))
 
     implementation(project(":domain:mapdomain"))
     implementation(project(":domain:gamedomain"))

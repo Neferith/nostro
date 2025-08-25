@@ -5,6 +5,7 @@ import com.angelus.gamedomain.entities.EntityPosition
 import com.angelus.mapdomain.entities.GameMap
 import com.angelus.mapdomain.entities.Panorama
 import com.angelus.mapdomain.entities.Tile
+import kotlinx.coroutines.flow.Flow
 
 sealed class MoveType {
     object blocked : MoveType()
@@ -37,4 +38,5 @@ interface CurrentMapRepository {
     ): Result<Tile>
 
     suspend fun fetchMapById(mapId: String): Result<GameMap>
+    fun observeMap(mapId: String): Flow<GameMap?>
 }

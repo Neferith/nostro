@@ -9,7 +9,9 @@ import com.angelus.mapdata.save.datasource.dto.GameMapDTO
 import com.angelus.mapdata.save.datasource.mapper.convertFromDTO
 import com.angelus.mapdata.save.datasource.mapper.convertToDTO
 import com.angelus.mapdomain.entities.GameMap
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -23,6 +25,7 @@ class UnableToUpdateMapException(mapId: String): Exception("Unable to update ma 
 interface GameMapDataSource {
     suspend fun fetchMap(mapId: String): GameMap?
     suspend fun updateMap(map: GameMap)
+    fun observeMap(mapId: String): Flow<GameMap?>
 }
 
 class GameMapDataStore(
@@ -59,6 +62,18 @@ class GameMapDataStore(
         } catch (e: Exception) {
             e.printStackTrace()
             throw UnableToUpdateMapException(map.id)
+        }
+    }
+
+    // 🔹 Flux d’observation de la map
+    override fun observeMap(mapId: String): Flow<GameMap?> {
+        return dataStore.data.map { preferences ->
+            val mapJson = preferences[mapKey(mapId)]
+            if (mapJson != null) {
+                Json.decodeFromString<GameMapDTO>(mapJson).convertFromDTO()
+            } else {
+                basemaps[mapId]
+            }
         }
     }
 

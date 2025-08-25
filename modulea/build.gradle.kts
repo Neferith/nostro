@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:faction"))
+    implementation(project(":feature:npc"))
 
     implementation(project(":domain:gamedomain"))
     implementation(project(":domain:mapdomain"))
